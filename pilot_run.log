@@ -1,0 +1,29 @@
+cd experiments/m1_wk0 && python budget.py
+cd experiments/m1_wk0 && python budget.py
+device=cuda
+R6             params=   7,046,890  Δvs_max= +0.0%
+R5d            params=   4,274,346  Δvs_max=-39.3%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R6: 156.7 ms/step, peak 1.5 GB
+  steps/epoch≈39  total_train_steps≈12,500,000
+  => ~544 GPU-hours for the matrix (8 arms × 10 seeds × 1 scen × 10 tasks × 400 ep)
+  (add eval cost: eval_inits× forwards per experience; de-scope epochs/seeds if infeasible)
+  per-layer fraction-active (R6 fixed point): [0.999, 0.999, 0.999]
+  wrote /root/NC/experiments/m1_wk0/results/sparsity_target.json: [0.999, 0.999, 0.999]
+device=cuda
+R6             params=   7,046,890  Δvs_max= +0.0%
+R5d            params=   4,274,346  Δvs_max=-39.3%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R6: 154.5 ms/step, peak 1.5 GB
+  steps/epoch≈39  total_train_steps≈12,500,000
+  => ~537 GPU-hours for the matrix (8 arms × 10 seeds × 1 scen × 10 tasks × 400 ep)
+  (add eval cost: eval_inits× forwards per experience; de-scope epochs/seeds if infeasible)
+  per-layer fraction-active (R6 fixed point): [0.999, 0.999, 0.999]
+  wrote /root/NC/experiments/m1_wk0/results/sparsity_target.json: [0.999, 0.999, 0.999]
+device=cuda
+R6             params=   7,046,890  Δvs_max= +0.0%
+R5d            params=   4,274,346  Δvs_max=-39.3%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R6: 151.5 ms/step, peak 1.5 GB
+  steps/epoch≈39  total_train_steps≈12,500,000
+  => ~526 GPU-hours for the matrix (8 arms × 10 seeds × 1 scen × 10 tasks × 400 ep)
+  (add eval cost: eval_inits× forwards per experience; de-scope epochs/seeds if infeasible)
+  per-layer fraction-active (R6 fixed point): [0.999, 0.999, 0.999]
+  wrote /root/NC/experiments/m1_wk0/results/sparsity_target.json: [0.999, 0.999, 0.999]

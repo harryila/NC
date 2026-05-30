@@ -7,13 +7,19 @@ oscillator state |x|>eps, but x is L2-normalized onto the unit sphere every step
 PARTICIPATION RATIO of the readout features (the activations that actually feed forward
 and the head): PR = (Σλ)^2 / Σλ^2 over the feature-covariance eigenvalues ≈ effective #
 active dims. Reported as PR/num_features in (0,1] -> the target R2-R4 k-WTA should match.
+Persists results/sparsity_target.json (the one cross-job dependency; see RUNNING.md DAG).
 
 Run on the GPU box:  python budget.py
 """
+import json
+import os
 import time
 import torch
 
 from ladder import build, param_report
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+RESULTS = os.path.join(HERE, "results")
 
 
 def measure(rung="R6", num_classes=100, bs=128, steps=20, device="cuda", **kw):
@@ -82,4 +88,9 @@ if __name__ == "__main__":
     print(f"R6: {sps*1000:.1f} ms/step, peak {gb:.1f} GB")
     extrapolate(sps)
     if dev == "cuda":
-        effective_sparsity("R6", device=dev)
+        fr = effective_sparsity("R6", device=dev)
+        # Persist the ONE cross-job dependency (R2-R4 k-WTA target). See RUNNING.md DAG.
+        os.makedirs(RESULTS, exist_ok=True)
+        with open(os.path.join(RESULTS, "sparsity_target.json"), "w") as f:
+            json.dump(fr, f)
+        print(f"  wrote {os.path.join(RESULTS, 'sparsity_target.json')}: {[round(x,3) for x in fr]}")

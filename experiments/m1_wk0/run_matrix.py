@@ -48,7 +48,7 @@ def _sparsity_target(device):
     return fr
 
 
-def run_one(rung, scen, nexp, seed, target, epochs, device):
+def run_one(rung, scen, nexp, seed, target, epochs, device, eval_inits=8):
     out = os.path.join(RESULTS, _jid(rung, scen, nexp, epochs, seed) + ".json")
     if os.path.exists(out):
         print("skip (done):", os.path.basename(out)); return
@@ -61,7 +61,8 @@ def run_one(rung, scen, nexp, seed, target, epochs, device):
     print("RUN:", _jid(rung, scen, nexp, epochs, seed))
     try:
         metrics = run_split_cifar100(base, scenario=scen, n_experiences=nexp,
-                                     seed=seed, epochs=epochs, device=device, **kw)
+                                     seed=seed, epochs=epochs, device=device,
+                                     eval_inits=eval_inits, **kw)
         json.dump({"rung": rung, "scenario": scen, "nexp": nexp, "epochs": epochs,
                    "seed": seed, "metrics": metrics}, open(out, "w"), default=str)
         print("  done ->", os.path.basename(out))
@@ -75,6 +76,7 @@ def main():
     ap.add_argument("--seeds", type=int, default=10)
     ap.add_argument("--rungs", type=str, default="", help="comma list to restrict, e.g. 'R6,R5:no_proj'")
     ap.add_argument("--scenarios", type=str, default="", help="comma list like 'class10,class20'")
+    ap.add_argument("--eval_inits", type=int, default=8, help="fixed-seed eval forwards (matched across arms)")
     ap.add_argument("--shard", type=str, default="0/1", help="k/N to split across N GPUs")
     ap.add_argument("--device", type=str, default="cuda")
     args = ap.parse_args()
@@ -90,9 +92,9 @@ def main():
     jobs = [(r, s, ne, sd) for (s, ne) in scens for r in rungs for sd in range(args.seeds)]
     jobs = [j for i, j in enumerate(jobs) if i % n == k]
     print(f"{len(jobs)} jobs on shard {k}/{n}  (rungs={rungs}, scenarios={[f'{s}{ne}' for s,ne in scens]}, "
-          f"epochs={args.epochs}, seeds={args.seeds})")
+          f"epochs={args.epochs}, seeds={args.seeds}, eval_inits={args.eval_inits})")
     for (r, s, ne, sd) in jobs:
-        run_one(r, s, ne, sd, target, args.epochs, args.device)
+        run_one(r, s, ne, sd, target, args.epochs, args.device, eval_inits=args.eval_inits)
     print("queue drained.")
 
 
