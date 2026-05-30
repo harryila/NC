@@ -12,7 +12,7 @@ Locking these before seeing results is what makes the GREENLIGHT/PIVOT calls hon
 - **Endpoint:** class-IL average **Forgetting** (lower = better), key `StreamForgetting/eval_phase/test_stream`.  [alt: final-average-ACC]
 - **Scenario:** Split-CIFAR-100, class-IL, **10 × 10** (primary).
 - **Replication stream:** **20 × 5** (Split-CIFAR-100); Split-TinyImageNet optional — effect must replicate in **sign**.
-- **Decisive contrast:** **R6 − R5**, with R5 ∈ {**depthwise (primary)**, no_proj, frozen_J}.
+- **Decisive contrast:** **R6 − R5:no_proj** (PRIMARY — param-identical `apply_proj` flip, the cleanest causal isolation of synchrony). `R5:depthwise` and `R5:frozen_J` are −39%-param **robustness brackets** (Holm family), not the primary. *(Revised 2026-05-30 from the original "depthwise primary": depthwise is capacity-confounded; the H3 DiD and the gate both run against the param-identical no_proj.)*
 
 ## Numbers
 - **SESOI / Δg** (GREENLIGHT effect): ΔForgetting ≥ **3.0** abs pts  OR  Cohen's d ≥ **0.8** on seed-paired diffs.  **[locked]**

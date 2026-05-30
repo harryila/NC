@@ -60,13 +60,19 @@ def run_one(rung, scen, nexp, seed, target, epochs, device, eval_inits=8):
         backbone, strat, kw = base, "naive", ({"variant": variant} if variant else {})
         if base in ("R2", "R3", "R4"):
             kw["akorn_sparsity"] = sum(target) / len(target)   # TODO: per-layer match, not the mean
+    snapshot_h3 = base.startswith("R5") or base.startswith("R6")   # H3 mechanism only for the decisive arms
     print("RUN:", _jid(rung, scen, nexp, epochs, seed))
     try:
-        metrics = run_split_cifar100(backbone, scenario=scen, n_experiences=nexp,
-                                     seed=seed, epochs=epochs, device=device,
-                                     eval_inits=eval_inits, strategy=strat, **kw)
-        json.dump({"rung": rung, "scenario": scen, "nexp": nexp, "epochs": epochs,
-                   "seed": seed, "metrics": metrics}, open(out, "w"), default=str)
+        res = run_split_cifar100(backbone, scenario=scen, n_experiences=nexp,
+                                 seed=seed, epochs=epochs, device=device,
+                                 eval_inits=eval_inits, strategy=strat, snapshot_h3=snapshot_h3, **kw)
+        # unpack the rich driver dict: flat avalanche metrics under 'metrics', new fields at top level
+        # (analyze_hardened.load() reads learning_acc / h3 at top level; analyze.py reads StreamForgetting in 'metrics')
+        json.dump({"rung": rung, "scenario": scen, "nexp": nexp, "epochs": epochs, "seed": seed,
+                   "metrics": res["final_metrics"], "learning_acc": res["learning_acc"],
+                   "acc_matrix": res["acc_matrix"], "avg_forgetting": res["avg_forgetting"],
+                   "bwt": res["bwt"], "selfcheck_ok": res.get("selfcheck_ok", True),
+                   "h3": res["h3"]}, open(out, "w"), default=str)
         print("  done ->", os.path.basename(out))
     except Exception as e:
         print("  FAIL:", _jid(rung, scen, nexp, epochs, seed), "::", e); traceback.print_exc()
