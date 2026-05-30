@@ -19,7 +19,7 @@ Locking these before seeing results is what makes the GREENLIGHT/PIVOT calls hon
 - **Δe** (equivalence margin for PIVOT nulls, TOST): ± **1.5** pts.  **[locked]**
 - **Inconclusive band:** 1.5 < |effect| < 3.0 → add seeds, no forced call.  **[locked]**
 - **Seeds:** **10** baseline; **15** for the decisive R6−R5. Each seed keys data-order + init + augmentation RNG.  **[locked]**
-- **A5 competitiveness margin:** R6 within **3.0** pts of A5 (DER++/FOSTER).  **[locked]**
+- **A5 competitiveness margin:** R6 within **3.0** pts of A5 = **DER++** (`avalanche DER`, beta>0; FOSTER is absent from avalanche-lib 0.6.0). A4 refs = EWC, Replay — all on the R6 backbone.  **[locked]**
 - **Test:** exact paired **permutation / sign-flip** (n≤22 exact, else MC; NOT n=5 Wilcoxon). Multiplicity: intersection-union for conjunctions; Holm within the confirmatory family.  **[locked]**
 - **Power:** with n=15 and pilot SD σ=____, MDES at 80% power = ____.  **[pilot]** *(Wk-0 budget probe on A100-80GB: R6 ≈152 ms/step, ~1.5 GB peak; extrapolated ~530 GPU-h for 8 arms×10 seeds×10×10×400 ep single-scenario core — full 180-job matrix with 2 scenarios is ~3× that before eval overhead; lock σ from confirmatory pilot SD.)*
 

@@ -18,7 +18,7 @@ Build the **"Oscillatory Workspace"** — fuse the two neuro-inspired threads th
 | [RUNNING.md](RUNNING.md) | How to run on a GPU box: setup, the experiment DAG, chaining/sharding runs |
 | `setup.sh` · `Makefile` · `requirements.txt` | Bring in pinned AKOrN (→ `external/akorn`, gitignored) + staged pipeline targets |
 | [experiments/M1-protocol.md](experiments/M1-protocol.md) | The v2 protocol (the control ladder, gates, stats) |
-| [experiments/m1_wk0/](experiments/m1_wk0/) | M1 code: `ladder.py` (R1–R6), `avalanche_backbone.py`, `budget.py`, `run_matrix.py` (chained runner), `analyze.py` (R6−R5 gate stats), `anatomy.md`, `preregistration.md` |
+| [experiments/m1_wk0/](experiments/m1_wk0/) | M1 code: `ladder.py` (R1–R6), `avalanche_backbone.py` (+A4/A5 strategy dispatch), `budget.py`, `calibrate_epochs.py`, `run_matrix.py` (chained runner, baselines), `analyze.py` (R6−R5 gate stats), `h3.py` (CKA/phase mechanism), `anatomy.md`, `preregistration.md` |
 
 ## Status (2026-05-30)
 
@@ -27,8 +27,10 @@ Build the **"Oscillatory Workspace"** — fuse the two neuro-inspired threads th
 - ✅ Residual prior-art angles closed — no verdict flipped, confidence HIGH
 - ✅ M1 protocol drafted, red-teamed (blockers found), revised to **v2** ([experiments/M1-protocol.md](experiments/M1-protocol.md)) — synchrony isolated as the R6−R5 ladder increment
 - ✅ M1 Wk-0 scaffolding authored against the real AKOrN source ([experiments/m1_wk0/](experiments/m1_wk0/)) — ladder R1–R6, deterministic-eval wrapper, budget probe, pre-registration template (syntax-validated, untested)
-- 🔄 Next gate: **run the Wk-0 spike on a GPU box** (native repro → smokes → Split-MNIST e2e → GPU-hour budget)
-- ⬜ M1 build (control ladder R1–R6 on Split-CIFAR-100 class-IL)
+- ✅ Wk-0 ran on A100 — all gates pass; caught + fixed the sparsity-probe bug + 400-epoch over-scope; merged GPU+local
+- ✅ Phase-2 #1 (A4 EWC/Replay + A5 DER++ anchors) and #2 (H3 CKA/phase mechanism module) built + reviewed
+- 🔄 GPU: calibrate epochs → front-load R6 vs R5:no_proj (decisive contrast) → analyze
+- ⬜ #3 harden analyze (plasticity guard + multiplicity) + H3 driver loop · #4 positive control · #5 R1–R4 LadderCore
 
 ## Operating principle
 

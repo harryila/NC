@@ -1,0 +1,776 @@
+"""
+H3 deliverable — mechanism analysis for "synchrony reduces catastrophic forgetting".
+
+This module is the analysis half of the M1 study (the training half lives in
+avalanche_backbone.py). It implements, in order:
+
+  1. linear CKA          -- numerically stable, biased HSIC_0 full-set form + an
+                            unbiased HSIC_1 minibatch estimator for the memory-bound case.
+  2. feature extraction  -- forward hooks on the per-layer READOUT block (model.net.layers[l][3]),
+                            captured over the eval_inits FIXED-seed forwards and AVERAGED in
+                            feature space so the AKOrN stochastic oscillator init is integrated out.
+  3. inter-task CKA       -- O_l(i,j) between model-after-task-i and model-after-task-j features
+                            on a byte-identical probe set; aggregated into per-layer overlap matrices.
+  4. seed-paired DiD      -- difference-in-differences R5:no_proj minus R6 on the inter-vs-intra
+                            overlap contrast, with paired t / Wilcoxon, Cohen's d_z, BCa CI.
+  5. phase-cluster observable -- cross-task stability (AMI/ARI) of spherical-cluster assignments
+                            of the n-dim AKOrN oscillator group directions xs[l][-1]. EXISTS ONLY in
+                            synchrony arms (R6/R6s); R5:no_proj -> "N/A - no oscillator state".
+  6. partialling control -- sparsity + sphere/geometry covariates, partial correlation + a
+                            seed/layer mixed-effects regression of overlap on the arm indicator.
+
+DESIGN INVARIANTS (do not break):
+  * The CKA probe set must be byte-identical (same indices, same order) across every arm,
+    task and seed -- CKA is NOT permutation-equivariant across different example sets.
+  * Average the FEATURES over eval_inits, then compute ONE CKA. Averaging per-init CKAs
+    re-introduces the finite-sample HSIC bias.
+  * The probe set must be DISJOINT from any data used to read out accuracy/forgetting.
+
+VERIFIED API NOTES (avalanche-lib v0.6.0, 2024-10-29; CKA refs below):
+  * CKA is NOT provided by Avalanche -- there is no avalanche.evaluation CKA metric in 0.6.0.
+    It is implemented here from scratch (verified against the Kornblith google-research
+    reference and RistoAle97/centered-kernel-alignment "ckatorch": hsic0/hsic1/cka_base/cka_batch).
+  * AKOrN features come from the model's own forward, captured with PyTorch forward hooks
+    on model.net.layers[l][3] (the readout block); the oscillator state comes from
+    model.net.feature(x) -> (c_pooled, x_pooled, xs, es), xs[l][-1] of shape [B, C, H, W].
+  * The primary endpoint forgetting key is 'StreamForgetting/eval_phase/test_stream'
+    (Avalanche metric-key convention MetricName/phase/stream; no TaskXXX tag at stream level).
+
+The PURE-STATS parts (CKA, DiD, phase-stability scoring, partialling) run on CPU with no torch
+GPU and no Avalanche/AKOrN import:  `python h3.py --demo`  exercises them on synthetic data,
+mirroring analyze.py --demo.
+
+References (verified against primary sources):
+  - Kornblith, Norouzi, Lee, Hinton (2019) "Similarity of Neural Network Representations
+    Revisited", ICLR 2019, arXiv:1905.00414. Linear CKA; biased HSIC_0 = tr(KHLH)/(n-1)^2;
+    feature-space form ||Yc^T Xc||_F^2 / (||Xc^T Xc||_F * ||Yc^T Yc||_F).
+    Reference: github.com/google-research/google-research/tree/master/representation_similarity
+  - Nguyen, Raghu, Kornblith (2021) "Do Wide and Deep Networks Learn the Same Things?",
+    ICLR 2021, arXiv:2010.15327. Minibatch CKA via averaging UNBIASED HSIC_1 before the ratio.
+  - Song et al. (2007/2012); Gretton et al. (2005). HSIC and the unbiased U-statistic.
+  - Szekely & Rizzo (2014), Ann. Statist. Numerically stable U-centering.
+  - PyTorch CKA impls verified: github.com/RistoAle97/centered-kernel-alignment (ckatorch),
+    github.com/numpee/CKA.pytorch; anatome also provides CKA.
+"""
+import argparse
+import json
+import math
+from itertools import combinations
+
+import numpy as np
+
+# torch is required only for the CKA tensor ops and the feature-extraction path.
+# The DiD / partialling / phase-stability stats are pure numpy/scipy and run without it.
+try:
+    import torch
+except Exception:  # pragma: no cover - allows --demo of pure-numpy stats on a torchless box
+    torch = None
+
+import contextlib
+
+
+@contextlib.contextmanager
+def _seeded(seed):
+    """Save/restore CPU+CUDA RNG and seed deterministically — the SAME scheme LadderClassifier
+    uses at eval, so feature-extraction forwards are bit-identical to the logit-averaging forwards
+    (matched across arms) and the global RNG is left untouched for the rest of the driver."""
+    cpu = torch.get_rng_state()
+    cuda = torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None
+    torch.manual_seed(seed)
+    try:
+        yield
+    finally:
+        torch.set_rng_state(cpu)
+        if cuda is not None:
+            torch.cuda.set_rng_state_all(cuda)
+
+
+# =====================================================================================
+# 1. LINEAR CKA  (numerically stable; biased full-set form + unbiased minibatch estimator)
+# =====================================================================================
+def linear_cka(X, Y, eps=1e-12):
+    """Full-set (biased HSIC_0) linear CKA. X:(n,p1), Y:(n,p2) torch tensors. Returns scalar in [0,1].
+
+    Uses the numerically stable feature-space form (Kornblith et al. 2019):
+        CKA(X,Y) = ||Yc^T Xc||_F^2 / (||Xc^T Xc||_F * ||Yc^T Yc||_F)
+    where Xc, Yc are feature matrices column-centered over the n examples. This equals the
+    biased HSIC_0 ratio tr(KHLH)/sqrt(tr(KHKH)tr(LHLH)); the (n-1)^2 factor cancels.
+    float64 for stability. Cheaper than forming the (n,n) Gram when p < n.
+    """
+    if torch is None:
+        raise RuntimeError("linear_cka needs torch; the pure-stats demo does not call it.")
+    X = X.to(torch.float64)
+    Y = Y.to(torch.float64)
+    X = X - X.mean(0, keepdim=True)          # center features over examples (rows)
+    Y = Y - Y.mean(0, keepdim=True)
+    XtX = X.T @ X
+    YtY = Y.T @ Y
+    YtX = Y.T @ X
+    hsic_xy = (YtX ** 2).sum()               # ||Yc^T Xc||_F^2 == sum of squared cross-cov singular values
+    hsic_xx = torch.linalg.norm(XtX, ord="fro")
+    hsic_yy = torch.linalg.norm(YtY, ord="fro")
+    return float(hsic_xy / (hsic_xx * hsic_yy + eps))
+
+
+def _hsic1(K, L):
+    """Unbiased HSIC U-statistic (Song et al. 2007; Szekely-Rizzo 2014; Nguyen et al. 2021).
+    K, L: (n,n) Gram matrices. Diagonals are zeroed in-place on clones."""
+    n = K.shape[-1]
+    K = K.clone()
+    L = L.clone()
+    K.fill_diagonal_(0.0)
+    L.fill_diagonal_(0.0)
+    KL = K @ L
+    trace = torch.trace(KL)
+    middle = (K.sum() * L.sum()) / ((n - 1) * (n - 2))
+    right = (2.0 / (n - 2)) * KL.sum()
+    return (trace + middle - right) / (n * (n - 3))
+
+
+def minibatch_linear_cka(Xb, Yb, eps=1e-12):
+    """Memory-safe estimator (Nguyen, Raghu, Kornblith 2021). Xb, Yb: lists of k minibatch
+    activation tensors (n_i, p). Averages the UNBIASED HSIC_1 over batches BEFORE the ratio,
+    so the estimate is batch-size-independent (the biased HSIC_0 inflates toward 1 as n shrinks).
+    Use only when the probe set cannot fit in one pass; the fixed probe set here normally can,
+    so prefer linear_cka over the whole set."""
+    if torch is None:
+        raise RuntimeError("minibatch_linear_cka needs torch.")
+    num = xx = yy = 0.0
+    for X, Y in zip(Xb, Yb):
+        X = X.to(torch.float64)
+        Y = Y.to(torch.float64)
+        X = X - X.mean(0, keepdim=True)
+        Y = Y - Y.mean(0, keepdim=True)
+        K = X @ X.T
+        L = Y @ Y.T
+        num = num + _hsic1(K, L)
+        xx = xx + _hsic1(K, K)
+        yy = yy + _hsic1(L, L)
+    return float(num / (torch.sqrt(xx * yy) + eps))
+
+
+# =====================================================================================
+# 2. PER-LAYER FEATURE EXTRACTION  (hooks on the readout block, averaged over eval_inits)
+# =====================================================================================
+def _readout_blocks(model, layers):
+    """Resolve the per-layer readout block model.net.layers[l][3] (the feature that feeds
+    forward + head) for the requested layer indices. NOT the head logits."""
+    blocks = {l: model.net.layers[l][3] for l in layers}
+    # Guard: BatchNorm running-stats drift across CL tasks would contaminate the CKA probe
+    # (the project deliberately uses GroupNorm). Fail loudly if a readout tap contains BN.
+    import torch.nn as _nn
+    for l, blk in blocks.items():
+        bn = [type(m).__name__ for m in blk.modules()
+              if isinstance(m, (_nn.BatchNorm1d, _nn.BatchNorm2d, _nn.BatchNorm3d))]
+        assert not bn, (f"readout block layer {l} contains BatchNorm {bn}; rebuild the backbone with "
+                        "norm='gn' (BN running-stat drift contaminates the CKA features).")
+    return blocks
+
+
+def extract_features(model, probe_loader, layers, device="cpu",
+                     eval_inits=None, base_seed=None):
+    """Capture post-readout features for `layers` on the FIXED probe set, averaged in feature
+    space over the eval_inits fixed-seed forwards (the same seeding scheme LadderClassifier uses
+    at eval), so the AKOrN oscillator-init noise is integrated out and matched across arms.
+
+    Returns dict {l: tensor (n_probe, C*H*W)} of float32 features on CPU.
+
+    NB feedforward rungs (R1-R4, R5) are deterministic, so eval_inits forwards are identical
+    and the average is a harmless no-op that keeps the inference budget matched.
+    """
+    if torch is None:
+        raise RuntimeError("extract_features needs torch + a real model; use --demo for stats only.")
+    eval_inits = getattr(model, "eval_inits", 8) if eval_inits is None else eval_inits
+    base_seed = getattr(model, "base_seed", 0) if base_seed is None else base_seed
+
+    blocks = _readout_blocks(model, layers)
+    feats = {}
+
+    def mk_hook(l):
+        def hook(_module, _inp, out):
+            feats.setdefault(l, []).append(out.detach().flatten(1).float().cpu())
+        return hook
+
+    handles = [blocks[l].register_forward_hook(mk_hook(l)) for l in layers]
+    was_training = model.training
+    model.eval()
+    accum = {l: None for l in layers}
+    try:
+        for j in range(eval_inits):
+            feats.clear()
+            with _seeded(base_seed + j), torch.no_grad():   # CPU+CUDA save/restore; matches eval head
+                for batch in probe_loader:
+                    xb = batch[0].to(device)         # Avalanche yields (x, y, task_id)
+                    model(xb)
+            for l in layers:
+                fl = torch.cat(feats[l], 0)          # (n_probe, C*H*W) for this init
+                accum[l] = fl if accum[l] is None else accum[l] + fl
+        out = {l: accum[l] / float(eval_inits) for l in layers}
+    finally:
+        for h in handles:
+            h.remove()
+        if was_training:
+            model.train()
+    return out
+
+
+# =====================================================================================
+# 3. INTER-TASK CKA MATRIX
+# =====================================================================================
+def inter_task_cka_matrix(features_by_task, layer, cka_fn=linear_cka):
+    """features_by_task: dict {task_index t: dict {layer l: feature tensor}} where each entry is
+    the model-snapshot-AFTER-task-t features on the SAME probe set (from extract_features).
+    Returns a symmetric numpy matrix O[t_i, t_j] = CKA of layer `layer` between snapshots i and j
+    (diagonal = 1.0 by construction). Identical probe inputs across snapshots is the caller's
+    responsibility."""
+    tasks = sorted(features_by_task)
+    T = len(tasks)
+    O = np.eye(T, dtype=float)
+    for a, b in combinations(range(T), 2):
+        c = cka_fn(features_by_task[tasks[a]][layer], features_by_task[tasks[b]][layer])
+        O[a, b] = O[b, a] = c
+    return O
+
+
+def overlap_summaries(features_by_task, layers, cka_fn=linear_cka):
+    """Per-arm/per-seed overlap summaries from inter-task CKA matrices.
+
+    Returns dict with:
+      'matrices'     : {l: O (T,T)} per-layer inter-task CKA matrices.
+      'O_inter'      : mean over off-diagonal (i!=j) pairs, averaged over layers (cross-task overlap).
+      'O_intra'      : mean of the diagonal == 1.0 (within-snapshot baseline; here trivially 1.0
+                       since the probe inputs are identical -- kept explicit for the DiD inner contrast).
+      'Obar'         : O_inter (the within-run cross-task overlap summary used by the simple DiD).
+      'inner'        : O_inter - O_intra (the inner contrast: how much LOWER cross-task overlap is
+                       than the within-snapshot baseline; this is what the DiD differences across arms).
+      'per_layer_inter': {l: mean off-diagonal CKA for that layer}.
+    """
+    matrices = {l: inter_task_cka_matrix(features_by_task, l, cka_fn) for l in layers}
+    per_layer_inter = {}
+    for l, O in matrices.items():
+        T = O.shape[0]
+        off = [O[i, j] for i, j in combinations(range(T), 2)]
+        per_layer_inter[l] = float(np.mean(off)) if off else float("nan")
+    O_inter = float(np.mean(list(per_layer_inter.values())))
+    O_intra = 1.0  # identical probe inputs -> within-snapshot self-CKA is 1.0 by construction
+    return {
+        "matrices": {l: O.tolist() for l, O in matrices.items()},
+        "per_layer_inter": per_layer_inter,
+        "O_inter": O_inter,
+        "O_intra": O_intra,
+        "Obar": O_inter,
+        "inner": O_inter - O_intra,
+    }
+
+
+# =====================================================================================
+# 4. SEED-PAIRED DIFFERENCE-IN-DIFFERENCES  (R5:no_proj minus R6)
+# =====================================================================================
+def _wilcoxon_signed_rank_p(d):
+    """One-sided (delta > 0) Wilcoxon signed-rank p via scipy if available, else exact-ish fallback."""
+    d = np.asarray([x for x in d if x != 0.0], float)
+    if len(d) == 0:
+        return 1.0
+    try:
+        from scipy import stats
+        return float(stats.wilcoxon(d, alternative="greater").pvalue)
+    except Exception:
+        # normal approximation fallback (no scipy)
+        ranks = np.argsort(np.argsort(np.abs(d))) + 1
+        W = float(np.sum(ranks[d > 0]))
+        n = len(d)
+        mu = n * (n + 1) / 4.0
+        sigma = np.sqrt(n * (n + 1) * (2 * n + 1) / 24.0)
+        z = (W - mu) / (sigma + 1e-12)
+        # survival of standard normal
+        return float(0.5 * math.erfc(z / np.sqrt(2.0)))
+
+
+def _paired_t_p_onesided(d):
+    """One-sided paired t-test p for H1: mean(d) > 0. scipy if available, else t->normal fallback."""
+    d = np.asarray(d, float)
+    n = len(d)
+    m = d.mean()
+    se = d.std(ddof=1) / np.sqrt(n)
+    t = m / (se + 1e-12)
+    try:
+        from scipy import stats
+        return float(stats.t.sf(t, n - 1))
+    except Exception:
+        return float(0.5 * math.erfc(t / np.sqrt(2.0)))
+
+
+def _bca_ci(d, n_boot=20000, alpha=0.05, seed=0):
+    """BCa bootstrap CI for the mean of paired diffs d (bias- and skew-corrected)."""
+    from math import erf, sqrt
+    d = np.asarray(d, float)
+    n = len(d)
+    rng = np.random.default_rng(seed)
+    theta_hat = d.mean()
+    boots = d[rng.integers(0, n, size=(n_boot, n))].mean(1)
+    # bias-correction z0
+    prop = np.mean(boots < theta_hat)
+    prop = min(max(prop, 1.0 / (n_boot + 1)), 1.0 - 1.0 / (n_boot + 1))
+    z0 = _norm_ppf(prop)
+    # acceleration via jackknife
+    jack = np.array([np.delete(d, i).mean() for i in range(n)])
+    jbar = jack.mean()
+    num = np.sum((jbar - jack) ** 3)
+    den = 6.0 * (np.sum((jbar - jack) ** 2) ** 1.5) + 1e-12
+    a = num / den
+    zl, zu = _norm_ppf(alpha / 2), _norm_ppf(1 - alpha / 2)
+
+    def adj(z):
+        p = z0 + (z0 + z) / (1 - a * (z0 + z))
+        return 0.5 * (1 + erf(p / sqrt(2)))   # normal cdf
+
+    lo = float(np.quantile(boots, adj(zl)))
+    hi = float(np.quantile(boots, adj(zu)))
+    return lo, hi
+
+
+def _norm_ppf(p):
+    """Inverse standard-normal CDF (Acklam's rational approximation; no scipy dependency)."""
+    if p <= 0:
+        return -np.inf
+    if p >= 1:
+        return np.inf
+    a = [-3.969683028665376e+01, 2.209460984245205e+02, -2.759285104469687e+02,
+         1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00]
+    b = [-5.447609879822406e+01, 1.615858368580409e+02, -1.556989798598866e+02,
+         6.680131188771972e+01, -1.328068155288572e+01]
+    c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00,
+         -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00]
+    dd = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00,
+          3.754408661907416e+00]
+    plow, phigh = 0.02425, 1 - 0.02425
+    if p < plow:
+        q = np.sqrt(-2 * np.log(p))
+        return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((dd[0]*q+dd[1])*q+dd[2])*q+dd[3])*q+1)
+    if p > phigh:
+        q = np.sqrt(-2 * np.log(1 - p))
+        return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((dd[0]*q+dd[1])*q+dd[2])*q+dd[3])*q+1)
+    q = p - 0.5
+    r = q * q
+    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)
+
+
+def paired_did(summary_R6, summary_R5, alpha=0.05, use_wilcoxon=False, seed=0):
+    """Seed-paired difference-in-differences for H3.
+
+    Inputs are per-seed within-run overlap summaries keyed by seed:
+        summary_R6[s]  -> dict from overlap_summaries() for arm R6 at seed s
+        summary_R5[s]  -> same for the param-identical control R5:no_proj at seed s
+
+    DiD per seed (positive => R6 has LOWER cross-task overlap, i.e. MORE reduction):
+        delta(s) = inner_{R5}(s) - inner_{R6}(s)
+    where inner = O_inter - O_intra is the within-arm inter-vs-intra contrast. Because R6 and
+    R5:no_proj are parameter-identical except for apply_proj and share seeds/data-order, the
+    generic overlap<->forgetting coupling present in BOTH arms cancels; delta isolates the
+    synchrony mechanism's incremental effect on cross-task overlap (see circularity guard).
+
+    H0: mean delta = 0  vs  H1: mean delta > 0 (one-sided, pre-registered direction).
+    Returns mean delta, paired test p (t or Wilcoxon), Cohen's d_z, and BCa 95% CI over seeds.
+    """
+    seeds = sorted(set(summary_R6) & set(summary_R5))
+    if len(seeds) < 2:
+        raise ValueError(f"need >=2 paired seeds; have {seeds}")
+    delta = np.array([summary_R5[s]["inner"] - summary_R6[s]["inner"] for s in seeds], float)
+    # Also expose the simpler Obar-based contrast (R5 minus R6) for transparency.
+    delta_obar = np.array([summary_R5[s]["Obar"] - summary_R6[s]["Obar"] for s in seeds], float)
+    p = _wilcoxon_signed_rank_p(delta) if use_wilcoxon else _paired_t_p_onesided(delta)
+    d_z = float(delta.mean() / (delta.std(ddof=1) + 1e-12))
+    lo, hi = _bca_ci(delta, alpha=alpha, seed=seed)
+    return {
+        "seeds": seeds,
+        "delta_per_seed": delta.tolist(),
+        "mean_delta_R5_minus_R6": float(delta.mean()),
+        "mean_delta_obar_R5_minus_R6": float(delta_obar.mean()),
+        "test": "wilcoxon_signed_rank" if use_wilcoxon else "paired_t",
+        "p_one_sided_delta_gt_0": float(p),
+        "cohens_dz": d_z,
+        "bca_ci95": [lo, hi],
+        "interpretation": "delta>0 => synchrony (R6) yields LOWER inter-task overlap than R5:no_proj",
+        "estimand_note": ("With identical probe inputs O_intra=1 by construction, so this is a "
+                          "seed-paired R6-vs-R5:no_proj CROSS-TASK OVERLAP CONTRAST (paired diff), "
+                          "NOT a true difference-in-differences. For an honest DiD, give O_intra "
+                          "real content via an augmentation-based within-snapshot baseline (TODO). "
+                          "The causal claim rests on the apply_proj-flip + the phase observable, "
+                          "not on this overlap contrast."),
+    }
+
+
+def did_forgetting_coupling(summary_R6, summary_R5, forget_R6, forget_R5):
+    """Descriptive corroboration ONLY (see circularity guard): seed-level correlation between the
+    DiD overlap effect delta(s) and the forgetting gap forget_R5(s) - forget_R6(s) on the primary
+    endpoint key 'StreamForgetting/eval_phase/test_stream'. A positive r supports the mechanism but
+    is NOT the causal claim (CKA overlap and forgetting are near-views; the DiD + the phase
+    observable carry the mechanism)."""
+    seeds = sorted(set(summary_R6) & set(summary_R5) & set(forget_R6) & set(forget_R5))
+    delta = np.array([summary_R5[s]["inner"] - summary_R6[s]["inner"] for s in seeds], float)
+    fgap = np.array([forget_R5[s] - forget_R6[s] for s in seeds], float)  # positive => R6 forgets less
+    if len(seeds) < 3 or np.std(delta) == 0 or np.std(fgap) == 0:
+        r = float("nan")
+    else:
+        r = float(np.corrcoef(delta, fgap)[0, 1])
+    return {"seeds": seeds, "pearson_r_delta_vs_forgetting_gap": r,
+            "note": "descriptive/corroborative; DiD + phase-cluster observable carry the mechanism claim"}
+
+
+# =====================================================================================
+# 5. PHASE-CLUSTER-STABILITY OBSERVABLE  (synchrony-arms ONLY)
+# =====================================================================================
+def group_directions(osc_state, n=4):
+    """Reshape an AKOrN oscillator state xs[l][-1] of shape (B, C, H, W) into unit group-vectors
+    on S^{n-1}. Returns numpy array (n_sites, n) where n_sites = B * (C//n) * H * W; each row is a
+    unit vector (the phase variable). Re-normalized defensively (AKOrN already projects to sphere).
+
+    These directions EXIST ONLY in synchrony arms; a non-synchrony arm (R5:no_proj / plain CNN)
+    has no oscillator state and cannot produce this observable -- that is what isolates synchrony.
+    """
+    a = np.asarray(osc_state, float)
+    B, C, H, W = a.shape
+    assert C % n == 0, f"C={C} not divisible by n={n}"
+    G = C // n
+    # (B, G, n, H, W) -> (B*G*H*W, n)
+    a = a.reshape(B, G, n, H, W).transpose(0, 1, 3, 4, 2).reshape(-1, n)
+    norms = np.linalg.norm(a, axis=1, keepdims=True)
+    return a / np.clip(norms, 1e-12, None)
+
+
+def spherical_kmeans(U, k, n_iter=50, seed=0):
+    """Cosine-distance (spherical) k-means on unit vectors U:(m,n). Returns integer assignments (m,).
+    Centroids are re-normalized to the sphere each step; cosine similarity is the assignment metric."""
+    rng = np.random.default_rng(seed)
+    U = np.ascontiguousarray(U, dtype=float)
+    m = U.shape[0]
+    k = min(k, m)                              # cannot ask for more clusters than sites
+    cent = U[rng.choice(m, size=k, replace=False)].copy()
+    assign = -np.ones(m, dtype=int)
+    for _ in range(n_iter):
+        # errstate guards a benign numpy-2.x SIMD matmul warning; inputs are finite unit vectors.
+        with np.errstate(divide="ignore", over="ignore", invalid="ignore"):
+            sims = U @ cent.T                  # (m,k) cosine sims (U, cent are unit)
+        new = np.argmax(sims, axis=1)
+        if np.array_equal(new, assign):
+            break
+        assign = new
+        for j in range(k):
+            members = U[assign == j]
+            if len(members):
+                c = members.mean(0)
+                nrm = np.linalg.norm(c)
+                # empty/degenerate centroid -> re-seed to a random unit site (never NaN/inf)
+                cent[j] = c / nrm if nrm > 1e-12 else U[rng.integers(0, m)]
+            else:
+                cent[j] = U[rng.integers(0, m)]
+    return assign
+
+
+def phase_cluster_assignments(osc_state, n=4, k=8, seed=0):
+    """Cluster the group directions of a single snapshot into k synchrony clusters. Returns
+    assignment vector over the (fixed-order) group-sites of the probe set."""
+    U = group_directions(osc_state, n=n)
+    return spherical_kmeans(U, k=k, seed=seed)
+
+
+def _ami(a, b):
+    """Adjusted Mutual Information between two label arrays; scipy/sklearn-free fallback included."""
+    try:
+        from sklearn.metrics import adjusted_mutual_info_score
+        return float(adjusted_mutual_info_score(a, b))
+    except Exception:
+        # Fallback: adjusted Rand index is also fine as a partition-overlap score.
+        return _ari(a, b)
+
+
+def _ari(a, b):
+    """Adjusted Rand Index (Hubert-Arabie), pure numpy."""
+    a = np.asarray(a)
+    b = np.asarray(b)
+    ca = {v: i for i, v in enumerate(np.unique(a))}
+    cb = {v: i for i, v in enumerate(np.unique(b))}
+    cont = np.zeros((len(ca), len(cb)), int)
+    for x, y in zip(a, b):
+        cont[ca[x], cb[y]] += 1
+    sum_comb_c = np.sum([_comb2(v) for v in cont.flatten()])
+    sum_a = np.sum([_comb2(v) for v in cont.sum(1)])
+    sum_b = np.sum([_comb2(v) for v in cont.sum(0)])
+    n = len(a)
+    expected = sum_a * sum_b / _comb2(n) if n > 1 else 0.0
+    maxidx = 0.5 * (sum_a + sum_b)
+    denom = maxidx - expected
+    return float((sum_comb_c - expected) / denom) if denom != 0 else 1.0
+
+
+def _comb2(x):
+    return x * (x - 1) / 2.0
+
+
+def phase_cluster_stability(osc_by_task, layer, n=4, k=8, seed=0, score="ami"):
+    """Cross-task phase-cluster STABILITY S(i,j) for a synchrony arm at one layer.
+
+    osc_by_task: dict {task t: oscillator state xs[layer][-1] (B,C,H,W)} from the model snapshot
+    AFTER task t, on the SAME probe set (identical group-sites, fixed order). Cluster directions
+    are gauge-arbitrary across snapshots, so we compare ASSIGNMENTS via AMI/ARI, not raw angles.
+
+    Returns dict with the S(i,j) matrix and the mean over ordered task pairs (i<j). High S =
+    synchrony cluster structure preserved across tasks; low S = phases re-organize. For a
+    non-synchrony arm there is NO oscillator state -> caller should record 'N/A - no oscillator state'.
+    """
+    tasks = sorted(osc_by_task)
+    assigns = {t: phase_cluster_assignments(osc_by_task[t], n=n, k=k, seed=seed) for t in tasks}
+    T = len(tasks)
+    S = np.eye(T, dtype=float)
+    scorer = _ami if score == "ami" else _ari
+    pairs = []
+    for i, j in combinations(range(T), 2):
+        s = scorer(assigns[tasks[i]], assigns[tasks[j]])
+        S[i, j] = S[j, i] = s
+        pairs.append(s)
+    return {"layer": layer, "S_matrix": S.tolist(),
+            "mean_cross_task_stability": float(np.mean(pairs)) if pairs else float("nan"),
+            "score": score}
+
+
+# Explicit, concrete alternative for arms without oscillator state (R5:no_proj, R1-R4).
+PHASE_NA = {"phase_cluster_stability": "N/A - no oscillator state",
+            "concrete_alternative": "only feature-CKA (overlap_summaries) is available for this arm; "
+                                    "the phase observable is undefined without xs[l][-1]"}
+
+
+# =====================================================================================
+# 6. PARTIALLING CONTROL  (sparsity + sphere/normalization geometry)
+# =====================================================================================
+def hoyer_sparsity(F):
+    """Mean Hoyer sparsity over examples of a feature matrix F:(n, p) (numpy). 0=dense, 1=sparse."""
+    F = np.abs(np.asarray(F, float))
+    p = F.shape[1]
+    l1 = F.sum(1)
+    l2 = np.sqrt((F ** 2).sum(1)) + 1e-12
+    sp = (np.sqrt(p) - l1 / l2) / (np.sqrt(p) - 1.0)
+    return float(np.mean(sp))
+
+
+def effective_rank(F):
+    """Effective rank = exp(entropy of normalized PCA eigenvalue spectrum) of feature cov. F:(n,p)."""
+    F = np.asarray(F, float)
+    F = F - F.mean(0, keepdims=True)
+    # covariance eigenvalues via SVD (singular values squared)
+    s = np.linalg.svd(F, compute_uv=False)
+    ev = s ** 2
+    ev = ev[ev > 1e-12]
+    if ev.size == 0:
+        return 0.0
+    p = ev / ev.sum()
+    H = -np.sum(p * np.log(p))
+    return float(np.exp(H))
+
+
+def geometry_covariates(F, osc_state=None, n=4):
+    """Nuisance covariates on a probe-feature matrix F:(n,p) (numpy). If an oscillator state is
+    given, also report the angular concentration (mean resultant length) of the group directions.
+    Returns dict {sparsity, mean_l2_norm, effective_rank, [resultant_length]}.
+    """
+    F = np.asarray(F, float)
+    out = {
+        "sparsity_hoyer": hoyer_sparsity(F),
+        "frac_near_zero": float(np.mean(np.abs(F) < 1e-6)),
+        "mean_l2_norm": float(np.mean(np.linalg.norm(F, axis=1))),
+        "effective_rank": effective_rank(F),
+    }
+    if osc_state is not None:
+        U = group_directions(osc_state, n=n)
+        R = float(np.linalg.norm(U.mean(0)))     # mean resultant length in [0,1]; kappa proxy
+        out["resultant_length"] = R
+    return out
+
+
+def partial_correlation(x, y, z):
+    """Partial correlation of x and y controlling for covariates z (list of arrays or 2D array).
+    r_xy.z = corr of the residuals of x~z and y~z. Returns r in [-1,1]."""
+    x = np.asarray(x, float)
+    y = np.asarray(y, float)
+    Z = np.atleast_2d(np.asarray(z, float))
+    if Z.shape[0] != len(x):
+        Z = Z.T
+    Z = np.column_stack([np.ones(len(x)), Z])     # design with intercept
+
+    def resid(v):
+        beta, *_ = np.linalg.lstsq(Z, v, rcond=None)
+        return v - Z @ beta
+
+    rx, ry = resid(x), resid(y)
+    if np.std(rx) == 0 or np.std(ry) == 0:
+        return float("nan")
+    return float(np.corrcoef(rx, ry)[0, 1])
+
+
+def partial_corr_did(summary_R6, summary_R5, forget_R6, forget_R5, cov_R6, cov_R5,
+                     covariate_keys=("sparsity_hoyer", "effective_rank")):
+    """Does the seed-paired DiD effect survive conditioning on sparsity/geometry?
+
+    Computes partial correlation of delta(s) (overlap DiD) with the forgetting gap GIVEN the
+    matched-arm differences in the nuisance covariates (e.g. sparsity, effective rank). cov_R6/cov_R5
+    are dicts {seed: geometry_covariates(...)}. Returns r_partial and the raw correlation for contrast.
+    """
+    seeds = sorted(set(summary_R6) & set(summary_R5) & set(forget_R6) & set(forget_R5)
+                   & set(cov_R6) & set(cov_R5))
+    delta = np.array([summary_R5[s]["inner"] - summary_R6[s]["inner"] for s in seeds], float)
+    fgap = np.array([forget_R5[s] - forget_R6[s] for s in seeds], float)
+    covs = [np.array([cov_R5[s][k] - cov_R6[s][k] for s in seeds], float) for k in covariate_keys]
+    raw = float(np.corrcoef(delta, fgap)[0, 1]) if len(seeds) >= 3 else float("nan")
+    rp = partial_correlation(delta, fgap, covs) if len(seeds) >= len(covariate_keys) + 3 else float("nan")
+    survives = bool((not np.isnan(rp)) and abs(rp) >= 0.3 and np.sign(rp) == np.sign(raw))
+    return {"seeds": seeds, "covariates": list(covariate_keys),
+            "raw_corr_delta_vs_forgetting": raw,
+            "partial_corr_given_covariates": rp,
+            "survives": survives}
+
+
+def arm_overlap_regression(rows):
+    """Sparsity/geometry-adjusted overlap reduction via OLS with a fixed effect per seed and per
+    layer (a practical proxy for the pre-registered mixed model; swap in statsmodels MixedLM for
+    the random-effects version). `rows` is a list of dicts:
+        {arm: 'R6'|'R5', seed: int, layer: int, overlap: float, sparsity_hoyer: float, effective_rank: float, mean_l2_norm: float}
+    Returns the arm coefficient (R6 vs R5) after partialling out covariates + seed/layer dummies.
+    A negative arm coefficient (R6 lower) = synchrony reduces overlap net of sparsity/geometry.
+    """
+    arms = sorted({r["arm"] for r in rows})
+    seeds = sorted({r["seed"] for r in rows})
+    layers = sorted({r["layer"] for r in rows})
+    names = []
+
+    def onehot(val, levels, prefix):
+        # drop-first dummy coding
+        return [1.0 if val == lv else 0.0 for lv in levels[1:]], [f"{prefix}={lv}" for lv in levels[1:]]
+
+    X, y = [], []
+    arm_levels = arms  # arms[0] is the reference (alphabetical: 'R5' < 'R6' -> R6 coeff is R6-vs-R5)
+    for r in rows:
+        feats = [1.0]                                   # intercept
+        nm = ["intercept"]
+        a, an = onehot(r["arm"], arm_levels, "arm")
+        feats += a; nm += an
+        s, sn = onehot(r["seed"], seeds, "seed")
+        feats += s; nm += sn
+        l, ln = onehot(r["layer"], layers, "layer")
+        feats += l; nm += ln
+        feats += [r.get("sparsity_hoyer", 0.0), r.get("effective_rank", 0.0), r.get("mean_l2_norm", 0.0)]
+        nm += ["sparsity_hoyer", "effective_rank", "mean_l2_norm"]
+        X.append(feats); names = nm
+        y.append(r["overlap"])
+    X = np.asarray(X, float); y = np.asarray(y, float)
+    beta, *_ = np.linalg.lstsq(X, y, rcond=None)
+    coef = dict(zip(names, beta.tolist()))
+    arm_key = next((k for k in coef if k.startswith("arm=")), None)
+    return {"arm_coefficient": coef.get(arm_key), "arm_term": arm_key,
+            "all_coefficients": coef,
+            "note": "negative arm coefficient (R6 vs R5) => synchrony reduces overlap net of sparsity/geometry; "
+                    "use statsmodels MixedLM(random=seed,layer) for the pre-registered random-effects version"}
+
+
+# =====================================================================================
+# DEMO  (pure-stats, CPU, no torch/Avalanche/AKOrN) -- mirrors analyze.py --demo
+# =====================================================================================
+def _demo():
+    rng = np.random.default_rng(0)
+    n_seeds, n_tasks, layers = 8, 5, [0, 1, 2]
+
+    def synth_summary(off_mean, off_sd):
+        """Build a fake overlap_summaries() output with a target mean off-diagonal CKA."""
+        matrices, per_layer = {}, {}
+        for l in layers:
+            O = np.eye(n_tasks)
+            for i, j in combinations(range(n_tasks), 2):
+                O[i, j] = O[j, i] = float(np.clip(rng.normal(off_mean, off_sd), 0, 1))
+            matrices[l] = O.tolist()
+            per_layer[l] = float(np.mean([O[i, j] for i, j in combinations(range(n_tasks), 2)]))
+        O_inter = float(np.mean(list(per_layer.values())))
+        return {"matrices": matrices, "per_layer_inter": per_layer,
+                "O_inter": O_inter, "O_intra": 1.0, "Obar": O_inter, "inner": O_inter - 1.0}
+
+    # R6 has LOWER inter-task overlap (~0.55) than R5:no_proj (~0.72); seed-paired.
+    summary_R6, summary_R5, forget_R6, forget_R5 = {}, {}, {}, {}
+    cov_R6, cov_R5 = {}, {}
+    for s in range(n_seeds):
+        summary_R6[s] = synth_summary(0.55, 0.05)
+        summary_R5[s] = synth_summary(0.72, 0.05)
+        # forgetting (points): R6 forgets ~3.5 pts less; correlated with the overlap gap.
+        gap = summary_R5[s]["inner"] - summary_R6[s]["inner"]
+        forget_R6[s] = 18.0 + rng.normal(0, 1.5)
+        forget_R5[s] = forget_R6[s] + 3.5 + 4.0 * gap + rng.normal(0, 1.0)
+        cov_R6[s] = {"sparsity_hoyer": 0.62 + rng.normal(0, 0.02), "effective_rank": 40 + rng.normal(0, 3)}
+        cov_R5[s] = {"sparsity_hoyer": 0.60 + rng.normal(0, 0.02), "effective_rank": 42 + rng.normal(0, 3)}
+
+    print("=== H3 DEMO (synthetic; pure-stats CPU path) ===\n")
+
+    print("[1] linear CKA self-consistency (torch path):")
+    if torch is not None:
+        X = torch.randn(64, 30)
+        print("    CKA(X,X)         =", round(linear_cka(X, X), 6), "(expect 1.0)")
+        print("    CKA(X, 2X+const) =", round(linear_cka(X, 2 * X + 5.0), 6), "(expect 1.0; scale/shift-invariant)")
+        Y = torch.randn(64, 30)
+        print("    CKA(X, indep Y)  =", round(linear_cka(X, Y), 6), "(expect small)")
+        Xb = [X[:32], X[32:]]
+        print("    minibatch unbiased CKA(X,X) =", round(minibatch_linear_cka(Xb, Xb), 6), "(expect ~1.0)")
+    else:
+        print("    (torch not importable; skipping CKA tensor check -- stats below are torch-free)")
+
+    print("\n[2/3] inter-task overlap summaries (R6 vs R5:no_proj), seed 0:")
+    print("    R6  O_inter =", round(summary_R6[0]["O_inter"], 4),
+          " R5 O_inter =", round(summary_R5[0]["O_inter"], 4))
+
+    print("\n[4] seed-paired difference-in-differences (R5:no_proj minus R6):")
+    did = paired_did(summary_R6, summary_R5)
+    print(json.dumps({k: did[k] for k in
+                      ["mean_delta_R5_minus_R6", "p_one_sided_delta_gt_0", "cohens_dz", "bca_ci95"]}, indent=2))
+    coup = did_forgetting_coupling(summary_R6, summary_R5, forget_R6, forget_R5)
+    print("    corroborating r(delta, forgetting-gap) =", round(coup["pearson_r_delta_vs_forgetting_gap"], 3))
+
+    print("\n[5] phase-cluster cross-task stability (synchrony arm only):")
+    # synthetic oscillator states (B,C,H,W) with n=4 group directions; stable across tasks for R6.
+    n, C, B, H, W = 4, 16, 6, 4, 4
+    base = rng.normal(size=(B, C, H, W))
+    osc_by_task = {t: base + rng.normal(scale=0.05, size=(B, C, H, W)) for t in range(n_tasks)}
+    ps = phase_cluster_stability(osc_by_task, layer=0, n=n, k=6, score="ari")
+    print("    R6 mean cross-task phase-cluster stability =", round(ps["mean_cross_task_stability"], 3),
+          "(high => phase binding preserved)")
+    print("    R5:no_proj phase observable ->", PHASE_NA["phase_cluster_stability"])
+
+    print("\n[6] partialling control (sparsity + effective rank):")
+    pc = partial_corr_did(summary_R6, summary_R5, forget_R6, forget_R5, cov_R6, cov_R5)
+    print(json.dumps(pc, indent=2))
+
+    # regression demo rows
+    rows = []
+    for s in range(n_seeds):
+        for l in layers:
+            rows.append({"arm": "R6", "seed": s, "layer": l,
+                         "overlap": summary_R6[s]["per_layer_inter"][l],
+                         "sparsity_hoyer": cov_R6[s]["sparsity_hoyer"],
+                         "effective_rank": cov_R6[s]["effective_rank"], "mean_l2_norm": 1.0})
+            rows.append({"arm": "R5", "seed": s, "layer": l,
+                         "overlap": summary_R5[s]["per_layer_inter"][l],
+                         "sparsity_hoyer": cov_R5[s]["sparsity_hoyer"],
+                         "effective_rank": cov_R5[s]["effective_rank"], "mean_l2_norm": 1.0})
+    reg = arm_overlap_regression(rows)
+    print("    arm coefficient (R6 vs R5), covariate-adjusted =", round(reg["arm_coefficient"], 4),
+          "(negative => synchrony reduces overlap net of sparsity/geometry)")
+    print("\n=== DEMO OK ===")
+
+
+def main():
+    ap = argparse.ArgumentParser(description="H3 mechanism analysis (CKA / DiD / phase / partialling)")
+    ap.add_argument("--demo", action="store_true", help="run the pure-stats parts on synthetic data (CPU)")
+    args = ap.parse_args()
+    if args.demo:
+        _demo()
+        return
+    print("h3.py is a library. Run `python h3.py --demo` for the CPU stats demo, or import its "
+          "functions from the Avalanche driver (see avalanche_backbone.py) to snapshot features "
+          "per task and compute the inter-task CKA / DiD / phase-cluster observables.")
+
+
+if __name__ == "__main__":
+    main()

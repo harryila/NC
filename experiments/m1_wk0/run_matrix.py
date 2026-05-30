@@ -31,7 +31,8 @@ os.makedirs(RESULTS, exist_ok=True)
 
 RUNGS = ["R1", "R2", "R3", "R4",
          "R5:depthwise", "R5:no_proj", "R5:frozen_J",
-         "R6", "R6s"]                 # add "A4:ewc", "A5:derpp" once wired
+         "R6", "R6s",
+         "A4:ewc", "A4:replay", "A5:derpp"]   # baselines: R6 backbone + CL strategy
 SCENARIOS = [("class", 10), ("class", 20)]   # 10×10 (arbiter) + 20×5 (replication)
 
 
@@ -53,16 +54,17 @@ def run_one(rung, scen, nexp, seed, target, epochs, device, eval_inits=8):
     if os.path.exists(out):
         print("skip (done):", os.path.basename(out)); return
     base, _, variant = rung.partition(":")
-    kw = {}
-    if variant:
-        kw["variant"] = variant
-    if base in ("R2", "R3", "R4"):
-        kw["akorn_sparsity"] = sum(target) / len(target)   # TODO: per-layer match, not the mean
+    if base in ("A4", "A5"):
+        backbone, strat, kw = "R6", variant, {}            # baselines: R6 backbone + CL strategy
+    else:
+        backbone, strat, kw = base, "naive", ({"variant": variant} if variant else {})
+        if base in ("R2", "R3", "R4"):
+            kw["akorn_sparsity"] = sum(target) / len(target)   # TODO: per-layer match, not the mean
     print("RUN:", _jid(rung, scen, nexp, epochs, seed))
     try:
-        metrics = run_split_cifar100(base, scenario=scen, n_experiences=nexp,
+        metrics = run_split_cifar100(backbone, scenario=scen, n_experiences=nexp,
                                      seed=seed, epochs=epochs, device=device,
-                                     eval_inits=eval_inits, **kw)
+                                     eval_inits=eval_inits, strategy=strat, **kw)
         json.dump({"rung": rung, "scenario": scen, "nexp": nexp, "epochs": epochs,
                    "seed": seed, "metrics": metrics}, open(out, "w"), default=str)
         print("  done ->", os.path.basename(out))
