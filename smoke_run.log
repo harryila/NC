@@ -1,0 +1,55 @@
+cd experiments/m1_wk0 && python ladder.py && python avalanche_backbone.py
+R1             params=   7,046,884  Δvs_max= -0.0%
+R2             params=   7,046,884  Δvs_max= -0.0%
+R3             params=   7,046,884  Δvs_max= -0.0%
+R4             params=   7,046,884  Δvs_max= -0.0%
+R5_depthwise   params=   4,274,346  Δvs_max=-39.3%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R5_no_proj     params=   7,046,890  Δvs_max= +0.0%
+R6             params=   7,046,890  Δvs_max= +0.0%
+R6s            params=   4,273,450  Δvs_max=-39.4%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R1 logits (2, 100)
+R2 logits (2, 100)
+R3 logits (2, 100)
+R4 logits (2, 100)
+R5_depthwise logits (2, 100)
+R5_no_proj logits (2, 100)
+R6 logits (2, 100)
+R6s logits (2, 100)
+R1             params=   7,046,884  Δvs_max= -0.0%
+R2             params=   7,046,884  Δvs_max= -0.0%
+R3             params=   7,046,884  Δvs_max= -0.0%
+R4             params=   7,046,884  Δvs_max= -0.0%
+R5_depthwise   params=   4,274,346  Δvs_max=-39.3%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R5_no_proj     params=   7,046,890  Δvs_max= +0.0%
+R6             params=   7,046,890  Δvs_max= +0.0%
+R6s            params=   4,273,450  Δvs_max=-39.4%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R1 logits (2, 100)
+R2 logits (2, 100)
+R3 logits (2, 100)
+R4 logits (2, 100)
+R5_depthwise logits (2, 100)
+R5_no_proj logits (2, 100)
+R6 logits (2, 100)
+R6s logits (2, 100)
+R1             params=   7,046,884  Δvs_max= -0.0%
+R2             params=   7,046,884  Δvs_max= -0.0%
+R3             params=   7,046,884  Δvs_max= -0.0%
+R4             params=   7,046,884  Δvs_max= -0.0%
+R5_depthwise   params=   4,274,346  Δvs_max=-39.3%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R5_no_proj     params=   7,046,890  Δvs_max= +0.0%
+R6             params=   7,046,890  Δvs_max= +0.0%
+R6s            params=   4,273,450  Δvs_max=-39.4%  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)
+R1 logits (2, 100)
+R2 logits (2, 100)
+R3 logits (2, 100)
+R4 logits (2, 100)
+R5_depthwise logits (2, 100)
+R5_no_proj logits (2, 100)
+R6 logits (2, 100)
+R6s logits (2, 100)
+eval deterministic: True
+train stochastic: True
+eval deterministic: True
+train stochastic: True
+eval deterministic: True
+train stochastic: True

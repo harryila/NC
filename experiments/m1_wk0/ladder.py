@@ -157,7 +157,7 @@ def param_report(models: dict):
     ref = max(counts.values())
     for k, v in counts.items():
         flag = "" if abs(v - ref) / ref <= 0.02 else "  <-- EXCEEDS 2% (compensate width/MLP or report as capacity-bounded)"
-    print(f"{k:14s} params={v:>12,}  Δvs_max={100*(v-ref)/ref:+5.1f}%{flag}")
+        print(f"{k:14s} params={v:>12,}  Δvs_max={100*(v-ref)/ref:+5.1f}%{flag}")
     return counts
 
 

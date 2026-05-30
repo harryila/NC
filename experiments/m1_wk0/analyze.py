@@ -71,12 +71,21 @@ def decide(diffs, delta_g, delta_e, alpha=0.05):
 
 # ----------------------------- results loading -----------------------------
 def _forgetting(metrics):
-    # TODO(Wk-0): set to the exact Avalanche stream-forgetting key seen on Split-MNIST,
-    # e.g. "StreamForgetting/eval_phase/test_stream". Until then this scans for a forgetting key.
+    # Confirmed in the Wk-0 Split-CIFAR-100 e2e run: the class-IL stream-forgetting key is
+    # "StreamForgetting/eval_phase/test_stream". Prefer it exactly; the dict also contains
+    # per-experience ExperienceForgetting/* keys we must NOT pick up.
+    # Avalanche reports forgetting as a FRACTION in [0,1]; the pre-registered SESOI/Δg, Δe and the
+    # --demo are in percentage POINTS. Return points (×100) so the gate thresholds are comparable.
     if isinstance(metrics, dict):
+        exact = "StreamForgetting/eval_phase/test_stream"
+        if isinstance(metrics.get(exact), (int, float)):
+            return 100.0 * float(metrics[exact])
+        for k, v in metrics.items():  # fallback: any stream-level forgetting scalar
+            if "streamforgetting" in k.lower() and isinstance(v, (int, float)):
+                return 100.0 * float(v)
         for k, v in metrics.items():
             if "forget" in k.lower() and isinstance(v, (int, float)):
-                return float(v)
+                return 100.0 * float(v)
     return None
 
 
