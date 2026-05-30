@@ -1,0 +1,13 @@
+# NeuralCombs — lean deps for the M1 classification + continual-learning study.
+# AKOrN itself is pinned into external/akorn by setup.sh (not vendored, not listed here).
+# Install a CUDA-matched torch/torchvision FIRST on the GPU box if the default wheels don't fit.
+torch
+torchvision
+einops
+ema_pytorch
+numpy
+scipy
+scikit-learn
+tqdm
+tensorboard
+avalanche-lib
