@@ -3,7 +3,7 @@ external/
 
 # data + run artifacts
 data/
-results/
+
 runs/
 wandb/
 *.pth
