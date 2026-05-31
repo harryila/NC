@@ -40,3 +40,39 @@ Locking these before seeing results is what makes the GREENLIGHT/PIVOT calls hon
 - **Prediction:** overlap reduction present in R6 but absent/smaller in R5 (**difference-in-differences**); the synchrony-specific observable (phase-cluster assignment stability) predicts forgetting after partialling out sparsity + normalization.
 
 _Signed / dated before runs: ____________________________
+
+---
+
+## Amendment 1 — PROPOSED 2026-05-31 (post-front-load; pending ratification before the next gate run)
+
+The decisive front-load (R6 vs R5:no_proj, class-IL 10×10, E=50, 10 seeds) exposed two defects in the
+locked rules above. This amendment is **prospective** — it does NOT rewrite the front-load's recorded
+component verdict (honoring the locked rule we wrote behind the veil), it binds **future** gate runs.
+**Status: proposed — Harry to ratify (or veto) before the next confirmatory run.**
+
+**(A) σ now locked from the confirmatory pilot.** The Power line above left σ as a blank `[pilot]`
+placeholder, so the `|d|≥0.8` clause was committed with an unknown denominator. **Lock σ = 1.08 pts**
+(seed-paired forgetting-diff SD, n=10 front-load). At this σ, `|d|=0.8` corresponds to only **0.86 pt** —
+below the ±1.5 equivalence margin — so the d-clause as written rubber-stamps a sub-equivalence effect.
+
+**(B) d-clause gated behind a raw-effect floor (fixes the internal contradiction).** A GREENLIGHT on the
+forgetting component now requires the effect to **clear the equivalence band**: `ΔForgetting ≤ −3.0`
+**OR** (`|d|≥0.8` **AND** `ΔForgetting ≤ −Δe = −1.5`), with perm p<0.05. This removes the case where the
+same effect both GREENLIGHTs (via d) and sits in the "≈null" band (via TOST). *(Implemented in
+`analyze_hardened.decide()`, 2026-05-31.)*
+
+**(C) INVALIDATION requires AFFIRMATIVE inferiority, not failure-to-establish non-inferiority.** The
+plasticity guard's `holds=False` only means non-inferiority was **not established** (absence of evidence).
+A forgetting "win" is **INVALIDATED** only when R6 is **demonstrably** worse by >Δe (one-sided test rejects
+H0: μ ≥ −Δe). When the guard neither holds nor establishes inferiority, the call is
+**CONFOUNDED-INCONCLUSIVE**, with the forgetting↔learning collinearity `r` reported. *(Implemented in
+`analyze_hardened.plasticity_guard()` + `gate()`, 2026-05-31.)*
+
+**(D) Saturation floor-check (endpoint validity gate).** Class-IL forgetting is only interpretable as a
+**memory** endpoint when early-task final retained accuracy is bounded away from 0 for **both** arms. The
+front-load had **0.00%** early-task retention (forgetting↔learning collinear at **r=0.996**), making the
+endpoint a learning proxy. **Pre-register:** report class-IL forgetting only if `mean early-task
+retained-acc > floor_eps` (e.g. 5 pts) for both arms; otherwise forgetting is declared **untestable** and
+the gate leans on the head-free **task-IL retained-acc** + **H3 CKA DiD** (per checkpoint §3.3).
+
+_Amendment 1 ratified / dated: ____________________________

@@ -100,14 +100,24 @@ def decide(diffs, delta_g, delta_e, alpha=0.05):
     d = paired_cohens_d(diffs)
     p_eq = tost(diffs, delta_e)
     mean = float(np.mean(diffs))
-    if (mean <= -delta_g or abs(d) >= 0.8) and p_perm < alpha:
+    # SESOI: a big absolute effect OR a reliable standardized effect.
+    # FIX (2026-05-31, prereg Amendment 1): the |d|>=0.8 branch is now gated behind a raw-effect
+    # floor of Delta_e, so it can no longer rubber-stamp a sub-equivalence-margin effect under tiny
+    # sd (the front-load degeneracy: at sd~1.08, |d|=0.8 corresponds to only 0.86 pt -- a "benefit"
+    # that simultaneously sits inside the +-Delta_e "~null" band). A GREENLIGHT now requires the
+    # effect to CLEAR the equivalence band, not merely be variance-normalized-large.
+    big_magnitude = mean <= -delta_g
+    reliable_and_material = (abs(d) >= 0.8) and (mean <= -delta_e)
+    if (big_magnitude or reliable_and_material) and p_perm < alpha:
         call = "GREENLIGHT (synchrony reduces forgetting)"
     elif p_eq < alpha:
         call = "PIVOT-A (synchrony ~= geometry -- equivalence)"
     else:
         call = "INCONCLUSIVE (add seeds)"
     return {"mean_R6_minus_R5": mean, "cohens_d": d, "perm_p": p_perm,
-            "tost_p": p_eq, "call": call}
+            "tost_p": p_eq, "call": call,
+            "sesoi_path": ("magnitude" if big_magnitude else
+                           ("d_clause_material" if reliable_and_material else "none"))}
 
 
 # =====================================================================================
@@ -176,8 +186,8 @@ def plasticity_guard(learn_R6, learn_R5, margin=DELTA_E, alpha=ALPHA):
     seeds = sorted(set(learn_R6) & set(learn_R5))
     if len(seeds) < 2:
         return {"seeds": seeds, "available": False, "holds": False, "equivalent": False,
-                "reason": "need >=2 paired seeds with learning_acc",
-                "mean_R6_minus_R5": float("nan"), "tost_p": None, "noninf_p": None}
+                "inferior": False, "reason": "need >=2 paired seeds with learning_acc",
+                "mean_R6_minus_R5": float("nan"), "tost_p": None, "noninf_p": None, "inferior_p": None}
     from scipy import stats
     diffs = np.array([learn_R6[s] - learn_R5[s] for s in seeds], float)
     n = len(diffs)
@@ -186,20 +196,27 @@ def plasticity_guard(learn_R6, learn_R5, margin=DELTA_E, alpha=ALPHA):
     if se == 0:                                          # degenerate (identical or n too small)
         p_lower = 0.0 if m > -margin else 1.0
         p_upper = 0.0 if m < margin else 1.0
+        inferior_p = 0.0 if m < -margin else 1.0
     else:
-        p_lower = float(stats.t.sf((m - (-margin)) / se, n - 1))   # H0: mean <= -margin (R6 worse)
-        p_upper = float(stats.t.cdf((m - margin) / se, n - 1))     # H0: mean >=  margin (R6 better)
+        p_lower = float(stats.t.sf((m - (-margin)) / se, n - 1))   # H0: mean <= -margin -> reject => NON-INFERIOR
+        p_upper = float(stats.t.cdf((m - margin) / se, n - 1))     # H0: mean >=  margin -> reject => R6 better
+        inferior_p = float(stats.t.cdf((m - (-margin)) / se, n - 1))  # H0: mean >= -margin -> reject => AFFIRMATIVELY inferior
     tost_p = max(p_lower, p_upper)                       # equivalence p (symmetric TOST)
     noninf_p = p_lower                                   # non-inferiority: reject "R6 worse by >=margin"
-    holds = bool(noninf_p < alpha)                       # the load-bearing guard (no underfitting)
+    holds = bool(noninf_p < alpha)                       # guard "holds" = NON-INFERIORITY established
     equivalent = bool(tost_p < alpha)
+    # FIX (2026-05-31): INVALIDATION must require AFFIRMATIVE inferiority, not merely "holds=False".
+    # holds=False is failure-to-ESTABLISH non-inferiority (absence of evidence); it is NOT the same as
+    # established inferiority. `inferior` rejects H0: mean >= -margin (R6 demonstrably worse by >margin).
+    inferior = bool(inferior_p < alpha)
     return {"seeds": seeds, "available": True,
             "mean_R6_minus_R5": m, "diffs": diffs.tolist(),
-            "tost_p": float(tost_p), "noninf_p": float(noninf_p),
-            "margin": float(margin), "holds": holds, "equivalent": equivalent,
-            "interpretation": ("holds=non-inferiority (R6 did not learn worse by >margin pts); "
-                               "equivalent=symmetric TOST (R6 plasticity indistinguishable from R5). "
-                               "GREENLIGHT requires holds; underfitting (holds=False) INVALIDATES it.")}
+            "tost_p": float(tost_p), "noninf_p": float(noninf_p), "inferior_p": float(inferior_p),
+            "margin": float(margin), "holds": holds, "equivalent": equivalent, "inferior": inferior,
+            "interpretation": ("holds=non-inferiority established (R6 not worse by >margin); "
+                               "inferior=affirmative inferiority established (R6 worse by >margin -> INVALIDATES); "
+                               "neither holds nor inferior => CONFOUNDED-INCONCLUSIVE (underpowered/ambiguous). "
+                               "equivalent=symmetric TOST. GREENLIGHT requires holds.")}
 
 
 # =====================================================================================
@@ -409,11 +426,27 @@ def gate(forget, learn, h3blocks, forget_rep=None,
     holm_res = holm(family_p, alpha) if family_p else {}
 
     # ---- 3. plasticity guard on the PRIMARY bracket ----
-    plast = {"available": False, "holds": False}
+    plast = {"available": False, "holds": False, "inferior": False}
     if primary_r5 in learn and "R6" in learn:
         lr6 = {s: v for s, v in learn["R6"].items() if v is not None}
         lr5 = {s: v for s, v in learn[primary_r5].items() if v is not None}
         plast = plasticity_guard(lr6, lr5, margin=delta_e, alpha=alpha)
+
+    # ---- 3b. SATURATION-CONFOUND diagnostic (front-load finding): under a head-saturated metric,
+    # forgetting becomes a learning proxy. If the per-seed forgetting-diff and learning-diff are
+    # highly correlated, any forgetting "benefit" is confounded by a plasticity difference (r=0.996
+    # on the front-load). Reported so a CONFOUNDED-INCONCLUSIVE call is auditable, not asserted.
+    confound_r = None
+    if primary_r5 in forget and "R6" in forget and primary_r5 in learn and "R6" in learn:
+        cs = sorted(s for s in (set(forget["R6"]) & set(forget[primary_r5])
+                                & set(learn["R6"]) & set(learn[primary_r5]))
+                    if None not in (forget["R6"].get(s), forget[primary_r5].get(s),
+                                    learn["R6"].get(s), learn[primary_r5].get(s)))
+        if len(cs) >= 3:
+            fd = np.array([forget["R6"][s] - forget[primary_r5][s] for s in cs], float)
+            ld = np.array([learn["R6"][s] - learn[primary_r5][s] for s in cs], float)
+            if fd.std() > 0 and ld.std() > 0:
+                confound_r = float(np.corrcoef(fd, ld)[0, 1])
 
     # ---- 4. replication (sign only) on the longer stream ----
     rep = {"available": False, "sign_replicates": False}
@@ -482,11 +515,21 @@ def gate(forget, learn, h3blocks, forget_rep=None,
             r6_eq_r1 = tost([forget["R6"][s] - forget["R1"][s] for s in p1], delta_e) < alpha
     pc_ok = bool(positive_control_pass)   # prereg Guard: positive control MUST pass before any null is declared
 
+    forget_beneficial = bool(primary.get("mean_R6_minus_R5", 0) < 0)   # R6 forgets less (benefit direction)
     if iut["pass"]:
         call = "GREENLIGHT M2 (synchrony reduces forgetting; conjunction holds)"
-    elif (primary.get("call", "").startswith("GREENLIGHT")
-          and plast.get("available") and not plast.get("holds")):
-        call = "INVALIDATED (forgetting win bought by reduced plasticity -- R6 underfit)"
+    elif plast.get("available") and plast.get("inferior"):
+        # AFFIRMATIVE inferiority (established, not just NI-not-shown): the forgetting "win" is bought
+        # by R6 learning worse by >margin. (FIX: was firing on `not holds`, which over-claimed underfit.)
+        call = "INVALIDATED (R6 affirmatively underfit: learns worse than R5 by >margin -- forgetting 'win' bought by reduced plasticity)"
+    elif forget_beneficial and plast.get("available") and not plast.get("holds"):
+        # The apparent benefit cannot be separated from a plasticity difference the guard could neither
+        # clear (non-inferiority not established) nor condemn (inferiority not established). Under
+        # saturation this is the expected state (forgetting ~ learning); confound_r quantifies it.
+        call = ("CONFOUNDED-INCONCLUSIVE (apparent forgetting benefit not separable from a plasticity "
+                "difference -- guard neither clears nor condemns R6"
+                + (f"; forgetting~learning collinearity r={confound_r:.3f}" if confound_r is not None else "")
+                + ")")
     elif pc_ok and r6_eq_r1:
         call = "PIVOT-B (no CL benefit: R6 ~= R1; positive control passed)"
     elif pc_ok and primary.get("tost_p") is not None and primary["tost_p"] < alpha:
@@ -499,6 +542,7 @@ def gate(forget, learn, h3blocks, forget_rep=None,
     return {"call": call,
             "primary_bracket": primary_r5, "h3_control": h3_control,
             "a5_competitive": a5, "positive_control_pass": pc_ok,
+            "confound_r": confound_r,
             "per_bracket": per_bracket,
             "holm_family": holm_res,
             "plasticity_guard": plast,
@@ -601,6 +645,20 @@ def _demo():
     v3 = gate(forget, learn, h3blocks=None, forget_rep=forget_rep)
     print("    call:", v3["call"])
     print("    H3 available:", v3["h3"]["available"], "| IUT pass:", v3["greenlight_iut"]["pass"])
+
+    # --- (6) the FRONT-LOAD pattern: R6 forgets less BUT also learns ~1pt less (within margin) ---
+    # plasticity guard neither holds (NI not established) nor condemns (inferiority not established),
+    # and forgetting~learning are collinear -> CONFOUNDED-INCONCLUSIVE (not INVALIDATED, not GREENLIGHT).
+    print("\n[6] FULL GATE -- forgets-less-but-learns-less, gap inside margin (-> CONFOUNDED-INCONCLUSIVE):")
+    # deterministic = the ACTUAL front-load learning diffs (mean -1.109, sd 1.070 -> NI p~0.139 not-holds,
+    # inferiority p~0.861 not-inferior); reproduces the real CONFOUNDED-INCONCLUSIVE state, not flaky noise.
+    real_ldiff = [-1.02, -3.28, -0.65, -1.65, -0.33, 0.45, 0.05, -1.82, -1.41, -1.43]
+    learn_confound = {k: dict(v) for k, v in learn.items()}
+    learn_confound["R6"] = {s: learn_R5[s] + real_ldiff[s] for s in range(len(real_ldiff))}
+    v4 = gate(forget, learn_confound, h3blocks, forget_rep)   # H3 present, but plasticity won't hold -> IUT fails
+    print("    call:", v4["call"])
+    print("    plast holds:", v4["plasticity_guard"]["holds"], "| inferior:", v4["plasticity_guard"]["inferior"],
+          "| confound_r:", None if v4["confound_r"] is None else round(v4["confound_r"], 3))
 
     print("\n=== DEMO OK ===")
 
