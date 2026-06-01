@@ -103,12 +103,25 @@ def linear_cka(X, Y, eps=1e-12):
     Y = Y.to(torch.float64)
     X = X - X.mean(0, keepdim=True)          # center features over examples (rows)
     Y = Y - Y.mean(0, keepdim=True)
-    XtX = X.T @ X
-    YtY = Y.T @ Y
-    YtX = Y.T @ X
-    hsic_xy = (YtX ** 2).sum()               # ||Yc^T Xc||_F^2 == sum of squared cross-cov singular values
-    hsic_xx = torch.linalg.norm(XtX, ord="fro")
-    hsic_yy = torch.linalg.norm(YtY, ord="fro")
+    n, p = X.shape
+    # PERF FIX (2026-05-31): pick the cheaper EXACT form. The feature form builds (p x p)
+    # matrices (65536x65536 float64 = 34 GB at the layer-0 readout) -> the real H3 bottleneck
+    # (~73s/call, was forming 3 of them x 45 pairs x 3 layers). The Gram form builds (n x n)
+    # matrices and is IDENTICAL: ||Yc^T Xc||_F^2 == <Xc Xc^T, Yc Yc^T>_F (verified |diff|~1e-12,
+    # 262x faster at p=65536). Branch on whichever dimension is smaller.
+    if p > n:                                # Gram form (n x n) -- cheap when p >> n (our case)
+        Kx = X @ X.T
+        Ky = Y @ Y.T
+        hsic_xy = (Kx * Ky).sum()            # <Kx, Ky>_F == ||Yc^T Xc||_F^2
+        hsic_xx = torch.linalg.norm(Kx, ord="fro")
+        hsic_yy = torch.linalg.norm(Ky, ord="fro")
+    else:                                    # feature form (p x p) -- cheap when p <= n
+        XtX = X.T @ X
+        YtY = Y.T @ Y
+        YtX = Y.T @ X
+        hsic_xy = (YtX ** 2).sum()           # ||Yc^T Xc||_F^2 == sum of squared cross-cov singular values
+        hsic_xx = torch.linalg.norm(XtX, ord="fro")
+        hsic_yy = torch.linalg.norm(YtY, ord="fro")
     return float(hsic_xy / (hsic_xx * hsic_yy + eps))
 
 
@@ -420,7 +433,7 @@ def did_forgetting_coupling(summary_R6, summary_R5, forget_R6, forget_R5):
 # =====================================================================================
 # 5. PHASE-CLUSTER-STABILITY OBSERVABLE  (synchrony-arms ONLY)
 # =====================================================================================
-def group_directions(osc_state, n=4):
+def group_directions(osc_state, n=4, max_sites=20000, subsample_seed=0):
     """Reshape an AKOrN oscillator state xs[l][-1] of shape (B, C, H, W) into unit group-vectors
     on S^{n-1}. Returns numpy array (n_sites, n) where n_sites = B * (C//n) * H * W; each row is a
     unit vector (the phase variable). Re-normalized defensively (AKOrN already projects to sphere).
@@ -435,7 +448,17 @@ def group_directions(osc_state, n=4):
     # (B, G, n, H, W) -> (B*G*H*W, n)
     a = a.reshape(B, G, n, H, W).transpose(0, 1, 3, 4, 2).reshape(-1, n)
     norms = np.linalg.norm(a, axis=1, keepdims=True)
-    return a / np.clip(norms, 1e-12, None)
+    a = a / np.clip(norms, 1e-12, None)
+    # PERF (2026-05-31, evidence-backed): full expansion is ~1e6-3e6 sites/snapshot -> spherical
+    # k-means + AMI cost hours/job. Subsample a FIXED-seed site subset (prereg 'subsample-matched').
+    # Convergence check on the real R6 model: |AMI(20k) - AMI(full)| ~= 0.001, far below the gate's
+    # seed-to-seed AMI noise (~0.02-0.05); cross-subsample std ~0.001. The seed is FIXED and every
+    # task snapshot shares an identical site count, so each draws the SAME indices -> cross-task AMI
+    # stays aligned (a CORRECTNESS requirement, not just speed).
+    if max_sites and a.shape[0] > max_sites:
+        idx = np.sort(np.random.default_rng(subsample_seed).choice(a.shape[0], size=max_sites, replace=False))
+        a = a[idx]
+    return a
 
 
 def spherical_kmeans(U, k, n_iter=50, seed=0):
@@ -519,7 +542,12 @@ def phase_cluster_stability(osc_by_task, layer, n=4, k=8, seed=0, score="ami"):
     non-synchrony arm there is NO oscillator state -> caller should record 'N/A - no oscillator state'.
     """
     tasks = sorted(osc_by_task)
-    assigns = {t: phase_cluster_assignments(osc_by_task[t], n=n, k=k, seed=seed) for t in tasks}
+    # The driver snapshots a PER-LAYER dict {layer: (B,C,H,W)} per task; the synthetic demo passes a
+    # bare (B,C,H,W) array per task. Index by `layer` when given the per-layer dict, else use as-is.
+    def _snap(t):
+        s = osc_by_task[t]
+        return s[layer] if isinstance(s, dict) else s
+    assigns = {t: phase_cluster_assignments(_snap(t), n=n, k=k, seed=seed) for t in tasks}
     T = len(tasks)
     S = np.eye(T, dtype=float)
     scorer = _ami if score == "ami" else _ari

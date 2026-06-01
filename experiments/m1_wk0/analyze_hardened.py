@@ -330,6 +330,22 @@ def h3_contrast(h3_R6, h3_R5, alpha=ALPHA):
           -> use it directly.
     Returns {'available','mean_delta_R5_minus_R6','p_one_sided','directional_ok',...}. directional_ok
     is the pre-registered prediction: delta>0 (overlap reduction present in R6, the DiD positive)."""
+    # FIX (2026-05-31): the driver writes each seed's block as
+    #   {"overlap_summary": {...O_inter, inner, Obar...}, "phase_stability": ...}
+    # but _is_summary/paired_did expect the BARE overlap-summary (inner/Obar at top level).
+    # Unwrap the nested driver shape; pass through bare summaries or precomputed-DiD blocks.
+    def _unwrap_overlap(blocks):
+        if not isinstance(blocks, dict):
+            return blocks
+        out = {}
+        for _s, _b in blocks.items():
+            if isinstance(_b, dict) and isinstance(_b.get("overlap_summary"), dict):
+                out[_s] = _b["overlap_summary"]
+            else:
+                out[_s] = _b
+        return out
+    h3_R6 = _unwrap_overlap(h3_R6)
+    h3_R5 = _unwrap_overlap(h3_R5)
     seeds = sorted(set(k for k in (h3_R6 or {}) if h3_R6.get(k) is not None)
                    & set(k for k in (h3_R5 or {}) if h3_R5.get(k) is not None))
     if not seeds:
