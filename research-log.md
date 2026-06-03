@@ -62,3 +62,42 @@ Verify→draft→adversarial-review workflow. Verified the exact Avalanche per-e
 Review-driven decisions: **primary decisive control = R5:no_proj** (param-identical; depthwise/frozen_J demoted to robustness brackets — prereg updated); self-check → warning (never discard a completed run); H3 reuses CPU+CUDA `_seeded` + GroupNorm guard; H3 control = no_proj (not the capacity-confounded depthwise). Residual TODO: the probe is a read-only subset of the scored test set (held-out split would be stricter).
 
 > Next: #4 positive-control task (a synchrony-favoring stream the gate requires PASS before any null) → #5 finalize R1–R4 LadderCore (param/FLOP-matched + k-WTA tuned to the PR sparsity target).
+
+## 2026-06-01/02 — Decisive head-free result → geometry kill-test SURVIVES → hardening built
+The decisive R6 vs R5:no_proj rerun (new driver, 20/20, 0 fails) gave the **head-free H3 result**: R6 has
+LOWER inter-task CKA overlap than R5:no_proj — mean_delta=+0.0249, **10/10 seeds**, paired-t p=0.00029,
+dz=1.64. Forgetting endpoint stayed confounded/saturated (confound_r≈0.99), so per the M1 pivot the **primary
+endpoint is now head-free (H3 + task-IL), not class-IL forgetting** (lit: Davari et al. CVPR 2022 — class-IL
+forgetting is dominated by the architecture-independent classifier-head recency catastrophe). Gate =
+PIVOT-A-PENDING (positive control unbuilt).
+
+A 5-agent roadmap workflow (all 4 lenses converged) flagged the **#1 arc risk: the apply_proj GEOMETRY
+CONFOUND** — dropping the tangent-space projection changes feature covariance geometry, which can lower
+linear-CKA overlap with no memory mechanism. Ran the **geometry kill-test** (R6s = synchrony machinery ON,
+learned coupling DEAD): if R6s reproduces R6's low overlap → artifact. **RESULT = SURVIVE, decisively:**
+O_inter R6=0.457 (sync ON, learned) < R5:no_proj=0.482 < R6s=0.555 (coupling dead) < R5:depthwise=0.573.
+Every arm without *learned* coupling sits HIGH; only learned-synchrony R6 is LOW (R6s vs R6 +0.098 p=0.002).
+The low overlap REQUIRES learned synchrony, not the projection. Geometry confound refuted; arc foundation
+holds. (Pre-reg position-ratio rule was mis-specified for the R6s-overshoot case → corrected to v1.1 in
+geometry-killtest-prereg.md, logged honestly; depthwise/frozen_J corroboration finishing.)
+
+Then built + adversarially-reviewed (all SHIP, CPU-verified) the hardening stack, **all local/uncommitted**:
+- **honest-DiD**: `h3.overlap_summaries(aug_features_by_task=)` + `intra_task_cka` + `_build_aug_probe_loader`
+  give O_intra real content (augmentation self-CKA) → `inner` is a genuine 2×2 difference-in-differences,
+  closing the gate's own estimand caveat. Backward-compatible; `h3_augment_intra=True` default (~2× H3 cost).
+- **positive control** (`positive_control.py`): synthetic color×shape CONJUNCTION binding stream (9 classes,
+  single-feature acc=1/3 → binding required), self-contained run reusing the existing ladder+H3 pipeline,
+  PASS iff R6<R5 overlap one-sided p<0.05 (detection-power proof). Avoids Sudoku/CLEVR/ItrSA.
+- **difficulty sweep** (`positive_control_sweep.py`, Decision 1): finds a non-saturated operating point
+  (both arms ~30–85% learning-acc, signal present) before the real control run — de-risks the saturation
+  trap that floored CIFAR. Module-level DIFFICULTY hook added to positive_control.py.
+- **gate**: `--positive-control pass/fail` wired through main() AND **auto-reads results/positive_control.json**
+  (Decision 2) → the prereg Guard is now structurally enforced (no silent PIVOT without a passing control).
+- **M2 primitives** (`m2_primitives.py`): `ctx_capacity_bits` (log2 twin of effective_rank), Wrong-Context
+  Probing P5/P5b/P6/P7 (inject_fn hook for the not-yet-built workspace bottleneck), `linear_task_decodability`
+  (S_N "zero task bits" pre-check) — M2 scaffolding ready to run the moment M1 is declarable.
+
+> Next: commit+push the above → pull to the box → (GPU) positive-control sweep then full control →
+> gate auto-reads it → with corroboration + honest-DiD this flips PIVOT-A-PENDING toward declarable.
+> M1 fork still open (de-saturate forgetting vs stake M1 on head-free H3). Box phase2 streams (kill-test
+> corroboration + A5/A4 baselines + 20×5 replication) still running, ~4.5 days, untouched.

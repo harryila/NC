@@ -245,18 +245,40 @@ def inter_task_cka_matrix(features_by_task, layer, cka_fn=linear_cka):
     return O
 
 
-def overlap_summaries(features_by_task, layers, cka_fn=linear_cka):
+def intra_task_cka(features_by_task, aug_features_by_task, layer, cka_fn=linear_cka):
+    """Within-snapshot AUGMENTATION self-CKA for one layer: for each task-t snapshot, the CKA of its
+    clean-probe features against the SAME snapshot's features on an AUGMENTED pass of the SAME probe
+    inputs (a fixed light augment, fixed seed -> matched across arms/snapshots). Returns the mean over
+    tasks. This is the honest within-snapshot baseline O_intra(l): how self-similar a snapshot's
+    representation is under an input perturbation that preserves task identity, which controls for the
+    per-arm representation geometry the M1 geometry kill-test motivates. <1 in general (the augment
+    perturbs the features), unlike the trivial identical-input self-CKA which is 1.0 by construction."""
+    tasks = sorted(set(features_by_task) & set(aug_features_by_task))
+    vals = [cka_fn(features_by_task[t][layer], aug_features_by_task[t][layer]) for t in tasks]
+    return float(np.mean(vals)) if vals else float("nan")
+
+
+def overlap_summaries(features_by_task, layers, cka_fn=linear_cka, aug_features_by_task=None):
     """Per-arm/per-seed overlap summaries from inter-task CKA matrices.
+
+    Optional `aug_features_by_task` (same shape as `features_by_task`: {task t: {layer l: tensor}})
+    holds the features of an AUGMENTED pass of the SAME probe inputs through the SAME post-task-t
+    snapshot. When supplied, O_intra becomes the real within-snapshot augmentation self-CKA (see
+    intra_task_cka), making `inner` a genuine difference-in-differences: cross-task overlap relative
+    to the within-snapshot self-similarity. When omitted, O_intra falls back to 1.0 (identical-input
+    self-CKA, the legacy cross-task-overlap contrast) and 'intra_is_augmentation_baseline' is False.
 
     Returns dict with:
       'matrices'     : {l: O (T,T)} per-layer inter-task CKA matrices.
       'O_inter'      : mean over off-diagonal (i!=j) pairs, averaged over layers (cross-task overlap).
-      'O_intra'      : mean of the diagonal == 1.0 (within-snapshot baseline; here trivially 1.0
-                       since the probe inputs are identical -- kept explicit for the DiD inner contrast).
+      'O_intra'      : within-snapshot baseline averaged over layers; the augmentation self-CKA when
+                       aug_features_by_task is given, else 1.0 (identical-input self-CKA).
       'Obar'         : O_inter (the within-run cross-task overlap summary used by the simple DiD).
       'inner'        : O_inter - O_intra (the inner contrast: how much LOWER cross-task overlap is
                        than the within-snapshot baseline; this is what the DiD differences across arms).
       'per_layer_inter': {l: mean off-diagonal CKA for that layer}.
+      'per_layer_intra': {l: within-snapshot augmentation self-CKA for that layer} (None in fallback).
+      'intra_is_augmentation_baseline': True iff O_intra is the real augmentation baseline (honest DiD).
     """
     matrices = {l: inter_task_cka_matrix(features_by_task, l, cka_fn) for l in layers}
     per_layer_inter = {}
@@ -265,14 +287,26 @@ def overlap_summaries(features_by_task, layers, cka_fn=linear_cka):
         off = [O[i, j] for i, j in combinations(range(T), 2)]
         per_layer_inter[l] = float(np.mean(off)) if off else float("nan")
     O_inter = float(np.mean(list(per_layer_inter.values())))
-    O_intra = 1.0  # identical probe inputs -> within-snapshot self-CKA is 1.0 by construction
+
+    if aug_features_by_task is not None:
+        per_layer_intra = {l: intra_task_cka(features_by_task, aug_features_by_task, l, cka_fn)
+                           for l in layers}
+        O_intra = float(np.mean(list(per_layer_intra.values())))
+        intra_is_aug = True
+    else:
+        per_layer_intra = None
+        O_intra = 1.0  # identical probe inputs -> within-snapshot self-CKA is 1.0 by construction
+        intra_is_aug = False
+
     return {
         "matrices": {l: O.tolist() for l, O in matrices.items()},
         "per_layer_inter": per_layer_inter,
+        "per_layer_intra": per_layer_intra,
         "O_inter": O_inter,
         "O_intra": O_intra,
         "Obar": O_inter,
         "inner": O_inter - O_intra,
+        "intra_is_augmentation_baseline": intra_is_aug,
     }
 
 
@@ -394,6 +428,22 @@ def paired_did(summary_R6, summary_R5, alpha=0.05, use_wilcoxon=False, seed=0):
     p = _wilcoxon_signed_rank_p(delta) if use_wilcoxon else _paired_t_p_onesided(delta)
     d_z = float(delta.mean() / (delta.std(ddof=1) + 1e-12))
     lo, hi = _bca_ci(delta, alpha=alpha, seed=seed)
+    # Honest-DiD flag: True iff BOTH arms supplied a real augmentation-based O_intra baseline.
+    honest_did = all(summary_R6[s].get("intra_is_augmentation_baseline", False)
+                     and summary_R5[s].get("intra_is_augmentation_baseline", False) for s in seeds)
+    if honest_did:
+        estimand_note = ("O_intra is the real within-snapshot AUGMENTATION self-CKA, so inner = "
+                         "O_inter - O_intra and this is a genuine seed-paired difference-in-differences: "
+                         "the cross-task overlap reduction RELATIVE TO each arm's within-snapshot "
+                         "augmentation self-similarity, which controls for per-arm representation "
+                         "geometry (the M1 geometry kill-test motivation).")
+    else:
+        estimand_note = ("With identical probe inputs O_intra=1 by construction, so this is a "
+                         "seed-paired R6-vs-R5:no_proj CROSS-TASK OVERLAP CONTRAST (paired diff), "
+                         "NOT a true difference-in-differences. For an honest DiD, give O_intra "
+                         "real content via an augmentation-based within-snapshot baseline "
+                         "(pass aug_features_by_task to overlap_summaries). The causal claim rests "
+                         "on the apply_proj-flip + the phase observable, not on this overlap contrast.")
     return {
         "seeds": seeds,
         "delta_per_seed": delta.tolist(),
@@ -403,13 +453,9 @@ def paired_did(summary_R6, summary_R5, alpha=0.05, use_wilcoxon=False, seed=0):
         "p_one_sided_delta_gt_0": float(p),
         "cohens_dz": d_z,
         "bca_ci95": [lo, hi],
+        "honest_did": honest_did,
         "interpretation": "delta>0 => synchrony (R6) yields LOWER inter-task overlap than R5:no_proj",
-        "estimand_note": ("With identical probe inputs O_intra=1 by construction, so this is a "
-                          "seed-paired R6-vs-R5:no_proj CROSS-TASK OVERLAP CONTRAST (paired diff), "
-                          "NOT a true difference-in-differences. For an honest DiD, give O_intra "
-                          "real content via an augmentation-based within-snapshot baseline (TODO). "
-                          "The causal claim rests on the apply_proj-flip + the phase observable, "
-                          "not on this overlap contrast."),
+        "estimand_note": estimand_note,
     }
 
 
@@ -705,18 +751,28 @@ def _demo():
     rng = np.random.default_rng(0)
     n_seeds, n_tasks, layers = 8, 5, [0, 1, 2]
 
-    def synth_summary(off_mean, off_sd):
-        """Build a fake overlap_summaries() output with a target mean off-diagonal CKA."""
-        matrices, per_layer = {}, {}
+    def synth_summary(off_mean, off_sd, intra_mean=None, intra_sd=0.0):
+        """Build a fake overlap_summaries() output with a target mean off-diagonal CKA. If intra_mean
+        is given, also emit a real augmentation-baseline O_intra (honest-DiD path); else fall back to
+        the legacy O_intra=1.0."""
+        matrices, per_layer, per_layer_intra = {}, {}, ({} if intra_mean is not None else None)
         for l in layers:
             O = np.eye(n_tasks)
             for i, j in combinations(range(n_tasks), 2):
                 O[i, j] = O[j, i] = float(np.clip(rng.normal(off_mean, off_sd), 0, 1))
             matrices[l] = O.tolist()
             per_layer[l] = float(np.mean([O[i, j] for i, j in combinations(range(n_tasks), 2)]))
+            if intra_mean is not None:
+                per_layer_intra[l] = float(np.clip(rng.normal(intra_mean, intra_sd), 0, 1))
         O_inter = float(np.mean(list(per_layer.values())))
-        return {"matrices": matrices, "per_layer_inter": per_layer,
-                "O_inter": O_inter, "O_intra": 1.0, "Obar": O_inter, "inner": O_inter - 1.0}
+        if intra_mean is not None:
+            O_intra = float(np.mean(list(per_layer_intra.values())))
+            intra_is_aug = True
+        else:
+            O_intra, intra_is_aug = 1.0, False
+        return {"matrices": matrices, "per_layer_inter": per_layer, "per_layer_intra": per_layer_intra,
+                "O_inter": O_inter, "O_intra": O_intra, "Obar": O_inter, "inner": O_inter - O_intra,
+                "intra_is_augmentation_baseline": intra_is_aug}
 
     # R6 has LOWER inter-task overlap (~0.55) than R5:no_proj (~0.72); seed-paired.
     summary_R6, summary_R5, forget_R6, forget_R5 = {}, {}, {}, {}
@@ -751,8 +807,19 @@ def _demo():
 
     print("\n[4] seed-paired difference-in-differences (R5:no_proj minus R6):")
     did = paired_did(summary_R6, summary_R5)
+    print("    legacy (O_intra=1) honest_did =", did["honest_did"])
     print(json.dumps({k: did[k] for k in
                       ["mean_delta_R5_minus_R6", "p_one_sided_delta_gt_0", "cohens_dz", "bca_ci95"]}, indent=2))
+    # honest-DiD path: real augmentation baseline O_intra (R6 retains more self-similarity ~0.90 than
+    # R5:no_proj ~0.80 under augment, so inner differs from O_inter-1).
+    summary_R6_h, summary_R5_h = {}, {}
+    for s in range(n_seeds):
+        summary_R6_h[s] = synth_summary(0.55, 0.05, intra_mean=0.90, intra_sd=0.02)
+        summary_R5_h[s] = synth_summary(0.72, 0.05, intra_mean=0.80, intra_sd=0.02)
+    did_h = paired_did(summary_R6_h, summary_R5_h)
+    print("    HONEST-DiD (augmentation O_intra) honest_did =", did_h["honest_did"],
+          " mean_delta =", round(did_h["mean_delta_R5_minus_R6"], 4),
+          " (legacy delta_obar =", round(did_h["mean_delta_obar_R5_minus_R6"], 4), ")")
     coup = did_forgetting_coupling(summary_R6, summary_R5, forget_R6, forget_R5)
     print("    corroborating r(delta, forgetting-gap) =", round(coup["pearson_r_delta_vs_forgetting_gap"], 3))
 

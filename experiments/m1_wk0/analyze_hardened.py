@@ -291,6 +291,28 @@ def _learning_acc(run):
     return _to_points(float(np.mean(diag)))
 
 
+def read_positive_control(results_dir=RESULTS):
+    """Auto-read the pre-registered positive control's PASS/FAIL from results/positive_control.json.
+
+    Returns True/False/None: True iff the control file exists AND reports pass==True; False iff it
+    exists and reports pass==False; None if the file is absent/unreadable (=> gate stays PIVOT-*-PENDING,
+    the safe default — the prereg Guard forbids declaring any null until the control PASSES). This makes
+    the Guard STRUCTURALLY enforced: nobody has to remember to pass a flag, and a missing/failed control
+    can never silently license a PIVOT. positive_control.py writes this file (run_positive_control)."""
+    p = os.path.join(results_dir, "positive_control.json")
+    if not os.path.exists(p):
+        return None
+    try:
+        d = json.load(open(p))
+    except Exception:
+        return None
+    # accept top-level 'pass'/'passed', or nested under 'verdict' (positive_control.py's run_positive_control)
+    v = d.get("pass", d.get("passed"))
+    if v is None and isinstance(d.get("verdict"), dict):
+        v = d["verdict"].get("pass", d["verdict"].get("passed"))
+    return bool(v) if isinstance(v, (bool, int)) else None
+
+
 def load(primary_scenario="class", primary_nexp=10, results_dir=RESULTS):
     """Load runs into nested dicts keyed by rung then seed.
 
@@ -689,6 +711,11 @@ def main():
     ap.add_argument("--nexp", type=int, default=10, help="primary scenario n_experiences (10x10)")
     ap.add_argument("--nexp_rep", type=int, default=20, help="replication stream n_experiences (20x5)")
     ap.add_argument("--results", default=RESULTS, help="results dir (defaults to ./results)")
+    ap.add_argument("--positive-control", dest="positive_control", default=None,
+                    choices=["pass", "fail"],
+                    help="state of the pre-registered positive control (prereg Guard): 'pass' is REQUIRED "
+                         "before any null/PIVOT is declarable. Omit => unknown => gate stays PIVOT-*-PENDING. "
+                         "Set 'pass' ONLY after the positive-control run actually passes (see positive_control.py).")
     args = ap.parse_args()
 
     if args.demo:
@@ -700,8 +727,18 @@ def main():
     if "R6" not in forget or args.r5 not in forget:
         print("Need both R6 and", args.r5, "results. Have:", sorted(forget))
         return
+    # Positive-control state: explicit --positive-control flag OVERRIDES; otherwise AUTO-READ
+    # results/positive_control.json (prereg Guard structurally enforced; absent => None => PENDING).
+    if args.positive_control is not None:
+        pc = (args.positive_control == "pass")
+        pc_src = f"--positive-control {args.positive_control} (manual override)"
+    else:
+        pc = read_positive_control(args.results)
+        pc_src = f"auto-read results/positive_control.json -> {pc}"
+    print(f"[positive control] {pc_src}")
     v = gate(forget, learn, h3blocks, forget_rep,
-             primary_r5=args.r5, delta_g=args.delta_g, delta_e=args.delta_e)
+             primary_r5=args.r5, delta_g=args.delta_g, delta_e=args.delta_e,
+             positive_control_pass=pc)
     print(json.dumps(v, indent=2, default=str))
 
 

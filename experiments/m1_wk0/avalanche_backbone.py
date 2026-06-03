@@ -72,6 +72,40 @@ def _build_probe_loader(bench, per_class=2, batch_size=100, probe_seed=12345):
     return DataLoader(Subset(full, sorted(idx)), batch_size=batch_size, shuffle=False)
 
 
+def _build_aug_probe_loader(probe_loader, batch_size=100, aug_seed=12345):
+    """A fixed AUGMENTED view of the SAME probe inputs, materialized ONCE into an in-memory
+    TensorDataset so every arm/seed/snapshot sees BYTE-IDENTICAL augmented inputs (the same
+    CKA-validity requirement as the clean probe). The augment is a fixed-seed light random
+    crop (pad 4, reflect) + horizontal flip -- the standard CIFAR train-time augment -- applied
+    once here, NOT re-sampled per forward, so O_intra (clean-vs-augmented self-CKA) is matched
+    across arms and is purely a property of each snapshot's representation, not of augment noise.
+
+    Returns a shuffle=False DataLoader yielding (x_aug, y, task_id) in the SAME order as
+    probe_loader, so extract_features over it produces a per-task augmented feature dict aligned
+    row-for-row with the clean features."""
+    from torch.utils.data import TensorDataset, DataLoader
+    g = torch.Generator().manual_seed(aug_seed)
+    xs, ys, tids = [], [], []
+    for batch in probe_loader:                       # shuffle=False -> deterministic order
+        x, y = batch[0], batch[1]
+        tid = batch[2] if len(batch) > 2 else torch.zeros(len(y), dtype=torch.long)
+        B, _C, H, W = x.shape
+        xp = torch.nn.functional.pad(x, (4, 4, 4, 4), mode="reflect")
+        for b in range(B):
+            top = int(torch.randint(0, 2 * 4 + 1, (1,), generator=g).item())
+            left = int(torch.randint(0, 2 * 4 + 1, (1,), generator=g).item())
+            crop = xp[b:b + 1, :, top:top + H, left:left + W]
+            if torch.rand((1,), generator=g).item() < 0.5:
+                crop = torch.flip(crop, dims=[3])    # horizontal flip
+            xs.append(crop)
+        ys.append(y)
+        tids.append(tid if torch.is_tensor(tid) else torch.as_tensor(tid))
+    x_aug = torch.cat(xs, 0)
+    y_aug = torch.cat(ys, 0)
+    t_aug = torch.cat([t.reshape(-1) for t in tids], 0)
+    return DataLoader(TensorDataset(x_aug, y_aug, t_aug), batch_size=batch_size, shuffle=False)
+
+
 def _capture_osc(model, probe_loader, layers, device, eval_inits, base_seed):
     """Capture xs[l][-1] (oscillator state [B,C,H,W]) per layer on the probe set, averaged over
     eval_inits fixed-seed forwards (synchrony arms only)."""
@@ -102,7 +136,7 @@ def run_split_cifar100(rung, scenario="class", n_experiences=10, seed=0,
                        strategy="naive", mem_size=2000, ewc_lambda=1.0, ewc_mode="separate",
                        der_alpha=0.1, der_beta=0.5, batch_size_mem=128,
                        snapshot_h3=False, h3_layers=(0, 1, 2), h3_n=None, h3_k=8,
-                       probe_per_class=2, probe_seed=12345, **rung_kw):
+                       probe_per_class=2, probe_seed=12345, h3_augment_intra=True, **rung_kw):
     """Split-CIFAR100 CL on a ladder rung with a selectable strategy. Records the per-experience
     accuracy MATRIX (-> learning_acc / forgetting / bwt) and, if snapshot_h3, H3 features per task.
 
@@ -157,10 +191,15 @@ def run_split_cifar100(rung, scenario="class", n_experiences=10, seed=0,
     is_synchrony_arm = str(rung).upper().startswith("R6")
     h3_layers = list(h3_layers)
     h3_n_eff = h3_n if h3_n is not None else int(getattr(model.net, "n", 4))   # derive n from the model
-    probe_loader, feats_by_task, osc_by_task = None, {}, {}
+    probe_loader, aug_probe_loader = None, None
+    feats_by_task, aug_feats_by_task, osc_by_task = {}, {}, {}
     if snapshot_h3:
         probe_loader = _build_probe_loader(bench, per_class=probe_per_class,
                                            batch_size=common["eval_mb_size"], probe_seed=probe_seed)
+        if h3_augment_intra:
+            # Augmented view of the SAME probe (fixed seed) -> real O_intra (honest DiD).
+            aug_probe_loader = _build_aug_probe_loader(probe_loader,
+                                                       batch_size=common["eval_mb_size"], aug_seed=probe_seed)
 
     A = np.full((T, T), np.nan, dtype=float)
     for i, exp in enumerate(bench.train_stream):
@@ -168,6 +207,10 @@ def run_split_cifar100(rung, scenario="class", n_experiences=10, seed=0,
         if snapshot_h3:
             feats_by_task[i] = h3.extract_features(model, probe_loader, layers=h3_layers, device=device,
                                                    eval_inits=model.eval_inits, base_seed=model.base_seed)
+            if aug_probe_loader is not None:
+                aug_feats_by_task[i] = h3.extract_features(model, aug_probe_loader, layers=h3_layers,
+                                                           device=device, eval_inits=model.eval_inits,
+                                                           base_seed=model.base_seed)
             if is_synchrony_arm:
                 osc_by_task[i] = _capture_osc(model, probe_loader, layers=h3_layers, device=device,
                                               eval_inits=model.eval_inits, base_seed=model.base_seed)
@@ -193,7 +236,11 @@ def run_split_cifar100(rung, scenario="class", n_experiences=10, seed=0,
 
     h3_out = {"overlap_summary": None, "phase_stability": "N/A"}
     if snapshot_h3 and len(feats_by_task) >= 2:
-        h3_out["overlap_summary"] = h3.overlap_summaries(feats_by_task, layers=h3_layers)
+        # Honest DiD: pass the augmented-probe features so O_intra is the real within-snapshot
+        # augmentation self-CKA. Only feed it when we captured the same task indices clean+augmented.
+        aug = aug_feats_by_task if (aug_feats_by_task and set(aug_feats_by_task) == set(feats_by_task)) else None
+        h3_out["overlap_summary"] = h3.overlap_summaries(feats_by_task, layers=h3_layers,
+                                                         aug_features_by_task=aug)
         if is_synchrony_arm and len(osc_by_task) >= 2:
             h3_out["phase_stability"] = {l: h3.phase_cluster_stability(osc_by_task, layer=l, n=h3_n_eff, k=h3_k)
                                          for l in h3_layers}
