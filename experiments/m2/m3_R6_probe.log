@@ -1,0 +1,13 @@
+[R6 CLREG b=0 seed 0] learn=0.597 final=0.133 forgetting=0.579 dP5=-0.0050
+HYPERNET_CLREG_DONE R6 b=0
+[R6 CLREG b=0.3 seed 0] learn=0.683 final=0.130 forgetting=0.692 dP5=-0.0233
+HYPERNET_CLREG_DONE R6 b=0.3
+[R6 CLREG b=1 seed 0] learn=0.550 final=0.107 forgetting=0.554 dP5=0.0000
+HYPERNET_CLREG_DONE R6 b=1
+[R6 CLREG b=3 seed 0] learn=0.553 final=0.110 forgetting=0.554 dP5=0.0000
+HYPERNET_CLREG_DONE R6 b=3
+[R6 CLREG b=10 seed 0] learn=0.567 final=0.100 forgetting=0.583 dP5=0.0000
+HYPERNET_CLREG_DONE R6 b=10
+[R6 CLREG b=30 seed 0] learn=0.505 final=0.100 forgetting=0.506 dP5=0.0067
+HYPERNET_CLREG_DONE R6 b=30
+M3_R6_PROBE_DONE

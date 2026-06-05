@@ -1,0 +1,12 @@
+[seed 0] R6 O_inter=0.5054  R5:no_proj O_inter=0.5469  R6 learn=98.6%  R5 learn=98.8%
+[seed 1] R6 O_inter=0.4519  R5:no_proj O_inter=0.6447  R6 learn=98.6%  R5 learn=99.0%
+[seed 2] R6 O_inter=0.5140  R5:no_proj O_inter=0.5388  R6 learn=93.5%  R5 learn=99.2%
+[seed 3] R6 O_inter=0.4927  R5:no_proj O_inter=0.5197  R6 learn=99.7%  R5 learn=99.6%
+[seed 4] R6 O_inter=0.4960  R5:no_proj O_inter=0.6079  R6 learn=92.6%  R5 learn=99.3%
+[seed 5] R6 O_inter=0.4571  R5:no_proj O_inter=0.6131  R6 learn=99.3%  R5 learn=98.9%
+[seed 6] R6 O_inter=0.5281  R5:no_proj O_inter=0.4921  R6 learn=99.2%  R5 learn=99.4%
+[seed 7] R6 O_inter=0.5584  R5:no_proj O_inter=0.4906  R6 learn=99.4%  R5 learn=77.5%
+[seed 8] R6 O_inter=0.4708  R5:no_proj O_inter=0.5641  R6 learn=98.5%  R5 learn=98.5%
+[seed 9] R6 O_inter=0.5709  R5:no_proj O_inter=0.5027  R6 learn=98.8%  R5 learn=97.6%
+wrote /root/NC/experiments/m1_wk0/results/positive_control.json
+PASS: False | mean_delta: 0.031 | p: 0.11321238617830681

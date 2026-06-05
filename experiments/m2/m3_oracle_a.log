@@ -1,0 +1,4 @@
+[R6 CLREG mech=replay b=0.1 oracle=True seed 0] learn=0.543 final=0.537 forgetting=0.008 dP5=-0.5367
+[R6 CLREG mech=replay b=0.1 oracle=True seed 1] learn=0.547 final=0.517 forgetting=0.038 dP5=-0.5167
+[R6 CLREG mech=replay b=0.1 oracle=True seed 2] learn=0.517 final=0.538 forgetting=-0.027 dP5=-0.5383
+HYPERNET_CLREG_DONE R6 mech=replay b=0.1

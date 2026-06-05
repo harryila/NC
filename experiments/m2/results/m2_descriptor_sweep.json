@@ -1,0 +1,28 @@
+{
+  "pooled8": {
+    "cv": 0.2475,
+    "chance": 0.2,
+    "dim": 8
+  },
+  "region_pool": {
+    "cv": 0.225,
+    "chance": 0.2,
+    "dim": 32
+  },
+  "randproj128": {
+    "cv": 0.25625,
+    "chance": 0.2,
+    "dim": 128
+  },
+  "randproj256": {
+    "cv": 0.27375000000000005,
+    "chance": 0.2,
+    "dim": 256
+  },
+  "full": {
+    "cv": 0.28187500000000004,
+    "chance": 0.2,
+    "dim": 32768
+  },
+  "recommended": "randproj128"
+}

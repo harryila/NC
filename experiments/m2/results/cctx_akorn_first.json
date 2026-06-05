@@ -1,0 +1,228 @@
+{
+  "metric": "C_ctx = I(phase-context; generated-theta) in BITS (PRIMARY=mi_lower_bits)",
+  "design": "capture-then-freeze; ON=R6:phase OFF_a=R5:no_proj:phase OFF_b=R6:rate",
+  "config": {
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "n_tasks": 5,
+    "epochs": 50,
+    "gen_epochs": 200,
+    "layer": 1,
+    "lr": 0.0001,
+    "gen_lr": 0.001,
+    "hidden": 64,
+    "eval_inits": 8,
+    "probe_per_class": 16,
+    "n_shuffle": 10
+  },
+  "per_seed": {
+    "ON": [
+      {
+        "arm": "R6:full",
+        "context_kind": "phase",
+        "C_ctx_bits": 0.014104649822556607,
+        "eff_dim_bits": 2.348662453345676,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.021814778569115977,
+        "chance_floor_bits": 0.007710128746559369,
+        "cv_accuracy": 0.248125,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.945625,
+        "wrong_ctx_deltas": {
+          "P5": -0.47875000000000006,
+          "P5b": -0.47437500000000005,
+          "P7": -0.43000000000000005
+        },
+        "n_tasks": 5,
+        "seed": 0
+      },
+      {
+        "arm": "R6:full",
+        "context_kind": "phase",
+        "C_ctx_bits": 0.016112345576971512,
+        "eff_dim_bits": 2.226992984803425,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.023542786589118632,
+        "chance_floor_bits": 0.0074304410121471196,
+        "cv_accuracy": 0.255,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.92625,
+        "wrong_ctx_deltas": {
+          "P5": -0.514375,
+          "P5b": -0.51875,
+          "P7": -0.429375
+        },
+        "n_tasks": 5,
+        "seed": 1
+      },
+      {
+        "arm": "R6:full",
+        "context_kind": "phase",
+        "C_ctx_bits": 0.01814953298068277,
+        "eff_dim_bits": 2.6659099345000823,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.024738088599243577,
+        "chance_floor_bits": 0.006588555618560805,
+        "cv_accuracy": 0.25125,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.9475,
+        "wrong_ctx_deltas": {
+          "P5": -0.51,
+          "P5b": -0.5075000000000001,
+          "P7": -0.44875
+        },
+        "n_tasks": 5,
+        "seed": 2
+      }
+    ],
+    "OFF_a": [
+      {
+        "arm": "R5:no_proj",
+        "context_kind": "phase",
+        "C_ctx_bits": 0.022836084483734663,
+        "eff_dim_bits": 2.028007684904433,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.029976056235920017,
+        "chance_floor_bits": 0.007139971752185355,
+        "cv_accuracy": 0.260625,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.953125,
+        "wrong_ctx_deltas": {
+          "P5": -0.5331250000000001,
+          "P5b": -0.52125,
+          "P7": -0.46625
+        },
+        "n_tasks": 5,
+        "seed": 0
+      },
+      {
+        "arm": "R5:no_proj",
+        "context_kind": "phase",
+        "C_ctx_bits": 0.015402081917378557,
+        "eff_dim_bits": 2.587561803275703,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.02377577906494306,
+        "chance_floor_bits": 0.008373697147564505,
+        "cv_accuracy": 0.24375,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.845,
+        "wrong_ctx_deltas": {
+          "P5": -0.49937499999999996,
+          "P5b": -0.49937499999999996,
+          "P7": -0.47312499999999996
+        },
+        "n_tasks": 5,
+        "seed": 1
+      },
+      {
+        "arm": "R5:no_proj",
+        "context_kind": "phase",
+        "C_ctx_bits": 0.010860363109898913,
+        "eff_dim_bits": 3.221863346543633,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.019178993667050045,
+        "chance_floor_bits": 0.008318630557151133,
+        "cv_accuracy": 0.243125,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.929375,
+        "wrong_ctx_deltas": {
+          "P5": -0.5674999999999999,
+          "P5b": -0.5518749999999999,
+          "P7": -0.47624999999999995
+        },
+        "n_tasks": 5,
+        "seed": 2
+      }
+    ],
+    "OFF_b": [
+      {
+        "arm": "R6:full",
+        "context_kind": "rate",
+        "C_ctx_bits": 0.019320328275092655,
+        "eff_dim_bits": 2.3310407217445466,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.02866962827505583,
+        "chance_floor_bits": 0.009349299999963178,
+        "cv_accuracy": 0.2525,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.973125,
+        "wrong_ctx_deltas": {
+          "P5": -0.52625,
+          "P5b": -0.49875,
+          "P7": -0.46562500000000007
+        },
+        "n_tasks": 5,
+        "seed": 0
+      },
+      {
+        "arm": "R6:full",
+        "context_kind": "rate",
+        "C_ctx_bits": 0.009636318155637431,
+        "eff_dim_bits": 3.173081494250724,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.01688866253612162,
+        "chance_floor_bits": 0.007252344380484191,
+        "cv_accuracy": 0.239375,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.950625,
+        "wrong_ctx_deltas": {
+          "P5": -0.45937500000000003,
+          "P5b": -0.4337500000000001,
+          "P7": -0.5575000000000001
+        },
+        "n_tasks": 5,
+        "seed": 1
+      },
+      {
+        "arm": "R6:full",
+        "context_kind": "rate",
+        "C_ctx_bits": 0.010143924720912885,
+        "eff_dim_bits": 1.9539456416458518,
+        "Hmax_bits": 2.321928094887362,
+        "raw_mi_bits": 0.017198729931721946,
+        "chance_floor_bits": 0.00705480521080906,
+        "cv_accuracy": 0.24875,
+        "n_classes": 5,
+        "n": 1600,
+        "gen_train_acc": 0.9425,
+        "wrong_ctx_deltas": {
+          "P5": -0.4425,
+          "P5b": -0.46375,
+          "P7": -0.44625
+        },
+        "n_tasks": 5,
+        "seed": 2
+      }
+    ]
+  },
+  "C_ctx_mean_bits": {
+    "ON": 0.016122176126736963,
+    "OFF_a": 0.01636617650367071,
+    "OFF_b": 0.013033523717214323
+  },
+  "comparison": {
+    "C_ctx_ON_bits": 0.01814953298068277,
+    "C_ctx_OFF_a_bits": 0.010860363109898913,
+    "C_ctx_OFF_b_bits": 0.010143924720912885,
+    "gaps_bits": {
+      "ON_minus_OFF_a": 0.007289169870783858,
+      "ON_minus_OFF_b": 0.008005608259769885
+    },
+    "ON_beats_both_OFF": true,
+    "delta_P5_ON": -0.51,
+    "C_ctx_ON_bits_mean": 0.016122176126736963,
+    "C_ctx_OFF_a_bits_mean": 0.01636617650367071,
+    "C_ctx_OFF_b_bits_mean": 0.013033523717214323
+  }
+}

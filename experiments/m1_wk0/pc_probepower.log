@@ -1,0 +1,32 @@
+=== PROBEPOWER START ===
+[seed 0] R6 O_inter=0.5398  R5:no_proj O_inter=0.6506  R6 learn=99.9%  R5 learn=100.0%
+[seed 1] R6 O_inter=0.5981  R5:no_proj O_inter=0.5121  R6 learn=100.0%  R5 learn=100.0%
+[seed 2] R6 O_inter=0.4010  R5:no_proj O_inter=0.5490  R6 learn=100.0%  R5 learn=100.0%
+[seed 3] R6 O_inter=0.4005  R5:no_proj O_inter=0.6049  R6 learn=100.0%  R5 learn=100.0%
+[seed 4] R6 O_inter=0.5368  R5:no_proj O_inter=0.6877  R6 learn=100.0%  R5 learn=100.0%
+[seed 5] R6 O_inter=0.5463  R5:no_proj O_inter=0.3876  R6 learn=100.0%  R5 learn=100.0%
+[seed 6] R6 O_inter=0.6057  R5:no_proj O_inter=0.6916  R6 learn=100.0%  R5 learn=99.9%
+[seed 7] R6 O_inter=0.4921  R5:no_proj O_inter=0.6312  R6 learn=100.0%  R5 learn=100.0%
+[seed 8] R6 O_inter=0.3850  R5:no_proj O_inter=0.4169  R6 learn=99.9%  R5 learn=100.0%
+[seed 9] R6 O_inter=0.4409  R5:no_proj O_inter=0.6100  R6 learn=100.0%  R5 learn=100.0%
+=== diff0 bigprobe (per_class=24, 10 seeds) ===
+raw Obar: mean=0.0795 p=0.0305 dz=0.677
+DiD inner: mean=0.1163 p=0.0208 dz=0.751
+wrote /root/NC/experiments/m1_wk0/results/positive_control_diff0_bigprobe.json
+=== DIFF0 BIGPROBE DONE ===
+[seed 0] R6 O_inter=0.5287  R5:no_proj O_inter=0.4685  R6 learn=99.0%  R5 learn=98.9%
+[seed 1] R6 O_inter=0.4892  R5:no_proj O_inter=0.5608  R6 learn=99.2%  R5 learn=99.3%
+[seed 2] R6 O_inter=0.3131  R5:no_proj O_inter=0.5104  R6 learn=98.8%  R5 learn=98.9%
+[seed 3] R6 O_inter=0.5250  R5:no_proj O_inter=0.3949  R6 learn=99.3%  R5 learn=99.9%
+[seed 4] R6 O_inter=0.4499  R5:no_proj O_inter=0.3685  R6 learn=99.2%  R5 learn=99.9%
+[seed 5] R6 O_inter=0.4663  R5:no_proj O_inter=0.5325  R6 learn=98.5%  R5 learn=98.8%
+[seed 6] R6 O_inter=0.6313  R5:no_proj O_inter=0.4800  R6 learn=99.7%  R5 learn=99.4%
+[seed 7] R6 O_inter=0.5464  R5:no_proj O_inter=0.4171  R6 learn=99.3%  R5 learn=99.4%
+[seed 8] R6 O_inter=0.4794  R5:no_proj O_inter=0.3852  R6 learn=98.2%  R5 learn=98.5%
+[seed 9] R6 O_inter=0.4265  R5:no_proj O_inter=0.4579  R6 learn=98.9%  R5 learn=98.5%
+=== diff1 bigprobe (per_class=24, 10 seeds) ===
+raw Obar: mean=-0.0280 p=0.7712 dz=-0.245
+DiD inner: mean=-0.0329 p=0.7941 dz=-0.272
+wrote /root/NC/experiments/m1_wk0/results/positive_control_diff1_bigprobe.json
+=== DIFF1 BIGPROBE DONE ===
+=== PROBEPOWER COMPLETE ===
