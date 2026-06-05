@@ -1,0 +1,28 @@
+[seed 0] R6: L1 marginal=0.413 2nd_moment=0.413 coh_eig=0.304 cluster_occ=0.233 spatial4x4=0.421 | L2 marginal=0.415 2nd_moment=0.497 coh_eig=0.448 cluster_occ=0.312 spatial4x4=0.457
+[seed 0] R5:no_proj: L1 marginal=0.297 2nd_moment=0.329 coh_eig=0.348 cluster_occ=0.229 spatial4x4=0.386 | L2 marginal=0.319 2nd_moment=0.358 coh_eig=0.318 cluster_occ=0.261 spatial4x4=0.389
+[seed 0] saved (1/4)
+[seed 1] R6: L1 marginal=0.371 2nd_moment=0.319 coh_eig=0.223 cluster_occ=0.235 spatial4x4=0.400 | L2 marginal=0.335 2nd_moment=0.333 coh_eig=0.315 cluster_occ=0.286 spatial4x4=0.328
+[seed 1] R5:no_proj: L1 marginal=0.320 2nd_moment=0.364 coh_eig=0.373 cluster_occ=0.247 spatial4x4=0.383 | L2 marginal=0.411 2nd_moment=0.361 coh_eig=0.302 cluster_occ=0.240 spatial4x4=0.427
+[seed 1] saved (2/4)
+[seed 2] R6: L1 marginal=0.336 2nd_moment=0.352 coh_eig=0.370 cluster_occ=0.235 spatial4x4=0.375 | L2 marginal=0.312 2nd_moment=0.334 coh_eig=0.308 cluster_occ=0.257 spatial4x4=0.358
+[seed 2] R5:no_proj: L1 marginal=0.305 2nd_moment=0.307 coh_eig=0.310 cluster_occ=0.248 spatial4x4=0.340 | L2 marginal=0.332 2nd_moment=0.344 coh_eig=0.337 cluster_occ=0.339 spatial4x4=0.348
+[seed 2] saved (3/4)
+[seed 3] R6: L1 marginal=0.348 2nd_moment=0.387 coh_eig=0.368 cluster_occ=0.294 spatial4x4=0.395 | L2 marginal=0.342 2nd_moment=0.341 coh_eig=0.370 cluster_occ=0.249 spatial4x4=0.397
+[seed 3] R5:no_proj: L1 marginal=0.357 2nd_moment=0.399 coh_eig=0.419 cluster_occ=0.253 spatial4x4=0.381 | L2 marginal=0.320 2nd_moment=0.334 coh_eig=0.344 cluster_occ=0.349 spatial4x4=0.355
+[seed 3] saved (4/4)
+
+=== M2 SHAPES CONSTRUCT — R6 vs R5:no_proj experience-decodability (multi-object) ===
+  -- layer 1 --
+    marginal     R6=0.367 R5=0.320  D=+0.0473  n_pos=3/4
+    2nd_moment   R6=0.368 R5=0.350  D=+0.0177  n_pos=2/4
+    coh_eig      R6=0.316 R5=0.363  D=-0.0465  n_pos=1/4
+    cluster_occ  R6=0.249 R5=0.244  D=+0.0052  n_pos=2/4
+    spatial4x4   R6=0.398 R5=0.372  D=+0.0254  n_pos=4/4
+  -- layer 2 --
+    marginal     R6=0.351 R5=0.345  D=+0.0054  n_pos=2/4
+    2nd_moment   R6=0.376 R5=0.349  D=+0.0273  n_pos=2/4
+    coh_eig      R6=0.360 R5=0.325  D=+0.0352  n_pos=3/4
+    cluster_occ  R6=0.276 R5=0.297  D=-0.0212  n_pos=2/4
+    spatial4x4   R6=0.385 R5=0.380  D=+0.0054  n_pos=3/4
+VERDICT: NULL-ROBUST (even on a binding task, synchrony adds no decodable task-channel)
+SHAPES_DONE

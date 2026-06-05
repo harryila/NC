@@ -1,0 +1,41 @@
+[seed 0] R6: L1 marginal=0.420 2nd_moment=0.467 coh_eig=0.381 cluster_occ=0.216 spatial4x4=0.509 | L2 marginal=0.417 2nd_moment=0.436 coh_eig=0.390 cluster_occ=0.303 spatial4x4=0.465
+[seed 0] R5:no_proj: L1 marginal=0.335 2nd_moment=0.402 coh_eig=0.289 cluster_occ=0.242 spatial4x4=0.436 | L2 marginal=0.372 2nd_moment=0.385 coh_eig=0.427 cluster_occ=0.314 spatial4x4=0.443
+[seed 0] saved (1/8)
+[seed 1] R6: L1 marginal=0.366 2nd_moment=0.368 coh_eig=0.327 cluster_occ=0.263 spatial4x4=0.472 | L2 marginal=0.371 2nd_moment=0.388 coh_eig=0.346 cluster_occ=0.208 spatial4x4=0.440
+[seed 1] R5:no_proj: L1 marginal=0.283 2nd_moment=0.306 coh_eig=0.331 cluster_occ=0.192 spatial4x4=0.340 | L2 marginal=0.236 2nd_moment=0.272 coh_eig=0.219 cluster_occ=0.272 spatial4x4=0.288
+[seed 1] saved (2/8)
+[seed 2] R6: L1 marginal=0.354 2nd_moment=0.385 coh_eig=0.342 cluster_occ=0.263 spatial4x4=0.479 | L2 marginal=0.366 2nd_moment=0.392 coh_eig=0.369 cluster_occ=0.336 spatial4x4=0.478
+[seed 2] R5:no_proj: L1 marginal=0.204 2nd_moment=0.196 coh_eig=0.200 cluster_occ=0.215 spatial4x4=0.273 | L2 marginal=0.200 2nd_moment=0.200 coh_eig=0.200 cluster_occ=0.216 spatial4x4=0.200
+[seed 2] saved (3/8)
+[seed 3] R6: L1 marginal=0.223 2nd_moment=0.223 coh_eig=0.226 cluster_occ=0.231 spatial4x4=0.333 | L2 marginal=0.200 2nd_moment=0.200 coh_eig=0.200 cluster_occ=0.228 spatial4x4=0.303
+[seed 3] R5:no_proj: L1 marginal=0.293 2nd_moment=0.285 coh_eig=0.269 cluster_occ=0.250 spatial4x4=0.423 | L2 marginal=0.270 2nd_moment=0.299 coh_eig=0.262 cluster_occ=0.272 spatial4x4=0.345
+[seed 3] saved (4/8)
+[seed 4] R6: L1 marginal=0.293 2nd_moment=0.330 coh_eig=0.262 cluster_occ=0.226 spatial4x4=0.412 | L2 marginal=0.296 2nd_moment=0.320 coh_eig=0.292 cluster_occ=0.225 spatial4x4=0.367
+[seed 4] R5:no_proj: L1 marginal=0.351 2nd_moment=0.399 coh_eig=0.378 cluster_occ=0.257 spatial4x4=0.467 | L2 marginal=0.361 2nd_moment=0.415 coh_eig=0.412 cluster_occ=0.308 spatial4x4=0.463
+[seed 4] saved (5/8)
+[seed 5] R6: L1 marginal=0.314 2nd_moment=0.362 coh_eig=0.362 cluster_occ=0.250 spatial4x4=0.504 | L2 marginal=0.433 2nd_moment=0.416 coh_eig=0.463 cluster_occ=0.246 spatial4x4=0.556
+[seed 5] R5:no_proj: L1 marginal=0.391 2nd_moment=0.383 coh_eig=0.395 cluster_occ=0.280 spatial4x4=0.447 | L2 marginal=0.409 2nd_moment=0.418 coh_eig=0.406 cluster_occ=0.315 spatial4x4=0.440
+[seed 5] saved (6/8)
+[seed 6] R6: L1 marginal=0.291 2nd_moment=0.333 coh_eig=0.297 cluster_occ=0.226 spatial4x4=0.403 | L2 marginal=0.302 2nd_moment=0.347 coh_eig=0.315 cluster_occ=0.217 spatial4x4=0.436
+[seed 6] R5:no_proj: L1 marginal=0.293 2nd_moment=0.287 coh_eig=0.255 cluster_occ=0.233 spatial4x4=0.321 | L2 marginal=0.279 2nd_moment=0.267 coh_eig=0.266 cluster_occ=0.231 spatial4x4=0.281
+[seed 6] saved (7/8)
+[seed 7] R6: L1 marginal=0.298 2nd_moment=0.414 coh_eig=0.238 cluster_occ=0.220 spatial4x4=0.396 | L2 marginal=0.415 2nd_moment=0.380 coh_eig=0.396 cluster_occ=0.287 spatial4x4=0.458
+[seed 7] R5:no_proj: L1 marginal=0.336 2nd_moment=0.335 coh_eig=0.310 cluster_occ=0.230 spatial4x4=0.383 | L2 marginal=0.200 2nd_moment=0.307 coh_eig=0.316 cluster_occ=0.247 spatial4x4=0.343
+[seed 7] saved (8/8)
+
+=== M2 SHAPES CONSTRUCT — R6 vs R5:no_proj experience-decodability (multi-object) ===
+  -- layer 1 --
+    marginal     R6=0.320 R5=0.311  D=+0.0092  n_pos=3/8
+    2nd_moment   R6=0.360 R5=0.324  D=+0.0361  n_pos=5/8
+    coh_eig      R6=0.304 R5=0.303  D=+0.0008  n_pos=3/8
+    cluster_occ  R6=0.237 R5=0.237  D=-0.0006  n_pos=2/8
+    spatial4x4   R6=0.439 R5=0.386  D=+0.0525  n_pos=6/8
+  -- layer 2 --
+    marginal     R6=0.350 R5=0.291  D=+0.0592  n_pos=6/8
+    2nd_moment   R6=0.360 R5=0.320  D=+0.0395  n_pos=5/8
+    coh_eig      R6=0.346 R5=0.313  D=+0.0329  n_pos=5/8
+    cluster_occ  R6=0.256 R5=0.272  D=-0.0154  n_pos=2/8
+    spatial4x4   R6=0.438 R5=0.351  D=+0.0874  n_pos=6/8
+VERDICT: RESCUE (multi-object binding opens a synchrony task-channel the CIFAR screen lacked)
+RESCUED BY: [{'layer': 1, 'descriptor': 'spatial4x4', 'mean_delta': 0.05249999999999999}, {'layer': 2, 'descriptor': 'spatial4x4', 'mean_delta': 0.08739583333333331}]
+SHAPES_DONE
