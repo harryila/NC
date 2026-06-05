@@ -1,0 +1,4 @@
+[R6 seed 0] learn=0.603 final=0.140 forgetting=0.579 dP5=-0.0100
+[R6 seed 1] learn=0.590 final=0.120 forgetting=0.587 dP5=-0.0067
+[R6 seed 2] learn=0.633 final=0.117 forgetting=0.646 dP5=-0.0067
+HYPERNET_ARM_DONE R6

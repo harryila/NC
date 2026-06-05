@@ -1,0 +1,7 @@
+[R6s CLREG mech=replay b=0.1 seed 0] learn=0.573 final=0.168 forgetting=0.506 dP5=-0.0567
+[R6s CLREG mech=replay b=0.1 seed 1] learn=0.495 final=0.115 forgetting=0.475 dP5=-0.0083
+[R6s CLREG mech=replay b=0.1 seed 2] learn=0.485 final=0.118 forgetting=0.458 dP5=-0.0017
+[R6s CLREG mech=replay b=0.1 seed 3] learn=0.462 final=0.110 forgetting=0.440 dP5=-0.0017
+[R6s CLREG mech=replay b=0.1 seed 4] learn=0.487 final=0.122 forgetting=0.456 dP5=-0.0150
+[R6s CLREG mech=replay b=0.1 seed 5] learn=0.495 final=0.128 forgetting=0.458 dP5=-0.0183
+HYPERNET_CLREG_DONE R6s mech=replay b=0.1

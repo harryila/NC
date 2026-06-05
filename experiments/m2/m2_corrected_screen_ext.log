@@ -1,0 +1,38 @@
+[seed 6] R6: L1 marginal=0.428 2nd_moment=0.434 coh_eig=0.435 cluster_occ=0.277 spatial4x4=0.454 L2 marginal=0.423 2nd_moment=0.422 coh_eig=0.373 cluster_occ=0.259 spatial4x4=0.412
+[seed 6] R6s: L1 marginal=0.302 2nd_moment=0.287 coh_eig=0.264 cluster_occ=0.224 spatial4x4=0.316 L2 marginal=0.339 2nd_moment=0.315 coh_eig=0.280 cluster_occ=0.251 spatial4x4=0.365
+[seed 6] R5:depthwise: L1 marginal=0.293 2nd_moment=0.289 coh_eig=0.265 cluster_occ=0.196 spatial4x4=0.276 L2 marginal=0.307 2nd_moment=0.292 coh_eig=0.307 cluster_occ=0.207 spatial4x4=0.333
+[seed 6] saved (1/3)
+[seed 7] R6: L1 marginal=0.338 2nd_moment=0.368 coh_eig=0.320 cluster_occ=0.248 spatial4x4=0.370 L2 marginal=0.333 2nd_moment=0.373 coh_eig=0.355 cluster_occ=0.283 spatial4x4=0.363
+[seed 7] R6s: L1 marginal=0.324 2nd_moment=0.338 coh_eig=0.267 cluster_occ=0.219 spatial4x4=0.345 L2 marginal=0.376 2nd_moment=0.409 coh_eig=0.381 cluster_occ=0.319 spatial4x4=0.389
+[seed 7] R5:depthwise: L1 marginal=0.358 2nd_moment=0.354 coh_eig=0.318 cluster_occ=0.253 spatial4x4=0.414 L2 marginal=0.313 2nd_moment=0.333 coh_eig=0.300 cluster_occ=0.188 spatial4x4=0.330
+[seed 7] saved (2/3)
+[seed 8] R6: L1 marginal=0.410 2nd_moment=0.389 coh_eig=0.356 cluster_occ=0.273 spatial4x4=0.438 L2 marginal=0.421 2nd_moment=0.448 coh_eig=0.408 cluster_occ=0.222 spatial4x4=0.455
+[seed 8] R6s: L1 marginal=0.278 2nd_moment=0.287 coh_eig=0.251 cluster_occ=0.215 spatial4x4=0.360 L2 marginal=0.396 2nd_moment=0.417 coh_eig=0.328 cluster_occ=0.287 spatial4x4=0.407
+[seed 8] R5:depthwise: L1 marginal=0.381 2nd_moment=0.355 coh_eig=0.345 cluster_occ=0.212 spatial4x4=0.350 L2 marginal=0.335 2nd_moment=0.333 coh_eig=0.352 cluster_occ=0.248 spatial4x4=0.376
+[seed 8] saved (3/3)
+
+=== M2 CORRECTED SCREEN (real ablation, eval_inits=1) ===
+  --- R6 vs R6s ---
+    L1 marginal     R6=0.392 R6s=0.302  D=+0.0906 p1=0.125 n_pos=3/3
+    L1 2nd_moment   R6=0.397 R6s=0.304  D=+0.0931 p1=0.125 n_pos=3/3
+    L1 coh_eig      R6=0.370 R6s=0.261  D=+0.1094 p1=0.125 n_pos=3/3
+    L1 cluster_occ  R6=0.266 R6s=0.219  D=+0.0464 p1=0.125 n_pos=3/3
+    L1 spatial4x4   R6=0.421 R6s=0.340  D=+0.0803 p1=0.125 n_pos=3/3
+    L2 marginal     R6=0.392 R6s=0.370  D=+0.0219 p1=0.375 n_pos=2/3
+    L2 2nd_moment   R6=0.415 R6s=0.380  D=+0.0344 p1=0.375 n_pos=2/3
+    L2 coh_eig      R6=0.379 R6s=0.330  D=+0.0489 p1=0.250 n_pos=2/3
+    L2 cluster_occ  R6=0.255 R6s=0.286  D=-0.0306 p1=0.875 n_pos=1/3
+    L2 spatial4x4   R6=0.410 R6s=0.387  D=+0.0233 p1=0.250 n_pos=2/3
+  --- R6 vs R5:depthwise ---
+    L1 marginal     R6=0.392 R5:depthwise=0.344  D=+0.0483 p1=0.250 n_pos=2/3
+    L1 2nd_moment   R6=0.397 R5:depthwise=0.333  D=+0.0644 p1=0.125 n_pos=3/3
+    L1 coh_eig      R6=0.370 R5:depthwise=0.309  D=+0.0611 p1=0.125 n_pos=3/3
+    L1 cluster_occ  R6=0.266 R5:depthwise=0.220  D=+0.0456 p1=0.250 n_pos=2/3
+    L1 spatial4x4   R6=0.421 R5:depthwise=0.347  D=+0.0739 p1=0.250 n_pos=2/3
+    L2 marginal     R6=0.392 R5:depthwise=0.318  D=+0.0739 p1=0.125 n_pos=3/3
+    L2 2nd_moment   R6=0.415 R5:depthwise=0.319  D=+0.0953 p1=0.125 n_pos=3/3
+    L2 coh_eig      R6=0.379 R5:depthwise=0.320  D=+0.0589 p1=0.125 n_pos=3/3
+    L2 cluster_occ  R6=0.255 R5:depthwise=0.214  D=+0.0406 p1=0.250 n_pos=2/3
+    L2 spatial4x4   R6=0.410 R5:depthwise=0.346  D=+0.0639 p1=0.125 n_pos=3/3
+VERDICT: CORRECTED-NULL (even with real ablation + eval_inits=1 + relational descriptors on a binding construct, R6 ~ R6s -> synchrony adds no decodable context-channel info)
+CORRECTED_DONE
