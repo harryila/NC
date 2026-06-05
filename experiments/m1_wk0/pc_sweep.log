@@ -1,0 +1,12 @@
+[diff0 ep35] R6 learn=99.9% R5 learn=99.8% | O_inter R6=0.5556 R5=0.7212 | usable=False
+[diff0 ep60] R6 learn=100.0% R5 learn=100.0% | O_inter R6=0.6000 R5=0.7123 | usable=False
+[diff1 ep35] R6 learn=98.7% R5 learn=99.2% | O_inter R6=0.4573 R5=0.4951 | usable=False
+[diff1 ep60] R6 learn=99.2% R5 learn=99.2% | O_inter R6=0.4678 R5=0.5332 | usable=False
+[diff2 ep35] R6 learn=91.9% R5 learn=91.7% | O_inter R6=0.4686 R5=0.4503 | usable=False
+[diff2 ep60] R6 learn=93.5% R5 learn=90.9% | O_inter R6=0.5155 R5=0.4920 | usable=False
+[diff3 ep35] R6 learn=82.2% R5 learn=80.6% | O_inter R6=0.3573 R5=0.3831 | usable=True
+[diff3 ep60] R6 learn=80.5% R5 learn=80.5% | O_inter R6=0.4460 R5=0.4309 | usable=False
+
+=== SWEEP RESULT ===
+use difficulty_idx=3 epochs=35
+  best: R6 learn=82.2% R5 learn=80.6% deltaO=+0.0258

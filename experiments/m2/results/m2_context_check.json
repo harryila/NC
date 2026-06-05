@@ -1,0 +1,6 @@
+{
+  "cv_pooled_8dim": 0.228125,
+  "chance": 0.2,
+  "cv_full_state": 0.28812499999999996,
+  "verdict": "POOL DESTROYS task info (cv_pooled ~ chance) -> need richer context descriptor"
+}

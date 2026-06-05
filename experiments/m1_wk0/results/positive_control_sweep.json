@@ -1,0 +1,248 @@
+{
+  "rows": [
+    {
+      "difficulty_idx": 3,
+      "difficulty": {
+        "jitter": 0.4,
+        "bg_noise": 0.28,
+        "pos_jitter": 10,
+        "radius_range": [
+          4,
+          13
+        ]
+      },
+      "epochs": 35,
+      "r6_learn": 82.22222222222223,
+      "r5_learn": 80.55555555555554,
+      "r6_O_inter": 0.3573182052114974,
+      "r5_O_inter": 0.3830758098519313,
+      "delta_O_inter_R5_minus_R6": 0.025757604640433918,
+      "both_learn": true,
+      "not_saturated": true,
+      "above_chance": true,
+      "signal_present": true,
+      "usable": true,
+      "rank_key": [
+        true,
+        -47.77777777777777
+      ]
+    },
+    {
+      "difficulty_idx": 3,
+      "difficulty": {
+        "jitter": 0.4,
+        "bg_noise": 0.28,
+        "pos_jitter": 10,
+        "radius_range": [
+          4,
+          13
+        ]
+      },
+      "epochs": 60,
+      "r6_learn": 80.46296296296296,
+      "r5_learn": 80.46296296296296,
+      "r6_O_inter": 0.4460462682545974,
+      "r5_O_inter": 0.43090949391976807,
+      "delta_O_inter_R5_minus_R6": -0.01513677433482935,
+      "both_learn": true,
+      "not_saturated": true,
+      "above_chance": true,
+      "signal_present": false,
+      "usable": false,
+      "rank_key": [
+        false,
+        -45.925925925925924
+      ]
+    },
+    {
+      "difficulty_idx": 2,
+      "difficulty": {
+        "jitter": 0.28,
+        "bg_noise": 0.18,
+        "pos_jitter": 8,
+        "radius_range": [
+          5,
+          12
+        ]
+      },
+      "epochs": 35,
+      "r6_learn": 91.85185185185186,
+      "r5_learn": 91.66666666666666,
+      "r6_O_inter": 0.4685638696566262,
+      "r5_O_inter": 0.4503242852826358,
+      "delta_O_inter_R5_minus_R6": -0.018239584373990425,
+      "both_learn": false,
+      "not_saturated": true,
+      "above_chance": true,
+      "signal_present": false,
+      "usable": false,
+      "rank_key": [
+        false,
+        -68.51851851851852
+      ]
+    },
+    {
+      "difficulty_idx": 2,
+      "difficulty": {
+        "jitter": 0.28,
+        "bg_noise": 0.18,
+        "pos_jitter": 8,
+        "radius_range": [
+          5,
+          12
+        ]
+      },
+      "epochs": 60,
+      "r6_learn": 93.51851851851852,
+      "r5_learn": 90.92592592592592,
+      "r6_O_inter": 0.5154783273043692,
+      "r5_O_inter": 0.4919641114080412,
+      "delta_O_inter_R5_minus_R6": -0.02351421589632796,
+      "both_learn": false,
+      "not_saturated": false,
+      "above_chance": true,
+      "signal_present": false,
+      "usable": false,
+      "rank_key": [
+        false,
+        -69.44444444444444
+      ]
+    },
+    {
+      "difficulty_idx": 1,
+      "difficulty": {
+        "jitter": 0.18,
+        "bg_noise": 0.1,
+        "pos_jitter": 6,
+        "radius_range": [
+          6,
+          11
+        ]
+      },
+      "epochs": 35,
+      "r6_learn": 98.7037037037037,
+      "r5_learn": 99.16666666666666,
+      "r6_O_inter": 0.45729751049154577,
+      "r5_O_inter": 0.49512510539400945,
+      "delta_O_inter_R5_minus_R6": 0.03782759490246368,
+      "both_learn": false,
+      "not_saturated": false,
+      "above_chance": true,
+      "signal_present": true,
+      "usable": false,
+      "rank_key": [
+        false,
+        -82.87037037037035
+      ]
+    },
+    {
+      "difficulty_idx": 1,
+      "difficulty": {
+        "jitter": 0.18,
+        "bg_noise": 0.1,
+        "pos_jitter": 6,
+        "radius_range": [
+          6,
+          11
+        ]
+      },
+      "epochs": 60,
+      "r6_learn": 99.16666666666667,
+      "r5_learn": 99.16666666666666,
+      "r6_O_inter": 0.4678335947241571,
+      "r5_O_inter": 0.5331641500572775,
+      "delta_O_inter_R5_minus_R6": 0.06533055533312038,
+      "both_learn": false,
+      "not_saturated": false,
+      "above_chance": true,
+      "signal_present": true,
+      "usable": false,
+      "rank_key": [
+        false,
+        -83.33333333333333
+      ]
+    },
+    {
+      "difficulty_idx": 0,
+      "difficulty": {
+        "jitter": 0.1,
+        "bg_noise": 0.05,
+        "pos_jitter": 4,
+        "radius_range": [
+          7,
+          10
+        ]
+      },
+      "epochs": 35,
+      "r6_learn": 99.90740740740742,
+      "r5_learn": 99.81481481481482,
+      "r6_O_inter": 0.5555551132750257,
+      "r5_O_inter": 0.7212276084402711,
+      "delta_O_inter_R5_minus_R6": 0.1656724951652454,
+      "both_learn": false,
+      "not_saturated": false,
+      "above_chance": true,
+      "signal_present": true,
+      "usable": false,
+      "rank_key": [
+        false,
+        -84.72222222222224
+      ]
+    },
+    {
+      "difficulty_idx": 0,
+      "difficulty": {
+        "jitter": 0.1,
+        "bg_noise": 0.05,
+        "pos_jitter": 4,
+        "radius_range": [
+          7,
+          10
+        ]
+      },
+      "epochs": 60,
+      "r6_learn": 100.0,
+      "r5_learn": 100.0,
+      "r6_O_inter": 0.5999822120023752,
+      "r5_O_inter": 0.7122765888740827,
+      "delta_O_inter_R5_minus_R6": 0.11229437687170751,
+      "both_learn": false,
+      "not_saturated": false,
+      "above_chance": true,
+      "signal_present": true,
+      "usable": false,
+      "rank_key": [
+        false,
+        -85.0
+      ]
+    }
+  ],
+  "best": {
+    "difficulty_idx": 3,
+    "difficulty": {
+      "jitter": 0.4,
+      "bg_noise": 0.28,
+      "pos_jitter": 10,
+      "radius_range": [
+        4,
+        13
+      ]
+    },
+    "epochs": 35,
+    "r6_learn": 82.22222222222223,
+    "r5_learn": 80.55555555555554,
+    "r6_O_inter": 0.3573182052114974,
+    "r5_O_inter": 0.3830758098519313,
+    "delta_O_inter_R5_minus_R6": 0.025757604640433918,
+    "both_learn": true,
+    "not_saturated": true,
+    "above_chance": true,
+    "signal_present": true,
+    "usable": true,
+    "rank_key": [
+      true,
+      -47.77777777777777
+    ]
+  },
+  "recommendation": "use difficulty_idx=3 epochs=35"
+}

@@ -1,0 +1,36 @@
+{
+  "layer": 2,
+  "layers_probed": [
+    0,
+    1,
+    2
+  ],
+  "per_layer": {
+    "0": {
+      "cv_accuracy": 0.29666666666666663,
+      "chance": 0.2,
+      "margin_over_chance": 0.09666666666666662,
+      "verdict": "AMBIGUOUS (weak task signal \u2014 more probing)"
+    },
+    "1": {
+      "cv_accuracy": 0.33166666666666667,
+      "chance": 0.2,
+      "margin_over_chance": 0.13166666666666665,
+      "verdict": "AMBIGUOUS (weak task signal \u2014 more probing)"
+    },
+    "2": {
+      "cv_accuracy": 0.39333333333333337,
+      "chance": 0.2,
+      "margin_over_chance": 0.19333333333333336,
+      "verdict": "CHANNEL EXISTS (M2 viable)"
+    }
+  },
+  "n_tasks": 5,
+  "epochs": 30,
+  "per_task_samples": 240,
+  "cv_accuracy": 0.39333333333333337,
+  "chance": 0.2,
+  "margin_over_chance": 0.19333333333333336,
+  "verdict": "CHANNEL EXISTS (M2 viable)",
+  "best_layer": 2
+}

@@ -428,6 +428,12 @@ def paired_did(summary_R6, summary_R5, alpha=0.05, use_wilcoxon=False, seed=0):
     p = _wilcoxon_signed_rank_p(delta) if use_wilcoxon else _paired_t_p_onesided(delta)
     d_z = float(delta.mean() / (delta.std(ddof=1) + 1e-12))
     lo, hi = _bca_ci(delta, alpha=alpha, seed=seed)
+    # Raw-contrast (Obar) p-value + dz, fully reported alongside the DiD. The honest-DiD subtracts a
+    # per-arm augmentation O_intra baseline that SHARPENS the contrast at large probe scale (CIFAR) but
+    # INFLATES variance at small probe scale (the 9-class positive control: noisy O_intra), so the raw
+    # Obar contrast is the project-standard metric used by the sweep and the decisive M1 result.
+    p_obar = _wilcoxon_signed_rank_p(delta_obar) if use_wilcoxon else _paired_t_p_onesided(delta_obar)
+    d_z_obar = float(delta_obar.mean() / (delta_obar.std(ddof=1) + 1e-12))
     # Honest-DiD flag: True iff BOTH arms supplied a real augmentation-based O_intra baseline.
     honest_did = all(summary_R6[s].get("intra_is_augmentation_baseline", False)
                      and summary_R5[s].get("intra_is_augmentation_baseline", False) for s in seeds)
@@ -452,6 +458,8 @@ def paired_did(summary_R6, summary_R5, alpha=0.05, use_wilcoxon=False, seed=0):
         "test": "wilcoxon_signed_rank" if use_wilcoxon else "paired_t",
         "p_one_sided_delta_gt_0": float(p),
         "cohens_dz": d_z,
+        "p_one_sided_obar_gt_0": float(p_obar),     # raw-contrast p (project-standard metric)
+        "cohens_dz_obar": d_z_obar,
         "bca_ci95": [lo, hi],
         "honest_did": honest_did,
         "interpretation": "delta>0 => synchrony (R6) yields LOWER inter-task overlap than R5:no_proj",

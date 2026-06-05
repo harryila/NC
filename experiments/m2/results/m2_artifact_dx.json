@@ -1,0 +1,29 @@
+{
+  "trained": {
+    "C_ctx_bits": 0.019106581546180664,
+    "raw_mi_bits": 0.027388610422381044,
+    "chance_floor_bits": 0.00828202887620038,
+    "cv_accuracy": 0.265625,
+    "gen_train_acc": 0.97625,
+    "wrong_ctx_deltas": {
+      "P5": -0.5306249999999999,
+      "P5b": -0.51125,
+      "P7": -0.48124999999999996
+    }
+  },
+  "agnostic": {
+    "C_ctx_bits": 0.003797266801648356,
+    "raw_mi_bits": 0.009603176446405398,
+    "chance_floor_bits": 0.005805909644757043,
+    "cv_accuracy": 0.2225,
+    "gen_train_acc": 1.0,
+    "wrong_ctx_deltas": {
+      "P5": 0.0,
+      "P5b": 0.0,
+      "P7": 0.0
+    }
+  },
+  "jump_bits": -0.015309314744532308,
+  "verdict": "TRUE NULL-ish (agnostic features did NOT lift C_ctx; phase context may genuinely lack parameter-channel capacity)",
+  "Hmax_bits": 2.321928094887362
+}

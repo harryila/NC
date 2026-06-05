@@ -1,0 +1,4 @@
+[R6 JOINT seed 0] real=0.572 const=0.162 lift=0.4100 dP5=-0.5383
+[R6 JOINT seed 1] real=0.263 const=0.147 lift=0.1167 dP5=-0.2000
+[R6 JOINT seed 2] real=0.493 const=0.158 lift=0.3350 dP5=-0.4567
+HYPERNET_JOINT_DONE R6

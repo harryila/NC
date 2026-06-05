@@ -96,28 +96,42 @@ def run_precheck(epochs=30, n_tasks=5, per_class=8, layer=0, device="cuda",
                criterion=nn.CrossEntropyLoss(), train_mb_size=128, eval_mb_size=100,
                train_epochs=epochs, evaluator=evalp, device=device)
 
-    # build ONE fixed probe loader per task (small, class-balanced) from each task's TEST set
-    phase_by_task = {}
+    # build ONE fixed probe loader per task (small, class-balanced) from each task's TEST set.
+    # `layer` may be an int (single) or a list/tuple (probe several layers from the SAME trained model
+    # in ONE run -- avoids re-training per layer). Task-discriminative info often lives in DEEPER
+    # layers (1,2 feed the readout) than layer 0, so probing all three is the cheap informative follow-up.
+    layers_to_probe = [layer] if isinstance(layer, int) else list(layer)
+    phase_by_task = {l: {} for l in layers_to_probe}
     for i, exp in enumerate(bench.train_stream):
         cl.train(exp)
-    # after training the full stream, capture phase-state per task on each task's test experience
+    from torch.utils.data import DataLoader, Subset
     for i, exp in enumerate(bench.test_stream):
-        from torch.utils.data import DataLoader, Subset
         ds = exp.dataset
         idx = list(range(min(max_samples_per_task, len(ds))))
         loader = DataLoader(Subset(ds, idx), batch_size=100, shuffle=False)
-        phase_by_task[i] = _capture_phase_per_sample(
-            model, loader, layer=layer, device=device, eval_inits=eval_inits,
-            base_seed=seed, max_samples=max_samples_per_task)
-        print(f"[task {i}] captured {len(phase_by_task[i])} pooled phase descriptors")
+        for l in layers_to_probe:
+            phase_by_task[l][i] = _capture_phase_per_sample(
+                model, loader, layer=l, device=device, eval_inits=eval_inits,
+                base_seed=seed, max_samples=max_samples_per_task)
+        print(f"[task {i}] captured phase descriptors for layers {layers_to_probe}")
 
-    cv_acc, chance = m2.linear_task_decodability(phase_by_task, seed=seed)
-    verdict = ("CHANNEL EXISTS (M2 viable)" if cv_acc > chance + 0.15
-               else "EMPTY CHANNEL (zero task bits — M2 needs explicit symmetry-breaker)"
-               if cv_acc < chance + 0.05 else "AMBIGUOUS (weak task signal — more probing)")
-    out = {"layer": layer, "n_tasks": n_tasks, "epochs": epochs, "per_task_samples": max_samples_per_task,
+    per_layer = {}
+    for l in layers_to_probe:
+        cv_acc, chance = m2.linear_task_decodability(phase_by_task[l], seed=seed)
+        verdict = ("CHANNEL EXISTS (M2 viable)" if cv_acc > chance + 0.15
+                   else "EMPTY CHANNEL (zero task bits — M2 needs explicit symmetry-breaker)"
+                   if cv_acc < chance + 0.05 else "AMBIGUOUS (weak task signal — more probing)")
+        per_layer[l] = {"cv_accuracy": float(cv_acc), "chance": float(chance),
+                        "margin_over_chance": float(cv_acc - chance), "verdict": verdict}
+        print(f"  [layer {l}] cv_acc={cv_acc:.3f} chance={chance:.3f} margin={cv_acc-chance:+.3f} -> {verdict}")
+    # best layer = the headline (M2 needs the channel to exist at SOME layer)
+    best_l = max(per_layer, key=lambda k: per_layer[k]["margin_over_chance"])
+    cv_acc = per_layer[best_l]["cv_accuracy"]; chance = per_layer[best_l]["chance"]
+    verdict = per_layer[best_l]["verdict"]
+    out = {"layer": best_l, "layers_probed": layers_to_probe, "per_layer": per_layer,
+           "n_tasks": n_tasks, "epochs": epochs, "per_task_samples": max_samples_per_task,
            "cv_accuracy": float(cv_acc), "chance": float(chance),
-           "margin_over_chance": float(cv_acc - chance), "verdict": verdict}
+           "margin_over_chance": float(cv_acc - chance), "verdict": verdict, "best_layer": best_l}
     os.makedirs(RESULTS, exist_ok=True)
     json.dump(out, open(os.path.join(RESULTS, "m2_precheck.json"), "w"), indent=2, default=str)
     print("\n=== M2 PRE-CHECK ===")
@@ -155,13 +169,16 @@ def main():
     ap.add_argument("--n-tasks", type=int, default=5)
     ap.add_argument("--per-class", type=int, default=8, help="(reserved) probe class balance knob")
     ap.add_argument("--layer", type=int, default=0)
+    ap.add_argument("--all-layers", action="store_true",
+                    help="probe layers 0,1,2 from ONE trained model (deeper layers often carry more task info)")
     ap.add_argument("--device", type=str, default="cuda")
     ap.add_argument("--eval-inits", type=int, default=4)
     ap.add_argument("--max-samples-per-task", type=int, default=240, help="cap probe size (OOM guard)")
     args = ap.parse_args()
     if args.demo:
         _demo(); return
-    run_precheck(epochs=args.epochs, n_tasks=args.n_tasks, layer=args.layer, device=args.device,
+    layer = [0, 1, 2] if args.all_layers else args.layer
+    run_precheck(epochs=args.epochs, n_tasks=args.n_tasks, layer=layer, device=args.device,
                  eval_inits=args.eval_inits, max_samples_per_task=args.max_samples_per_task)
 
 

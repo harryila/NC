@@ -1,0 +1,10 @@
+{
+  "acc_conditioned": 1.0,
+  "acc_agnostic": 1.0,
+  "C_ctx_conditioned_bits": 2.0891987577748377,
+  "C_ctx_agnostic_bits": 0.0,
+  "Hmax_bits": 2.321928094887362,
+  "eff_dim_cond": 3.1185604676677516,
+  "eff_dim_agno": 46.91594841993085,
+  "VALIDATION_PASS": true
+}

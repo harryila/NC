@@ -1,0 +1,54 @@
+=== C-RUN START ===
+[seed 0] R6 O_inter=0.5905  R5:no_proj O_inter=0.5387  R6 learn=99.0%  R5 learn=98.9%
+[seed 1] R6 O_inter=0.5978  R5:no_proj O_inter=0.6611  R6 learn=99.2%  R5 learn=99.3%
+[seed 2] R6 O_inter=0.4039  R5:no_proj O_inter=0.5635  R6 learn=98.8%  R5 learn=98.9%
+[seed 3] R6 O_inter=0.5757  R5:no_proj O_inter=0.4656  R6 learn=99.3%  R5 learn=99.9%
+[seed 4] R6 O_inter=0.5415  R5:no_proj O_inter=0.4514  R6 learn=99.2%  R5 learn=99.9%
+[seed 5] R6 O_inter=0.4835  R5:no_proj O_inter=0.6478  R6 learn=98.5%  R5 learn=98.8%
+[seed 6] R6 O_inter=0.7101  R5:no_proj O_inter=0.5476  R6 learn=99.7%  R5 learn=99.4%
+[seed 7] R6 O_inter=0.5922  R5:no_proj O_inter=0.5565  R6 learn=99.3%  R5 learn=99.4%
+[seed 8] R6 O_inter=0.5384  R5:no_proj O_inter=0.5168  R6 learn=98.2%  R5 learn=98.5%
+[seed 9] R6 O_inter=0.5190  R5:no_proj O_inter=0.5788  R6 learn=98.9%  R5 learn=98.5%
+[seed 10] R6 O_inter=0.5671  R5:no_proj O_inter=0.6148  R6 learn=99.2%  R5 learn=99.0%
+[seed 11] R6 O_inter=0.5399  R5:no_proj O_inter=0.6242  R6 learn=98.5%  R5 learn=96.7%
+[seed 12] R6 O_inter=0.5389  R5:no_proj O_inter=0.5003  R6 learn=99.6%  R5 learn=99.3%
+[seed 13] R6 O_inter=0.6394  R5:no_proj O_inter=0.6111  R6 learn=99.0%  R5 learn=99.0%
+[seed 14] R6 O_inter=0.4789  R5:no_proj O_inter=0.4752  R6 learn=98.9%  R5 learn=99.3%
+[seed 15] R6 O_inter=0.5717  R5:no_proj O_inter=0.6496  R6 learn=99.6%  R5 learn=99.6%
+[seed 16] R6 O_inter=0.4450  R5:no_proj O_inter=0.6094  R6 learn=99.0%  R5 learn=99.0%
+[seed 17] R6 O_inter=0.5918  R5:no_proj O_inter=0.5447  R6 learn=99.3%  R5 learn=98.9%
+[seed 18] R6 O_inter=0.5054  R5:no_proj O_inter=0.5411  R6 learn=99.0%  R5 learn=99.2%
+[seed 19] R6 O_inter=0.4629  R5:no_proj O_inter=0.5191  R6 learn=99.4%  R5 learn=95.8%
+=== diff1 (20 seeds) ===
+PASS: False | primary: raw_obar_overlap_contrast
+raw Obar: mean=0.0162 p=0.2180 dz=0.178
+DiD inner: mean=0.0200 p=0.2332
+wrote /root/NC/experiments/m1_wk0/results/positive_control_diff1.json
+=== DIFF1 DONE ===
+[seed 0] R6 O_inter=0.6040  R5:no_proj O_inter=0.7084  R6 learn=99.9%  R5 learn=100.0%
+[seed 1] R6 O_inter=0.6780  R5:no_proj O_inter=0.5900  R6 learn=100.0%  R5 learn=100.0%
+[seed 2] R6 O_inter=0.4656  R5:no_proj O_inter=0.5874  R6 learn=100.0%  R5 learn=100.0%
+[seed 3] R6 O_inter=0.4288  R5:no_proj O_inter=0.6308  R6 learn=100.0%  R5 learn=100.0%
+[seed 4] R6 O_inter=0.5876  R5:no_proj O_inter=0.7721  R6 learn=100.0%  R5 learn=100.0%
+[seed 5] R6 O_inter=0.5524  R5:no_proj O_inter=0.4199  R6 learn=100.0%  R5 learn=100.0%
+[seed 6] R6 O_inter=0.6374  R5:no_proj O_inter=0.7288  R6 learn=100.0%  R5 learn=99.9%
+[seed 7] R6 O_inter=0.5443  R5:no_proj O_inter=0.6742  R6 learn=100.0%  R5 learn=100.0%
+[seed 8] R6 O_inter=0.4257  R5:no_proj O_inter=0.4537  R6 learn=99.9%  R5 learn=100.0%
+[seed 9] R6 O_inter=0.5071  R5:no_proj O_inter=0.6689  R6 learn=100.0%  R5 learn=100.0%
+[seed 10] R6 O_inter=0.4605  R5:no_proj O_inter=0.6932  R6 learn=100.0%  R5 learn=100.0%
+[seed 11] R6 O_inter=0.5875  R5:no_proj O_inter=0.5708  R6 learn=99.9%  R5 learn=100.0%
+[seed 12] R6 O_inter=0.5601  R5:no_proj O_inter=0.7233  R6 learn=100.0%  R5 learn=100.0%
+[seed 13] R6 O_inter=0.6402  R5:no_proj O_inter=0.5534  R6 learn=100.0%  R5 learn=100.0%
+[seed 14] R6 O_inter=0.5251  R5:no_proj O_inter=0.7021  R6 learn=100.0%  R5 learn=100.0%
+[seed 15] R6 O_inter=0.6090  R5:no_proj O_inter=0.4877  R6 learn=100.0%  R5 learn=77.8%
+[seed 16] R6 O_inter=0.7157  R5:no_proj O_inter=0.5372  R6 learn=99.9%  R5 learn=100.0%
+[seed 17] R6 O_inter=0.5578  R5:no_proj O_inter=0.4560  R6 learn=99.9%  R5 learn=100.0%
+[seed 18] R6 O_inter=0.4830  R5:no_proj O_inter=0.6947  R6 learn=100.0%  R5 learn=100.0%
+[seed 19] R6 O_inter=0.6028  R5:no_proj O_inter=0.5329  R6 learn=99.9%  R5 learn=99.9%
+=== diff0 (20 seeds) ===
+PASS: False | primary: raw_obar_overlap_contrast
+raw Obar: mean=0.0506 p=0.0566 dz=0.371
+DiD inner: mean=0.0833 p=0.0134
+wrote /root/NC/experiments/m1_wk0/results/positive_control_diff0.json
+=== DIFF0 DONE ===
+=== C-RUN COMPLETE ===

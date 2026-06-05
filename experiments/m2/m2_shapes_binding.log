@@ -1,0 +1,18 @@
+[seed 4] R6: L1 ARI=0.4056 L2 ARI=0.1233
+[seed 4] R5:no_proj: L1 ARI=0.4068 L2 ARI=0.1890
+[seed 4] saved (1/4)
+[seed 5] R6: L1 ARI=0.3059 L2 ARI=0.1509
+[seed 5] R5:no_proj: L1 ARI=0.3742 L2 ARI=0.1892
+[seed 5] saved (2/4)
+[seed 6] R6: L1 ARI=0.3610 L2 ARI=0.1806
+[seed 6] R5:no_proj: L1 ARI=0.4057 L2 ARI=0.2019
+[seed 6] saved (3/4)
+[seed 7] R6: L1 ARI=0.4083 L2 ARI=0.1544
+[seed 7] R5:no_proj: L1 ARI=0.4725 L2 ARI=0.2261
+[seed 7] saved (4/4)
+
+=== M2 BINDING CHECK — object-ARI from phase clusters (R6 vs R5:no_proj) ===
+  L1: ARI R6=0.3702 R5=0.4148  D=-0.0446  n_pos=0/4
+  L2: ARI R6=0.1523 R5=0.2015  D=-0.0492  n_pos=0/4
+VERDICT: NO DIFFERENTIAL BINDING (R6 ~ R5 object-clustering)
+BINDING_DONE
