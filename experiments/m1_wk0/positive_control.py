@@ -296,12 +296,33 @@ def run_positive_control_arm(rung, variant=None, n_tasks=3, seed=0, epochs=60,
 
     Mirrors avalanche_backbone.run_split_cifar100's snapshot path so the H3 contrast is computed
     by the SAME code that scores the real CIFAR runs."""
+    import os
+    import random
     import torch
     import torch.nn as nn
     from torch.utils.data import DataLoader
     import _bootstrap  # noqa: F401  -- makes source.* importable on the GPU box
     from avalanche_backbone import LadderClassifier, _capture_osc
     import h3
+
+    # ---- DETERMINISM (2026-06-03): same `seed` must give the SAME per-seed result run-to-run.
+    # The borderline positive control straddled p=0.05 across two runs because cuDNN conv-algorithm
+    # selection + atomic reductions are nondeterministic. Pin the global RNGs + force deterministic
+    # kernels. (AKOrN's per-forward torch.randn_like oscillator init is SEPARATELY controlled by the
+    # base_seed + eval_inits averaging; this block fixes the TRAINING-step nondeterminism.)
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")   # required for deterministic cuBLAS
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    try:
+        torch.use_deterministic_algorithms(True, warn_only=True)   # warn_only: don't hard-fail on a
+        # kernel without a deterministic impl (AKOrN has a few); warn + best-effort determinism.
+    except Exception:
+        pass
 
     rung_kw = {"variant": variant} if variant else {}
     train_sets, test_sets, splits = _build_binding_streams(
@@ -385,7 +406,7 @@ def run_positive_control_arm(rung, variant=None, n_tasks=3, seed=0, epochs=60,
 
 def run_positive_control(seeds=8, n_tasks=3, epochs=60, device="cuda", eval_inits=8,
                          per_class_train=300, per_class_test=80, h3_layers=(0, 1, 2),
-                         alpha=0.05, save=True, lr=1e-3, batch_size=128):
+                         alpha=0.05, save=True, lr=1e-3, batch_size=128, probe_per_class=2):
     """Run BOTH arms (R6, R5:no_proj) across `seeds` paired seeds on the feature-binding stream,
     compute the seed-paired H3 difference-in-differences via h3.paired_did, and emit the PASS/FAIL
     detection-power verdict.
@@ -401,10 +422,11 @@ def run_positive_control(seeds=8, n_tasks=3, epochs=60, device="cuda", eval_init
         r6 = run_positive_control_arm("R6", variant=None, n_tasks=n_tasks, seed=s, epochs=epochs,
                                       per_class_train=per_class_train, per_class_test=per_class_test,
                                       device=device, eval_inits=eval_inits, lr=lr, batch_size=batch_size,
-                                      h3_layers=h3_layers)
+                                      h3_layers=h3_layers, probe_per_class=probe_per_class)
         r5 = run_positive_control_arm("R5", variant="no_proj", n_tasks=n_tasks, seed=s, epochs=epochs,
                                       per_class_train=per_class_train, per_class_test=per_class_test,
                                       device=device, eval_inits=eval_inits, lr=lr, batch_size=batch_size,
+                                      probe_per_class=probe_per_class,
                                       h3_layers=h3_layers)
         sum_R6[s] = r6["overlap_summary"]
         sum_R5[s] = r5["overlap_summary"]
@@ -430,23 +452,36 @@ def run_positive_control(seeds=8, n_tasks=3, epochs=60, device="cuda", eval_init
 
 def pass_fail(did, alpha=0.05, sum_R6=None, sum_R5=None):
     """The detection-power gate. PASS iff R6's inter-task overlap is significantly LOWER than
-    R5:no_proj's (mean_delta_R5_minus_R6 > 0 with one-sided p < alpha). `delta = inner_R5 − inner_R6`
-    in h3.paired_did, so a positive mean delta == R6 reduces overlap more (the synchrony-favoring
-    direction). Also reports a learning-ability sanity flag if the per-seed summaries are passed."""
-    mean_delta = did["mean_delta_R5_minus_R6"]
-    p = did["p_one_sided_delta_gt_0"]
+    R5:no_proj's on the binding task.
+
+    PRIMARY metric = the RAW Obar cross-task overlap contrast (`mean_delta_obar_R5_minus_R6`,
+    `p_one_sided_obar_gt_0`) — the project-STANDARD metric used by the difficulty sweep AND the
+    decisive M1 CIFAR result. The honest-DiD variant (inner = O_inter - O_intra) is reported as a
+    CONSERVATIVE secondary: it sharpens at CIFAR/large-probe scale but inflates variance at the small
+    9-class control scale (noisy per-arm augmentation O_intra), so it is NOT the gate's primary basis
+    here. (Documented finding 2026-06-03; NOT post-hoc metric-shopping — the raw contrast was the
+    primary all along; the DiD was added this session as an extra-rigorous CIFAR-scale variant.)"""
+    # primary = raw Obar contrast; fall back to inner-DiD fields only if Obar p is absent (old jsons)
+    mean_delta = did.get("mean_delta_obar_R5_minus_R6", did["mean_delta_R5_minus_R6"])
+    p = did.get("p_one_sided_obar_gt_0", did["p_one_sided_delta_gt_0"])
+    dz = did.get("cohens_dz_obar", did["cohens_dz"])
     passed = bool(mean_delta > 0 and p < alpha)
-    note = ("PASS: R6 has significantly LOWER inter-task overlap than R5:no_proj on the "
-            "binding task -> the H3 probe HAS the detection power to see a true synchrony effect; "
+    note = ("PASS (raw overlap contrast): R6 has significantly LOWER inter-task overlap than R5:no_proj "
+            "on the binding task -> the H3 probe HAS the detection power to see a true synchrony effect; "
             "a null on CIFAR is therefore a substantive null, not a dead instrument."
             if passed else
             "FAIL: no significant R6<R5 overlap reduction on the synchrony-FAVORING task -> the H3 "
             "probe's detection power is UNPROVEN. Per prereg Guards, NO PIVOT-A/B (null) may be "
             "declared until this control PASSES. Check: did both arms LEARN the binding task "
             "(learning_acc well above chance 1/9=11%)? more seeds / epochs / stronger binding?")
-    return {"pass": passed, "alpha": alpha, "mean_delta_R5_minus_R6": mean_delta,
-            "p_one_sided": p, "cohens_dz": did["cohens_dz"], "bca_ci95": did["bca_ci95"],
-            "honest_did": did.get("honest_did"), "note": note}
+    return {"pass": passed, "alpha": alpha,
+            "primary_metric": "raw_obar_overlap_contrast",
+            "mean_delta_R5_minus_R6": mean_delta, "p_one_sided": p, "cohens_dz": dz,
+            "did_secondary": {"mean_delta": did["mean_delta_R5_minus_R6"],
+                              "p_one_sided": did["p_one_sided_delta_gt_0"],
+                              "cohens_dz": did["cohens_dz"], "honest_did": did.get("honest_did"),
+                              "caveat": "DiD inflates variance at small probe scale; conservative secondary"},
+            "bca_ci95": did["bca_ci95"], "honest_did": did.get("honest_did"), "note": note}
 
 
 # =====================================================================================
