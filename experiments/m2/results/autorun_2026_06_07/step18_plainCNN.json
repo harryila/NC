@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.7300000429153443,
+      "final_acc": 0.27666668891906737,
+      "forgetting": 0.5666666924953461,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.7183333694934845,
+      "final_acc": 0.32166667506098745,
+      "forgetting": 0.4958333680406213,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.6550000295042991,
+      "final_acc": 0.2850000195205212,
+      "forgetting": 0.4625000124797225,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.7066667139530182,
+      "final_acc": 0.30666668638586997,
+      "forgetting": 0.5000000344589353,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.670000034570694,
+      "final_acc": 0.27166667878627776,
+      "forgetting": 0.49791669473052025,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.6483333587646485,
+      "final_acc": 0.23833334520459176,
+      "forgetting": 0.5125000169500709,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.66833336353302,
+      "final_acc": 0.1766666829586029,
+      "forgetting": 0.6145833507180214,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.6500000357627869,
+      "final_acc": 0.2916666828095913,
+      "forgetting": 0.44791669119149446,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.6966667234897613,
+      "final_acc": 0.283333358541131,
+      "forgetting": 0.5166667061857879,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.6650000393390656,
+      "final_acc": 0.28500001430511473,
+      "forgetting": 0.4750000312924385,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.6500000327825546,
+      "final_acc": 0.2866666827350855,
+      "forgetting": 0.4541666875593364,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.716666704416275,
+      "final_acc": 0.28666668236255644,
+      "forgetting": 0.5375000275671482,
+      "dataset": "2obj-fashion"
+    }
+  ]
+}

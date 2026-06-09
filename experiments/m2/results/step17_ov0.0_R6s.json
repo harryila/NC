@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.9233333349227906,
+      "final_acc": 0.993333351612091,
+      "forgetting": -0.08750002086162567,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 1.0,
+      "final_acc": 0.99666668176651,
+      "forgetting": 0.004166647791862488,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.9366667032241821,
+      "final_acc": 0.8616666853427887,
+      "forgetting": 0.09375002235174179,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 0.9950000286102295,
+      "forgetting": 0.004166647791862488,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 1.0,
+      "forgetting": -0.002083316445350647,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.9950000286102295,
+      "final_acc": 0.9800000309944152,
+      "forgetting": 0.01874999701976776,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 8,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 0.9916667103767395,
+      "forgetting": 0.008333295583724976,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 9,
+      "learn_acc": 1.0,
+      "final_acc": 0.9816666722297669,
+      "forgetting": 0.022916659712791443,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 10,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 11,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.0
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "runs": [
+    {
+      "strategy": "replay",
+      "seed": 0,
+      "final_acc": 0.2925
+    },
+    {
+      "strategy": "replay",
+      "seed": 1,
+      "final_acc": 0.36
+    },
+    {
+      "strategy": "replay",
+      "seed": 2,
+      "final_acc": 0.6358333333333334
+    },
+    {
+      "strategy": "replay",
+      "seed": 3,
+      "final_acc": 0.5683333333333334
+    },
+    {
+      "strategy": "replay",
+      "seed": 4,
+      "final_acc": 0.5066666666666667
+    },
+    {
+      "strategy": "replay",
+      "seed": 5,
+      "final_acc": 0.29333333333333333
+    },
+    {
+      "strategy": "replay",
+      "seed": 6,
+      "final_acc": 0.5741666666666667
+    },
+    {
+      "strategy": "replay",
+      "seed": 7,
+      "final_acc": 0.6416666666666667
+    }
+  ]
+}

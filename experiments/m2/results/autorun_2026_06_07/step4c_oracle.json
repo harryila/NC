@@ -1,0 +1,76 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.5766667008399964,
+      "final_acc": 0.5366666853427887,
+      "forgetting": 0.05000001937150955
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.5550000250339509,
+      "final_acc": 0.54333336353302,
+      "forgetting": 0.014583326876163483
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.5133333623409271,
+      "final_acc": 0.5433333575725555,
+      "forgetting": -0.03749999403953552
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.54333336353302,
+      "final_acc": 0.5233333468437195,
+      "forgetting": 0.02500002086162567
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.5116666853427887,
+      "final_acc": 0.495000022649765,
+      "forgetting": 0.020833328366279602
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.516666704416275,
+      "final_acc": 0.5016666948795319,
+      "forgetting": 0.018750011920928955
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.5200000286102295,
+      "final_acc": 0.4983333468437195,
+      "forgetting": 0.027083352208137512
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "lam": 0.0,
+      "oracle": true,
+      "learn_acc": 0.6066666960716247,
+      "final_acc": 0.5516666889190673,
+      "forgetting": 0.06875000894069672
+    }
+  ]
+}

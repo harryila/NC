@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "strategy": "naive",
+      "seed": 0,
+      "final_acc": 0.141
+    },
+    {
+      "strategy": "naive",
+      "seed": 1,
+      "final_acc": 0.151
+    },
+    {
+      "strategy": "naive",
+      "seed": 2,
+      "final_acc": 0.112
+    },
+    {
+      "strategy": "naive",
+      "seed": 3,
+      "final_acc": 0.1505
+    },
+    {
+      "strategy": "naive",
+      "seed": 4,
+      "final_acc": 0.134
+    },
+    {
+      "strategy": "naive",
+      "seed": 5,
+      "final_acc": 0.144
+    },
+    {
+      "strategy": "naive",
+      "seed": 6,
+      "final_acc": 0.1025
+    },
+    {
+      "strategy": "naive",
+      "seed": 7,
+      "final_acc": 0.134
+    },
+    {
+      "strategy": "naive",
+      "seed": 8,
+      "final_acc": 0.1415
+    },
+    {
+      "strategy": "naive",
+      "seed": 9,
+      "final_acc": 0.1
+    },
+    {
+      "strategy": "naive",
+      "seed": 10,
+      "final_acc": 0.1105
+    },
+    {
+      "strategy": "naive",
+      "seed": 11,
+      "final_acc": 0.117
+    }
+  ]
+}

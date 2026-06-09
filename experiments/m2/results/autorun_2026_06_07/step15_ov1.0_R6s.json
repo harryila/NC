@@ -1,0 +1,28 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.971666669845581,
+      "final_acc": 0.9,
+      "forgetting": 0.08958333730697632,
+      "overlap": 1.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 1.0,
+      "final_acc": 0.9,
+      "forgetting": 0.125,
+      "overlap": 1.0
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.9950000405311584,
+      "final_acc": 0.7966666698455811,
+      "forgetting": 0.24791671335697174,
+      "overlap": 1.0
+    }
+  ]
+}

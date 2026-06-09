@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.5111111303170522,
+      "final_acc": 0.26111112038294476,
+      "forgetting": 0.3750000149011612,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.519444485505422,
+      "final_acc": 0.30277779946724576,
+      "forgetting": 0.32500002905726433,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.6500000556310018,
+      "final_acc": 0.3083333571751912,
+      "forgetting": 0.5125000476837158,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.5722222526868185,
+      "final_acc": 0.3638889094193776,
+      "forgetting": 0.3125000149011612,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.49722225467363995,
+      "final_acc": 0.2527777912716071,
+      "forgetting": 0.3666666951030493,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.5722222526868185,
+      "final_acc": 0.3388889084259669,
+      "forgetting": 0.3500000163912773,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.5083333651224772,
+      "final_acc": 0.2555555688838164,
+      "forgetting": 0.3791666943579912,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.5750000178813934,
+      "final_acc": 0.30000001067916554,
+      "forgetting": 0.41250001080334187,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.4750000337759654,
+      "final_acc": 0.280555581053098,
+      "forgetting": 0.291666679084301,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.5777778029441833,
+      "final_acc": 0.31111112982034683,
+      "forgetting": 0.4000000096857548,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.6000000437100729,
+      "final_acc": 0.2777777910232544,
+      "forgetting": 0.48333337903022766,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.5277778108914694,
+      "final_acc": 0.2500000198682149,
+      "forgetting": 0.4166666865348816,
+      "task": "tetro-real-learnedtrunk-clean"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 1.0,
+      "final_acc": 0.99666668176651,
+      "forgetting": 0.004166647791862488,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 0.996666693687439,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 1.0,
+      "final_acc": 0.9950000047683716,
+      "forgetting": 0.0062499940395355225,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 1.0,
+      "final_acc": 0.9983333468437194,
+      "forgetting": 0.002083316445350647,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "learn_acc": 1.0,
+      "final_acc": 0.9850000381469727,
+      "forgetting": 0.01874995231628418,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "learn_acc": 1.0,
+      "final_acc": 0.9916666865348815,
+      "forgetting": 0.01041664183139801,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 0.9900000095367432,
+      "forgetting": 0.010416671633720398,
+      "overlap": 0.5
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "learn_acc": 1.0,
+      "final_acc": 0.9950000047683716,
+      "forgetting": 0.0062499940395355225,
+      "overlap": 0.5
+    }
+  ]
+}

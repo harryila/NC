@@ -1,0 +1,92 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 0,
+      "acc_real": 0.9883333683013916,
+      "acc_within": 0.4850000262260437,
+      "acc_const": 0.1,
+      "task_lift": 0.3850000262260437,
+      "instance_lift": 0.5033333420753479,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 1,
+      "acc_real": 0.9516667008399964,
+      "acc_within": 0.445000022649765,
+      "acc_const": 0.1,
+      "task_lift": 0.34500002264976504,
+      "instance_lift": 0.5066666781902314,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 2,
+      "acc_real": 0.9883333563804626,
+      "acc_within": 0.4983333647251129,
+      "acc_const": 0.1,
+      "task_lift": 0.39833336472511294,
+      "instance_lift": 0.4899999916553497,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 3,
+      "acc_real": 0.9916666865348815,
+      "acc_within": 0.49166669249534606,
+      "acc_const": 0.1,
+      "task_lift": 0.391666692495346,
+      "instance_lift": 0.4999999940395355,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 4,
+      "acc_real": 0.9900000333786011,
+      "acc_within": 0.4800000250339508,
+      "acc_const": 0.1,
+      "task_lift": 0.3800000250339508,
+      "instance_lift": 0.5100000083446503,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 5,
+      "acc_real": 0.9650000333786011,
+      "acc_within": 0.5133333563804626,
+      "acc_const": 0.1,
+      "task_lift": 0.41333335638046265,
+      "instance_lift": 0.45166667699813845,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 6,
+      "acc_real": 0.9783333778381348,
+      "acc_within": 0.5033333659172058,
+      "acc_const": 0.1,
+      "task_lift": 0.4033333659172058,
+      "instance_lift": 0.475000011920929,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6",
+      "pool": "mean",
+      "seed": 7,
+      "acc_real": 0.968333387374878,
+      "acc_within": 0.49500001668930055,
+      "acc_const": 0.1,
+      "task_lift": 0.3950000166893005,
+      "instance_lift": 0.4733333706855774,
+      "ctx_dim": 8
+    }
+  ]
+}

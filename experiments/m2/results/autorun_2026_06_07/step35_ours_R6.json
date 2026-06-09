@@ -1,0 +1,36 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 1.0,
+      "final_acc": 0.9805555840333303,
+      "forgetting": 0.02333329916000366,
+      "task": "tetro-scale-NC12-T6"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.9986111223697662,
+      "final_acc": 0.9166667064030966,
+      "forgetting": 0.09833329916000366,
+      "task": "tetro-scale-NC12-T6"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 1.0,
+      "final_acc": 0.9805555840333303,
+      "forgetting": 0.02333329916000366,
+      "task": "tetro-scale-NC12-T6"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 1.0,
+      "final_acc": 0.9763889114061991,
+      "forgetting": 0.028333306312561035,
+      "task": "tetro-scale-NC12-T6"
+    }
+  ]
+}

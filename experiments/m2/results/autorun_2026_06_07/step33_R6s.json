@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.8000000317891439,
+      "final_acc": 0.8638889392217001,
+      "forgetting": -0.09583336114883423,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.8916667103767395,
+      "final_acc": 0.9083333810170492,
+      "forgetting": -0.025000005960464478,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.8777778347333273,
+      "final_acc": 0.8805556098620096,
+      "forgetting": -0.004166662693023682,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.9472222725550333,
+      "final_acc": 0.86944446961085,
+      "forgetting": 0.11666670441627502,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.8361111481984457,
+      "final_acc": 0.8833333849906921,
+      "forgetting": -0.07083335518836975,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.99444446961085,
+      "final_acc": 0.9777777989705404,
+      "forgetting": 0.025000005960464478,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 0.8333333929379781,
+      "final_acc": 0.6361111402511597,
+      "forgetting": 0.29583337903022766,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 0.5722222328186035,
+      "final_acc": 0.5055555800596873,
+      "forgetting": 0.09999997913837433,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 8,
+      "learn_acc": 0.5250000258286794,
+      "final_acc": 0.8277778228123983,
+      "forgetting": -0.4541666954755783,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 9,
+      "learn_acc": 0.6638889114061991,
+      "final_acc": 0.36388890196879703,
+      "forgetting": 0.45000001415610313,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 10,
+      "learn_acc": 0.8694444894790649,
+      "final_acc": 0.7805555860201517,
+      "forgetting": 0.13333335518836975,
+      "task": "tetro-real-learnedtrunk-clean"
+    },
+    {
+      "arm": "R6s",
+      "seed": 11,
+      "learn_acc": 0.9694445133209229,
+      "final_acc": 0.7888889312744141,
+      "forgetting": 0.2708333730697632,
+      "task": "tetro-real-learnedtrunk-clean"
+    }
+  ]
+}

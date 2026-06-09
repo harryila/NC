@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.7316667079925537,
+      "final_acc": 0.2650000140070915,
+      "forgetting": 0.5833333674818277,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.7550000429153443,
+      "final_acc": 0.2900000125169754,
+      "forgetting": 0.581250037997961,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 0.6750000357627869,
+      "final_acc": 0.17000001166015863,
+      "forgetting": 0.6312500301282853,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 0.7200000405311584,
+      "final_acc": 0.3200000137090683,
+      "forgetting": 0.5000000335276127,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 0.6850000321865082,
+      "final_acc": 0.26166667938232424,
+      "forgetting": 0.52916669100523,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 0.7150000154972076,
+      "final_acc": 0.2800000116229057,
+      "forgetting": 0.5437500048428774,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 0.7283333778381348,
+      "final_acc": 0.24333335161209108,
+      "forgetting": 0.6062500327825546,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 0.76500004529953,
+      "final_acc": 0.2383333459496498,
+      "forgetting": 0.6583333741873503,
+      "dataset": "3obj-mnist"
+    }
+  ]
+}

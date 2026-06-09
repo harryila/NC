@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "cg_lr": 0.001,
+      "ctx_dim": 32,
+      "seed": 0,
+      "learn_acc": 0.49833335876464846,
+      "final_acc": 0.11666667461395264,
+      "forgetting": 0.47708335518836975
+    },
+    {
+      "arm": "plainCNN",
+      "cg_lr": 0.001,
+      "ctx_dim": 32,
+      "seed": 1,
+      "learn_acc": 0.44000000804662703,
+      "final_acc": 0.11166666746139527,
+      "forgetting": 0.4104166757315397
+    },
+    {
+      "arm": "plainCNN",
+      "cg_lr": 0.001,
+      "ctx_dim": 32,
+      "seed": 2,
+      "learn_acc": 0.476666702516377,
+      "final_acc": 0.10500000715255738,
+      "forgetting": 0.4645833692047745
+    },
+    {
+      "arm": "plainCNN",
+      "cg_lr": 0.001,
+      "ctx_dim": 32,
+      "seed": 3,
+      "learn_acc": 0.47500002980232237,
+      "final_acc": 0.10166667699813843,
+      "forgetting": 0.46666669100522995
+    }
+  ]
+}

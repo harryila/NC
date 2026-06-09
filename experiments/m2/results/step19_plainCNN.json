@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.6841667056083679,
+      "final_acc": 0.12666667401790618,
+      "forgetting": 0.6194444795449575,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.6233333647251129,
+      "final_acc": 0.05833333730697632,
+      "forgetting": 0.627777808242374,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.697500042617321,
+      "final_acc": 0.06416667103767396,
+      "forgetting": 0.7037037461996078,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.6458333656191826,
+      "final_acc": 0.07750000357627869,
+      "forgetting": 0.6314815133810043,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.6241666920483112,
+      "final_acc": 0.06500000357627869,
+      "forgetting": 0.6212963205244806,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.6850000262260437,
+      "final_acc": 0.13583333604037762,
+      "forgetting": 0.6101852113174068,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.6658333718776703,
+      "final_acc": 0.13500000834465026,
+      "forgetting": 0.5898148483700223,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.6575000427663327,
+      "final_acc": 0.1266666748560965,
+      "forgetting": 0.5898148532335957,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.6550000369548797,
+      "final_acc": 0.1341666743159294,
+      "forgetting": 0.5787037362655004,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.6175000235438347,
+      "final_acc": 0.06500000357627869,
+      "forgetting": 0.6138889110750623,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.6316666960716247,
+      "final_acc": 0.061666668951511384,
+      "forgetting": 0.6333333634667926,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.5883333645761013,
+      "final_acc": 0.10916666854172945,
+      "forgetting": 0.532407440038191,
+      "scale": "20cls-10task"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.9541666905085245,
+      "final_acc": 0.9500000476837158,
+      "forgetting": 0.004999971389770508,
+      "task": "tetro-scale-NC12-T6"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.9902778168519338,
+      "final_acc": 0.9375000298023224,
+      "forgetting": 0.06333334445953369,
+      "task": "tetro-scale-NC12-T6"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.9777778188387553,
+      "final_acc": 0.9722222487131754,
+      "forgetting": 0.0066666841506958004,
+      "task": "tetro-scale-NC12-T6"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.9611111382643381,
+      "final_acc": 0.8805555899937948,
+      "forgetting": 0.0966666579246521,
+      "task": "tetro-scale-NC12-T6"
+    }
+  ]
+}

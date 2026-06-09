@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.9550000309944153,
+      "final_acc": 0.8550000309944152,
+      "forgetting": 0.125,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.9566667079925537,
+      "final_acc": 0.8800000309944153,
+      "forgetting": 0.09583334624767303,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.9766666889190674,
+      "final_acc": 0.8916667103767395,
+      "forgetting": 0.10624997317790985,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.9716667056083679,
+      "final_acc": 0.9116667151451111,
+      "forgetting": 0.07499998807907104,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.9383333683013916,
+      "final_acc": 0.8583333849906921,
+      "forgetting": 0.09999997913837433,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.9816667079925537,
+      "final_acc": 0.871666693687439,
+      "forgetting": 0.13750001788139343,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 0.9866667032241822,
+      "final_acc": 0.8250000357627869,
+      "forgetting": 0.20208333432674408,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 0.9633333802223205,
+      "final_acc": 0.7683333814144134,
+      "forgetting": 0.24374999850988388,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 8,
+      "learn_acc": 0.8850000381469727,
+      "final_acc": 0.6716666936874389,
+      "forgetting": 0.2666666805744171,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 9,
+      "learn_acc": 0.9566666960716248,
+      "final_acc": 0.8550000429153443,
+      "forgetting": 0.12708331644535065,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 10,
+      "learn_acc": 0.9300000429153442,
+      "final_acc": 0.86500004529953,
+      "forgetting": 0.08124999701976776,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "R6s",
+      "seed": 11,
+      "learn_acc": 0.9116667032241821,
+      "final_acc": 0.918333375453949,
+      "forgetting": -0.008333340287208557,
+      "trunk": "learned-frozen-AE"
+    }
+  ]
+}

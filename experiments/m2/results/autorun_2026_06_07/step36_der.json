@@ -1,0 +1,44 @@
+{
+  "runs": [
+    {
+      "strategy": "der",
+      "seed": 0,
+      "final_acc": 0.6541666666666667
+    },
+    {
+      "strategy": "der",
+      "seed": 1,
+      "final_acc": 0.6541666666666667
+    },
+    {
+      "strategy": "der",
+      "seed": 2,
+      "final_acc": 0.8008333333333333
+    },
+    {
+      "strategy": "der",
+      "seed": 3,
+      "final_acc": 0.7125
+    },
+    {
+      "strategy": "der",
+      "seed": 4,
+      "final_acc": 0.815
+    },
+    {
+      "strategy": "der",
+      "seed": 5,
+      "final_acc": 0.6633333333333333
+    },
+    {
+      "strategy": "der",
+      "seed": 6,
+      "final_acc": 0.625
+    },
+    {
+      "strategy": "der",
+      "seed": 7,
+      "final_acc": 0.7941666666666667
+    }
+  ]
+}

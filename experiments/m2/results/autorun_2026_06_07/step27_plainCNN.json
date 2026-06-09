@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.37222224473953247,
+      "final_acc": 0.19166668256123862,
+      "forgetting": 0.2708333432674408,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.3333333432674408,
+      "final_acc": 0.18055556217829385,
+      "forgetting": 0.2291666716337204,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.33055556813875836,
+      "final_acc": 0.19722223281860352,
+      "forgetting": 0.20000000298023224,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.41111111640930176,
+      "final_acc": 0.18611111243565878,
+      "forgetting": 0.3375000059604645,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.3750000198682149,
+      "final_acc": 0.18055557335416475,
+      "forgetting": 0.29166666977107525,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.4166666915019353,
+      "final_acc": 0.18055556217829385,
+      "forgetting": 0.3541666939854622,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.4305555721124013,
+      "final_acc": 0.17777778704961142,
+      "forgetting": 0.3791666775941849,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.3888889153798421,
+      "final_acc": 0.20000000794728598,
+      "forgetting": 0.28333336114883423,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.36111114422480267,
+      "final_acc": 0.19444446048388878,
+      "forgetting": 0.2500000256113708,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.4083333412806193,
+      "final_acc": 0.16666666666666666,
+      "forgetting": 0.36250001192092896,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.42222224175930023,
+      "final_acc": 0.20000000794728598,
+      "forgetting": 0.3333333507180214,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.42222223182519275,
+      "final_acc": 0.18611111243565878,
+      "forgetting": 0.354166679084301,
+      "task": "conjunction-binding"
+    }
+  ]
+}

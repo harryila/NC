@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.7400000333786011,
+      "final_acc": 0.41833336353302003,
+      "forgetting": 0.4020833373069763,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.7283333659172058,
+      "final_acc": 0.40333335399627684,
+      "forgetting": 0.4062500149011612,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.7283333718776703,
+      "final_acc": 0.3833333522081375,
+      "forgetting": 0.43125002458691597,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.7233333706855773,
+      "final_acc": 0.42833335399627687,
+      "forgetting": 0.36875002086162567,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.7583333849906921,
+      "final_acc": 0.40333335995674136,
+      "forgetting": 0.4437500312924385,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.7400000333786011,
+      "final_acc": 0.4283333599567413,
+      "forgetting": 0.3895833417773247,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.7083333730697632,
+      "final_acc": 0.43333335816860197,
+      "forgetting": 0.3437500186264515,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.71833336353302,
+      "final_acc": 0.3733333557844162,
+      "forgetting": 0.4312500096857548,
+      "trunk": "cifar-pretrained-AE"
+    }
+  ]
+}

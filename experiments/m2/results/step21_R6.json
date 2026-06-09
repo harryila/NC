@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.9300000369548798,
+      "final_acc": 0.457500022649765,
+      "forgetting": 0.5250000158945719,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.8733333647251129,
+      "final_acc": 0.47083336263895037,
+      "forgetting": 0.4472222245401806,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 0.9058333814144135,
+      "final_acc": 0.4958333522081375,
+      "forgetting": 0.45555558800697327,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 0.9416667222976685,
+      "final_acc": 0.4983333557844162,
+      "forgetting": 0.49259262945916915,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 0.8958333790302276,
+      "final_acc": 0.4250000208616257,
+      "forgetting": 0.5231481757428911,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 0.9266667127609253,
+      "final_acc": 0.5166666865348816,
+      "forgetting": 0.4555555846956041,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 0.9041667103767395,
+      "final_acc": 0.4941666960716248,
+      "forgetting": 0.4555555714501275,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 0.8891667187213897,
+      "final_acc": 0.4225000232458115,
+      "forgetting": 0.5185185505284203,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "learn_acc": 0.9041667103767395,
+      "final_acc": 0.46333335936069486,
+      "forgetting": 0.4898148344622718,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "learn_acc": 0.9291667103767395,
+      "final_acc": 0.45833336263895036,
+      "forgetting": 0.5231481641530991,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "learn_acc": 0.9050000429153442,
+      "final_acc": 0.5258333623409271,
+      "forgetting": 0.42129631174935234,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "learn_acc": 0.9158333837985992,
+      "final_acc": 0.4791666939854622,
+      "forgetting": 0.4851852109034856,
+      "scale": "20cls-10task"
+    }
+  ]
+}

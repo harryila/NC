@@ -1,0 +1,28 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 1.0,
+      "final_acc": 0.9,
+      "forgetting": 0.125,
+      "overlap": 1.0
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 1.0,
+      "final_acc": 0.9,
+      "forgetting": 0.125,
+      "overlap": 1.0
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 1.0,
+      "final_acc": 0.9,
+      "forgetting": 0.125,
+      "overlap": 1.0
+    }
+  ]
+}

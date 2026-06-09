@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "strategy": "replay",
+      "seed": 0,
+      "final_acc": 0.2475
+    },
+    {
+      "strategy": "replay",
+      "seed": 1,
+      "final_acc": 0.5015
+    },
+    {
+      "strategy": "replay",
+      "seed": 2,
+      "final_acc": 0.4375
+    },
+    {
+      "strategy": "replay",
+      "seed": 3,
+      "final_acc": 0.571
+    },
+    {
+      "strategy": "replay",
+      "seed": 4,
+      "final_acc": 0.549
+    },
+    {
+      "strategy": "replay",
+      "seed": 5,
+      "final_acc": 0.5495
+    },
+    {
+      "strategy": "replay",
+      "seed": 6,
+      "final_acc": 0.3865
+    },
+    {
+      "strategy": "replay",
+      "seed": 7,
+      "final_acc": 0.5865
+    },
+    {
+      "strategy": "replay",
+      "seed": 8,
+      "final_acc": 0.529
+    },
+    {
+      "strategy": "replay",
+      "seed": 9,
+      "final_acc": 0.3035
+    },
+    {
+      "strategy": "replay",
+      "seed": 10,
+      "final_acc": 0.5765
+    },
+    {
+      "strategy": "replay",
+      "seed": 11,
+      "final_acc": 0.3815
+    }
+  ]
+}

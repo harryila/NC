@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "strategy": "der",
+      "seed": 0,
+      "final_acc": 0.9191666666666667
+    },
+    {
+      "strategy": "der",
+      "seed": 1,
+      "final_acc": 0.9125
+    },
+    {
+      "strategy": "der",
+      "seed": 2,
+      "final_acc": 0.9
+    },
+    {
+      "strategy": "der",
+      "seed": 3,
+      "final_acc": 0.7908333333333334
+    },
+    {
+      "strategy": "der",
+      "seed": 4,
+      "final_acc": 0.9308333333333333
+    },
+    {
+      "strategy": "der",
+      "seed": 5,
+      "final_acc": 0.7966666666666666
+    },
+    {
+      "strategy": "der",
+      "seed": 6,
+      "final_acc": 0.8833333333333333
+    },
+    {
+      "strategy": "der",
+      "seed": 7,
+      "final_acc": 0.8441666666666666
+    },
+    {
+      "strategy": "der",
+      "seed": 8,
+      "final_acc": 0.8808333333333334
+    },
+    {
+      "strategy": "der",
+      "seed": 9,
+      "final_acc": 0.9108333333333334
+    },
+    {
+      "strategy": "der",
+      "seed": 10,
+      "final_acc": 0.9
+    },
+    {
+      "strategy": "der",
+      "seed": 11,
+      "final_acc": 0.915
+    }
+  ]
+}

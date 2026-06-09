@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.7000000298023223,
+      "final_acc": 0.3950000196695328,
+      "forgetting": 0.381250012665987,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.7300000548362732,
+      "final_acc": 0.3966666877269745,
+      "forgetting": 0.4166667088866234,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.7016667068004608,
+      "final_acc": 0.34500002562999726,
+      "forgetting": 0.44583335146307945,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.688333374261856,
+      "final_acc": 0.4433333516120911,
+      "forgetting": 0.30625002831220627,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.7333333730697632,
+      "final_acc": 0.39000001847743987,
+      "forgetting": 0.42916669324040413,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.7566667199134827,
+      "final_acc": 0.42666669487953185,
+      "forgetting": 0.4125000312924385,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.7383333802223205,
+      "final_acc": 0.42166668176651,
+      "forgetting": 0.3958333730697632,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.7216666996479034,
+      "final_acc": 0.37500002384185793,
+      "forgetting": 0.4333333447575569,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.6683333516120911,
+      "final_acc": 0.3850000202655792,
+      "forgetting": 0.3541666641831398,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.7100000441074371,
+      "final_acc": 0.39500002562999725,
+      "forgetting": 0.39375002309679985,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.7666667103767395,
+      "final_acc": 0.45333335995674134,
+      "forgetting": 0.3916666880249977,
+      "trunk": "learned-frozen-AE"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.7316667079925537,
+      "final_acc": 0.45166668891906736,
+      "forgetting": 0.3500000238418579,
+      "trunk": "learned-frozen-AE"
+    }
+  ]
+}

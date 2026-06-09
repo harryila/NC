@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.8858333706855774,
+      "final_acc": 0.37750002145767214,
+      "forgetting": 0.5648148324754503,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.8858333766460419,
+      "final_acc": 0.410833352804184,
+      "forgetting": 0.527777804268731,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.8375000357627869,
+      "final_acc": 0.33416667878627776,
+      "forgetting": 0.5592592855294546,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.8625000417232513,
+      "final_acc": 0.4258333548903465,
+      "forgetting": 0.4851852075921165,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.8591666996479035,
+      "final_acc": 0.36916668601334096,
+      "forgetting": 0.5444444595939584,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.8850000381469727,
+      "final_acc": 0.4425000246614218,
+      "forgetting": 0.4916666816506121,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 0.8883333802223206,
+      "final_acc": 0.4775000289082527,
+      "forgetting": 0.4564815014600754,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 0.8883333802223206,
+      "final_acc": 0.43083336502313613,
+      "forgetting": 0.508333350221316,
+      "scale": "20cls-10task"
+    }
+  ]
+}

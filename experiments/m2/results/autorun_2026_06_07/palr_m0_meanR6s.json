@@ -1,0 +1,92 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 0,
+      "acc_real": 0.7983333468437195,
+      "acc_within": 0.39166668653488157,
+      "acc_const": 0.1,
+      "task_lift": 0.2916666865348816,
+      "instance_lift": 0.4066666603088379,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 1,
+      "acc_real": 0.9583333730697632,
+      "acc_within": 0.44833335280418396,
+      "acc_const": 0.1,
+      "task_lift": 0.348333352804184,
+      "instance_lift": 0.5100000202655792,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 2,
+      "acc_real": 0.7033333778381348,
+      "acc_within": 0.36333335041999815,
+      "acc_const": 0.1,
+      "task_lift": 0.26333335041999817,
+      "instance_lift": 0.3400000274181366,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 3,
+      "acc_real": 0.7316667199134826,
+      "acc_within": 0.38000001907348635,
+      "acc_const": 0.1,
+      "task_lift": 0.2800000190734864,
+      "instance_lift": 0.3516667008399963,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 4,
+      "acc_real": 0.9383333683013916,
+      "acc_within": 0.46166669130325316,
+      "acc_const": 0.1,
+      "task_lift": 0.36166669130325313,
+      "instance_lift": 0.4766666769981384,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 5,
+      "acc_real": 0.9666667103767395,
+      "acc_within": 0.5150000214576721,
+      "acc_const": 0.1,
+      "task_lift": 0.4150000214576721,
+      "instance_lift": 0.45166668891906736,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 6,
+      "acc_real": 0.9283333659172058,
+      "acc_within": 0.4800000250339508,
+      "acc_const": 0.1,
+      "task_lift": 0.3800000250339508,
+      "instance_lift": 0.44833334088325505,
+      "ctx_dim": 8
+    },
+    {
+      "arm": "R6s",
+      "pool": "mean",
+      "seed": 7,
+      "acc_real": 0.7533333718776702,
+      "acc_within": 0.4066666841506958,
+      "acc_const": 0.1,
+      "task_lift": 0.30666668415069576,
+      "instance_lift": 0.34666668772697445,
+      "ctx_dim": 8
+    }
+  ]
+}

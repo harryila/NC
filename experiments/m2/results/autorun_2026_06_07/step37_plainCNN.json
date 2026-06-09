@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.5138889253139496,
+      "final_acc": 0.26944446563720703,
+      "forgetting": 0.36666668951511383,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.5138889153798422,
+      "final_acc": 0.34444446365038556,
+      "forgetting": 0.2541666775941849,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.5277778108914694,
+      "final_acc": 0.3055555721124013,
+      "forgetting": 0.333333358168602,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.5944444934527079,
+      "final_acc": 0.32500002657373744,
+      "forgetting": 0.4041667003184557,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.419444461663564,
+      "final_acc": 0.27500001589457196,
+      "forgetting": 0.21666666865348816,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.4027777959903081,
+      "final_acc": 0.266666683057944,
+      "forgetting": 0.20416666939854622,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.49722224473953247,
+      "final_acc": 0.2888889014720917,
+      "forgetting": 0.3125000149011612,
+      "task": "conj-learned-trunk"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.5472222566604614,
+      "final_acc": 0.3083333522081375,
+      "forgetting": 0.35833335667848587,
+      "task": "conj-learned-trunk"
+    }
+  ]
+}

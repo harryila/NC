@@ -1,0 +1,46 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.45833335518836976,
+      "final_acc": 0.09000000357627869,
+      "forgetting": 0.46041668951511383
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.5250000298023224,
+      "final_acc": 0.1033333420753479,
+      "forgetting": 0.5270833596587181
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.4833333432674408,
+      "final_acc": 0.11166666746139527,
+      "forgetting": 0.4645833447575569
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.4500000312924385,
+      "final_acc": 0.11500000953674316,
+      "forgetting": 0.4187500271946192
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.43833335041999816,
+      "final_acc": 0.18166667222976685,
+      "forgetting": 0.32083334773778915
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.46166669130325316,
+      "final_acc": 0.10166667699813843,
+      "forgetting": 0.45000001788139343
+    }
+  ]
+}

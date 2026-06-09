@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.5500000238418579,
+      "final_acc": 0.11333333402872085,
+      "forgetting": 0.5458333622664213,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.5333333551883698,
+      "final_acc": 0.1,
+      "forgetting": 0.5416666939854622,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.5433333650231361,
+      "final_acc": 0.10833333730697632,
+      "forgetting": 0.5437500346451998,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.508333358168602,
+      "final_acc": 0.173333340883255,
+      "forgetting": 0.41875002160668373,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.511666701734066,
+      "final_acc": 0.1883333444595337,
+      "forgetting": 0.4041666965931654,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.4916666992008686,
+      "final_acc": 0.17000001668930054,
+      "forgetting": 0.4020833531394601,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.5600000292062759,
+      "final_acc": 0.10833333730697632,
+      "forgetting": 0.5645833648741245,
+      "dataset": "3obj-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.5600000381469726,
+      "final_acc": 0.09666666984558106,
+      "forgetting": 0.5791667103767395,
+      "dataset": "3obj-mnist"
+    }
+  ]
+}

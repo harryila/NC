@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "strategy": "naive",
+      "seed": 0,
+      "final_acc": 0.14339464882943143,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "naive",
+      "seed": 1,
+      "final_acc": 0.16262541806020067,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "naive",
+      "seed": 2,
+      "final_acc": 0.16680602006688963,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "naive",
+      "seed": 3,
+      "final_acc": 0.14297658862876253,
+      "NC": 12,
+      "NEXP": 6
+    }
+  ]
+}

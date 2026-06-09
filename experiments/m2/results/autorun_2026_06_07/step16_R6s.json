@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.8583333730697632,
+      "final_acc": 0.6233333587646485,
+      "forgetting": 0.29375001788139343,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.8850000500679016,
+      "final_acc": 0.6116667032241822,
+      "forgetting": 0.34166668355464935,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.8500000596046448,
+      "final_acc": 0.566666704416275,
+      "forgetting": 0.3541666939854622,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.8050000548362732,
+      "final_acc": 0.6083333671092988,
+      "forgetting": 0.2458333596587181,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.840000057220459,
+      "final_acc": 0.5733333766460419,
+      "forgetting": 0.3333333507180214,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.8516667127609253,
+      "final_acc": 0.6633333742618561,
+      "forgetting": 0.23541667312383652,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 0.8583333849906921,
+      "final_acc": 0.6466666996479035,
+      "forgetting": 0.26458335667848587,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 0.8983333706855774,
+      "final_acc": 0.5500000298023224,
+      "forgetting": 0.43541667610406876,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 8,
+      "learn_acc": 0.8766666889190674,
+      "final_acc": 0.6366666913032532,
+      "forgetting": 0.29999999701976776,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 9,
+      "learn_acc": 0.8416667103767395,
+      "final_acc": 0.5333333730697631,
+      "forgetting": 0.3854166716337204,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 10,
+      "learn_acc": 0.893333375453949,
+      "final_acc": 0.6616666972637176,
+      "forgetting": 0.28958334773778915,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6s",
+      "seed": 11,
+      "learn_acc": 0.8783333659172058,
+      "final_acc": 0.6133333623409272,
+      "forgetting": 0.33125000447034836,
+      "dataset": "2digit-mnist"
+    }
+  ]
+}

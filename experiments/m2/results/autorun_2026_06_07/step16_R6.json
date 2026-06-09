@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.9033333659172058,
+      "final_acc": 0.66833336353302,
+      "forgetting": 0.29375000298023224,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.8633333683013916,
+      "final_acc": 0.6183333694934845,
+      "forgetting": 0.3062499985098839,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 0.893333375453949,
+      "final_acc": 0.6383333802223206,
+      "forgetting": 0.3187499940395355,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 0.9233333826065063,
+      "final_acc": 0.6733333826065063,
+      "forgetting": 0.3125,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 0.9050000548362732,
+      "final_acc": 0.6000000298023224,
+      "forgetting": 0.3812500312924385,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 0.9216667056083679,
+      "final_acc": 0.6450000405311584,
+      "forgetting": 0.34583333134651184,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 0.9216667175292969,
+      "final_acc": 0.7066667079925537,
+      "forgetting": 0.26875001192092896,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 0.915000033378601,
+      "final_acc": 0.6483333587646485,
+      "forgetting": 0.3333333432674408,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "learn_acc": 0.946666705608368,
+      "final_acc": 0.6266667068004608,
+      "forgetting": 0.3999999985098839,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "learn_acc": 0.9266667127609253,
+      "final_acc": 0.6166666984558106,
+      "forgetting": 0.38750001788139343,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "learn_acc": 0.9433333873748779,
+      "final_acc": 0.6500000357627869,
+      "forgetting": 0.36666668951511383,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "learn_acc": 0.8983333826065063,
+      "final_acc": 0.6550000429153442,
+      "forgetting": 0.30416667461395264,
+      "dataset": "2digit-mnist"
+    }
+  ]
+}

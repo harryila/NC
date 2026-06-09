@@ -1,0 +1,92 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 0,
+      "acc_real": 0.9983333468437194,
+      "acc_within": 0.4850000262260437,
+      "acc_const": 0.1,
+      "task_lift": 0.3850000262260437,
+      "instance_lift": 0.5133333206176758,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 1,
+      "acc_real": 0.9983333468437194,
+      "acc_within": 0.4750000238418579,
+      "acc_const": 0.1,
+      "task_lift": 0.37500002384185793,
+      "instance_lift": 0.5233333230018615,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 2,
+      "acc_real": 0.99333336353302,
+      "acc_within": 0.5000000238418579,
+      "acc_const": 0.1,
+      "task_lift": 0.40000002384185795,
+      "instance_lift": 0.4933333396911621,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 3,
+      "acc_real": 0.9866667032241822,
+      "acc_within": 0.4850000202655792,
+      "acc_const": 0.1,
+      "task_lift": 0.3850000202655792,
+      "instance_lift": 0.501666682958603,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 4,
+      "acc_real": 0.9950000405311584,
+      "acc_within": 0.4833333730697632,
+      "acc_const": 0.1,
+      "task_lift": 0.38333337306976323,
+      "instance_lift": 0.5116666674613952,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 5,
+      "acc_real": 0.9950000405311584,
+      "acc_within": 0.5350000381469726,
+      "acc_const": 0.1,
+      "task_lift": 0.43500003814697263,
+      "instance_lift": 0.4600000023841858,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 6,
+      "acc_real": 0.996666693687439,
+      "acc_within": 0.5116666853427887,
+      "acc_const": 0.1,
+      "task_lift": 0.4116666853427887,
+      "instance_lift": 0.4850000083446503,
+      "ctx_dim": 16
+    },
+    {
+      "arm": "R6",
+      "pool": "learned",
+      "seed": 7,
+      "acc_real": 0.9983333468437194,
+      "acc_within": 0.5066666960716247,
+      "acc_const": 0.1,
+      "task_lift": 0.40666669607162476,
+      "instance_lift": 0.4916666507720947,
+      "ctx_dim": 16
+    }
+  ]
+}

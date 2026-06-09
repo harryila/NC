@@ -1,0 +1,204 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "acc_real": 0.4783333659172058,
+      "acc_within_task_shuffle": 0.2700000166893005,
+      "acc_task_mean": 0.22500000894069672,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.33039647094740154,
+      "withintask_retention": 0.44933921246190905
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "acc_real": 0.3416666865348816,
+      "acc_within_task_shuffle": 0.19000001400709152,
+      "acc_task_mean": 0.3150000095367432,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.889655138734691,
+      "withintask_retention": 0.37241382044645666
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "acc_real": 0.34000002443790434,
+      "acc_within_task_shuffle": 0.1833333469927311,
+      "acc_task_mean": 0.29500001668930054,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.8124999868062649,
+      "withintask_retention": 0.347222243780613
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "acc_real": 0.38833335041999817,
+      "acc_within_task_shuffle": 0.21666667461395264,
+      "acc_task_mean": 0.2983333498239517,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.6878612881064615,
+      "withintask_retention": 0.4046242810414098
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "acc_real": 0.3983333557844162,
+      "acc_within_task_shuffle": 0.20000001043081284,
+      "acc_task_mean": 0.2250000074505806,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.41899440685039924,
+      "withintask_retention": 0.33519554046472616
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "acc_real": 0.4083333551883698,
+      "acc_within_task_shuffle": 0.24666667282581328,
+      "acc_task_mean": 0.2950000107288361,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.632432422401089,
+      "withintask_retention": 0.4756756619348249
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "acc_real": 0.3800000250339508,
+      "acc_within_task_shuffle": 0.18333334475755692,
+      "acc_task_mean": 0.10166667401790619,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.005952406674621169,
+      "withintask_retention": 0.2976190618106284
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "acc_real": 0.521666693687439,
+      "acc_within_task_shuffle": 0.31666668206453324,
+      "acc_task_mean": 0.3366666823625565,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.561264823391496,
+      "withintask_retention": 0.5138339956846051
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "acc_real": 0.5116666972637176,
+      "acc_within_task_shuffle": 0.29333334863185884,
+      "acc_task_mean": 0.09166666865348816,
+      "acc_const": 0.1,
+      "taskmean_retention": -0.020242908648919526,
+      "withintask_retention": 0.46963562978719076
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "acc_real": 0.35000001043081286,
+      "acc_within_task_shuffle": 0.20333334654569626,
+      "acc_task_mean": 0.17666667699813843,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.306666695197422,
+      "withintask_retention": 0.41333336893717293
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "acc_real": 0.4083333551883698,
+      "acc_within_task_shuffle": 0.23166667371988298,
+      "acc_task_mean": 0.10000000614672899,
+      "acc_const": 0.1,
+      "taskmean_retention": 1.9935335841806112e-08,
+      "withintask_retention": 0.42702701963413586
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "acc_real": 0.30500002205371857,
+      "acc_within_task_shuffle": 0.19666667878627778,
+      "acc_task_mean": 0.24666668176651002,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.7154471511621459,
+      "withintask_retention": 0.4715447238388446
+    },
+    {
+      "arm": "R6",
+      "seed": 12,
+      "acc_real": 0.5250000298023224,
+      "acc_within_task_shuffle": 0.29833335280418394,
+      "acc_task_mean": 0.07666667103767395,
+      "acc_const": 0.1,
+      "taskmean_retention": -0.05490194664969538,
+      "withintask_retention": 0.4666666797563131
+    },
+    {
+      "arm": "R6",
+      "seed": 13,
+      "acc_real": 0.5033333599567413,
+      "acc_within_task_shuffle": 0.3266666829586029,
+      "acc_task_mean": 0.17833333611488342,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.19421487010964053,
+      "withintask_retention": 0.5619834743719526
+    },
+    {
+      "arm": "R6",
+      "seed": 14,
+      "acc_real": 0.38500002324581145,
+      "acc_within_task_shuffle": 0.2000000111758709,
+      "acc_task_mean": 0.11833333969116211,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.06432750244146355,
+      "withintask_retention": 0.3508772035770021
+    },
+    {
+      "arm": "R6",
+      "seed": 15,
+      "acc_real": 0.37500002384185793,
+      "acc_within_task_shuffle": 0.25500001311302184,
+      "acc_task_mean": 0.27833335399627684,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.6484848674007009,
+      "withintask_retention": 0.5636363624541227
+    },
+    {
+      "arm": "R6",
+      "seed": 16,
+      "acc_real": 0.48500002920627594,
+      "acc_within_task_shuffle": 0.2616666778922081,
+      "acc_task_mean": 0.1500000089406967,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.12987014324071028,
+      "withintask_retention": 0.41991341721584663
+    },
+    {
+      "arm": "R6",
+      "seed": 17,
+      "acc_real": 0.420000022649765,
+      "acc_within_task_shuffle": 0.22833334654569626,
+      "acc_task_mean": 0.186666676774621,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.2708333457509668,
+      "withintask_retention": 0.40104167956936393
+    },
+    {
+      "arm": "R6",
+      "seed": 18,
+      "acc_real": 0.6233333706855774,
+      "acc_within_task_shuffle": 0.3083333492279053,
+      "acc_task_mean": 0.1650000035762787,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.12420381962481651,
+      "withintask_retention": 0.3980891739332127
+    },
+    {
+      "arm": "R6",
+      "seed": 19,
+      "acc_real": 0.3950000211596489,
+      "acc_within_task_shuffle": 0.21666667684912683,
+      "acc_task_mean": 0.10500000044703484,
+      "acc_const": 0.1,
+      "taskmean_retention": 0.01694915284202274,
+      "withintask_retention": 0.3954802321386576
+    }
+  ]
+}

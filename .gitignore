@@ -10,6 +10,12 @@ wandb/
 *.ckpt
 *.pt
 
+# large / derived data artifacts (pulled from GPU box — never commit regardless of location)
+*.tfrecords
+*.tfrecord
+*.npy
+*.npz
+
 # python
 __pycache__/
 *.py[cod]
@@ -18,3 +24,6 @@ __pycache__/
 venv/
 
 .DS_Store
+
+# local ssh / git-auth setup notes (host, PAT steps) — never commit
+cursor_ssh_configuration_for_neuralcomb.md

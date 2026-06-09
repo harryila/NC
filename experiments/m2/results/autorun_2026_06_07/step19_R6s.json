@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.8900000393390656,
+      "final_acc": 0.42416669279336927,
+      "forgetting": 0.5175926072729958,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.882500046491623,
+      "final_acc": 0.4091666921973228,
+      "forgetting": 0.525925949215889,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.8491667151451111,
+      "final_acc": 0.34083335399627684,
+      "forgetting": 0.5648148457209269,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.8991667091846466,
+      "final_acc": 0.377500019967556,
+      "forgetting": 0.5796296546856562,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.8433333814144135,
+      "final_acc": 0.31250002048909664,
+      "forgetting": 0.5898148454725742,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.8600000441074371,
+      "final_acc": 0.426666684448719,
+      "forgetting": 0.48148151073190903,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 0.8666667222976685,
+      "final_acc": 0.3825000151991844,
+      "forgetting": 0.5379630078872045,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 0.8725000441074371,
+      "final_acc": 0.41000002771615984,
+      "forgetting": 0.5138889071014192,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 8,
+      "learn_acc": 0.8558333694934845,
+      "final_acc": 0.3691666856408119,
+      "forgetting": 0.5407407598363029,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 9,
+      "learn_acc": 0.9050000488758088,
+      "final_acc": 0.41833335533738136,
+      "forgetting": 0.5407407705982527,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 10,
+      "learn_acc": 0.880833375453949,
+      "final_acc": 0.3600000262260437,
+      "forgetting": 0.5787037213643392,
+      "scale": "20cls-10task"
+    },
+    {
+      "arm": "R6s",
+      "seed": 11,
+      "learn_acc": 0.8508333742618561,
+      "final_acc": 0.38833335787057877,
+      "forgetting": 0.5138889071014192,
+      "scale": "20cls-10task"
+    }
+  ]
+}

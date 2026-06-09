@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "learn_acc": 1.0,
+      "final_acc": 1.0,
+      "forgetting": 0.0,
+      "overlap": 0.0
+    }
+  ]
+}

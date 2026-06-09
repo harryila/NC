@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.48166669309139254,
+      "final_acc": 0.1100000023841858,
+      "forgetting": 0.4645833633840084,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.46333336234092715,
+      "final_acc": 0.10833333730697632,
+      "forgetting": 0.4437500312924385,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.5133333548903465,
+      "final_acc": 0.10666667222976685,
+      "forgetting": 0.5083333533257246,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.4966666907072067,
+      "final_acc": 0.1,
+      "forgetting": 0.4958333633840084,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.4600000262260437,
+      "final_acc": 0.1,
+      "forgetting": 0.4500000327825546,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.44500000923871996,
+      "final_acc": 0.1,
+      "forgetting": 0.4312500115483999,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.48000002205371856,
+      "final_acc": 0.09500000476837159,
+      "forgetting": 0.48125002160668373,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.48333336412906647,
+      "final_acc": 0.1033333420753479,
+      "forgetting": 0.4750000275671482,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.473333352804184,
+      "final_acc": 0.14166666865348815,
+      "forgetting": 0.41458335518836975,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.42833335846662524,
+      "final_acc": 0.1,
+      "forgetting": 0.4104166980832815,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.46000002026557923,
+      "final_acc": 0.17666667699813843,
+      "forgetting": 0.354166679084301,
+      "tight": true
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.45833336412906645,
+      "final_acc": 0.11333333924412728,
+      "forgetting": 0.431250031106174,
+      "tight": true
+    }
+  ]
+}

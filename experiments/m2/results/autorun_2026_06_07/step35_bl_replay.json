@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "strategy": "replay",
+      "seed": 0,
+      "final_acc": 0.9728260869565217,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "replay",
+      "seed": 1,
+      "final_acc": 0.9561036789297659,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "replay",
+      "seed": 2,
+      "final_acc": 0.9732441471571907,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "replay",
+      "seed": 3,
+      "final_acc": 0.9774247491638796,
+      "NC": 12,
+      "NEXP": 6
+    }
+  ]
+}

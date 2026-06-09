@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.519444465637207,
+      "final_acc": 0.42777780691782635,
+      "forgetting": 0.13749998807907104,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.5055555800596873,
+      "final_acc": 0.4027777910232544,
+      "forgetting": 0.15416668355464935,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 0.5583333770434061,
+      "final_acc": 0.43611114223798114,
+      "forgetting": 0.1833333522081375,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 0.4833333690961202,
+      "final_acc": 0.42500002185503644,
+      "forgetting": 0.08750002086162567,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 0.5361111362775167,
+      "final_acc": 0.3916666805744171,
+      "forgetting": 0.21666668355464935,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 0.5555555820465088,
+      "final_acc": 0.4888889193534851,
+      "forgetting": 0.09999999403953552,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 0.5611111323038737,
+      "final_acc": 0.46388890345891315,
+      "forgetting": 0.1458333432674408,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 0.5444444616635641,
+      "final_acc": 0.5027778049310049,
+      "forgetting": 0.062499985098838806,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "learn_acc": 0.5805555780728658,
+      "final_acc": 0.4777778089046478,
+      "forgetting": 0.15416665375232697,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "learn_acc": 0.5166667004426321,
+      "final_acc": 0.41388891140619916,
+      "forgetting": 0.15416668355464935,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "learn_acc": 0.5805555780728658,
+      "final_acc": 0.29166667225460213,
+      "forgetting": 0.43333335872739553,
+      "task": "conjunction-binding"
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "learn_acc": 0.5638889074325562,
+      "final_acc": 0.46666667858759564,
+      "forgetting": 0.1458333432674408,
+      "task": "conjunction-binding"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.6333333750565847,
+      "final_acc": 0.644444485505422,
+      "forgetting": -0.01666666567325592,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.5583333671092987,
+      "final_acc": 0.541666696468989,
+      "forgetting": 0.025000005960464478,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 0.5361111362775167,
+      "final_acc": 0.35555557161569595,
+      "forgetting": 0.2708333469927311,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 0.48055559396743774,
+      "final_acc": 0.322222242752711,
+      "forgetting": 0.23750002682209015,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 0.6361111601193746,
+      "final_acc": 0.7055555979410807,
+      "forgetting": -0.1041666567325592,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 0.6055555939674377,
+      "final_acc": 0.9111111561457316,
+      "forgetting": -0.4583333432674408,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 0.6611111462116241,
+      "final_acc": 0.6222222546736399,
+      "forgetting": 0.05833333730697632,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 0.6916667024294535,
+      "final_acc": 0.6694444815317789,
+      "forgetting": 0.03333333134651184,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 8,
+      "learn_acc": 0.5944444636503855,
+      "final_acc": 0.6638889312744141,
+      "forgetting": -0.10416670143604279,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 9,
+      "learn_acc": 0.6000000238418579,
+      "final_acc": 0.6333333651224772,
+      "forgetting": -0.050000011920928955,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 10,
+      "learn_acc": 0.5305555860201517,
+      "final_acc": 0.3361111382643382,
+      "forgetting": 0.2916666716337204,
+      "task": "tetrominoes-real"
+    },
+    {
+      "arm": "R6",
+      "seed": 11,
+      "learn_acc": 0.5166667004426321,
+      "final_acc": 0.6111111442248026,
+      "forgetting": -0.14166666567325592,
+      "task": "tetrominoes-real"
+    }
+  ]
+}

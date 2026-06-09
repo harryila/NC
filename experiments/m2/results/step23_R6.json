@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 0.9650000333786011,
+      "forgetting": 0.04166664183139801,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.9733333468437195,
+      "final_acc": 0.9500000476837158,
+      "forgetting": 0.029166623950004578,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 1.0,
+      "final_acc": 0.9600000262260437,
+      "forgetting": 0.049999967217445374,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "learn_acc": 0.9883333563804626,
+      "final_acc": 0.9333333611488343,
+      "forgetting": 0.06874999403953552,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "learn_acc": 0.9866667032241822,
+      "final_acc": 0.9616666913032532,
+      "forgetting": 0.031250014901161194,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 5,
+      "learn_acc": 0.99666668176651,
+      "final_acc": 0.96500004529953,
+      "forgetting": 0.039583295583724976,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 6,
+      "learn_acc": 0.9983333468437194,
+      "final_acc": 0.9716667056083679,
+      "forgetting": 0.03333330154418945,
+      "trunk": "cifar-pretrained-AE"
+    },
+    {
+      "arm": "R6",
+      "seed": 7,
+      "learn_acc": 1.0,
+      "final_acc": 0.96833336353302,
+      "forgetting": 0.039583295583724976,
+      "trunk": "cifar-pretrained-AE"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "proto_slotacc": 0.50175,
+      "trunkcentroid_slotacc": 0.36825,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "proto_slotacc": 0.474,
+      "trunkcentroid_slotacc": 0.319,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "proto_slotacc": 0.31025,
+      "trunkcentroid_slotacc": 0.27075,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "proto_slotacc": 0.36575,
+      "trunkcentroid_slotacc": 0.326,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "proto_slotacc": 0.338,
+      "trunkcentroid_slotacc": 0.259,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "proto_slotacc": 0.36825,
+      "trunkcentroid_slotacc": 0.27725,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "proto_slotacc": 0.33025,
+      "trunkcentroid_slotacc": 0.30425,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "proto_slotacc": 0.3625,
+      "trunkcentroid_slotacc": 0.2775,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 8,
+      "proto_slotacc": 0.4905,
+      "trunkcentroid_slotacc": 0.31,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 9,
+      "proto_slotacc": 0.413,
+      "trunkcentroid_slotacc": 0.2835,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 10,
+      "proto_slotacc": 0.445,
+      "trunkcentroid_slotacc": 0.30775,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 11,
+      "proto_slotacc": 0.39875,
+      "trunkcentroid_slotacc": 0.29575,
+      "chance": 0.2
+    }
+  ]
+}

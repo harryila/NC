@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "sparseCNN",
+      "seed": 0,
+      "learn_acc": 0.49333334863185885,
+      "final_acc": 0.12333333492279053,
+      "forgetting": 0.4625000171363354,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 1,
+      "learn_acc": 0.4800000250339508,
+      "final_acc": 0.11166666746139527,
+      "forgetting": 0.4604166969656944,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 2,
+      "learn_acc": 0.5333333536982536,
+      "final_acc": 0.10833333730697632,
+      "forgetting": 0.5312500204890966,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 3,
+      "learn_acc": 0.49500001817941663,
+      "final_acc": 0.10833333730697632,
+      "forgetting": 0.4833333510905504,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 4,
+      "learn_acc": 0.44333335757255554,
+      "final_acc": 0.08000000715255737,
+      "forgetting": 0.4541666880249977,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 5,
+      "learn_acc": 0.46500002443790434,
+      "final_acc": 0.1033333420753479,
+      "forgetting": 0.45208335295319557,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 6,
+      "learn_acc": 0.48833335638046266,
+      "final_acc": 0.098333340883255,
+      "forgetting": 0.48750001937150955,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 7,
+      "learn_acc": 0.49333335757255553,
+      "final_acc": 0.1033333420753479,
+      "forgetting": 0.48750001937150955,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 8,
+      "learn_acc": 0.4333333559334278,
+      "final_acc": 0.10500000715255738,
+      "forgetting": 0.41041668597608805,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 9,
+      "learn_acc": 0.428333356231451,
+      "final_acc": 0.1033333420753479,
+      "forgetting": 0.4062500176951289,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 10,
+      "learn_acc": 0.4350000236183405,
+      "final_acc": 0.08333333730697631,
+      "forgetting": 0.4395833578892052,
+      "tight": true
+    },
+    {
+      "arm": "sparseCNN",
+      "seed": 11,
+      "learn_acc": 0.5033333525061607,
+      "final_acc": 0.12166666835546494,
+      "forgetting": 0.47708335518836975,
+      "tight": true
+    }
+  ]
+}

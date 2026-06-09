@@ -1,0 +1,114 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.256875,
+      "mlp_cv": 0.30812500715255736,
+      "mlp_shuffle_floor": 0.23562500178813933,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.25249999999999995,
+      "mlp_cv": 0.27937500476837157,
+      "mlp_shuffle_floor": 0.21312500536441803,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.24375,
+      "mlp_cv": 0.3050000011920929,
+      "mlp_shuffle_floor": 0.21937500536441804,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6",
+      "seed": 3,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.263125,
+      "mlp_cv": 0.29687501192092897,
+      "mlp_shuffle_floor": 0.20750000178813935,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6",
+      "seed": 4,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.255,
+      "mlp_cv": 0.28125000596046446,
+      "mlp_shuffle_floor": 0.20312500298023223,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.24562499999999998,
+      "mlp_cv": 0.3062500059604645,
+      "mlp_shuffle_floor": 0.23562500178813933,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.24000000000000005,
+      "mlp_cv": 0.2856250047683716,
+      "mlp_shuffle_floor": 0.20000000298023224,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.27125,
+      "mlp_cv": 0.3193750023841858,
+      "mlp_shuffle_floor": 0.23312500417232512,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.25,
+      "mlp_cv": 0.2975000083446503,
+      "mlp_shuffle_floor": 0.20750000178813935,
+      "chance": 0.2
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "layer": 1,
+      "dim": 136,
+      "n": 1600,
+      "linear_cv": 0.2475,
+      "mlp_cv": 0.2743750035762787,
+      "mlp_shuffle_floor": 0.2131250023841858,
+      "chance": 0.2
+    }
+  ]
+}

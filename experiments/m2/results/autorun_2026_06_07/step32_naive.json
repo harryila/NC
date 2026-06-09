@@ -1,0 +1,44 @@
+{
+  "runs": [
+    {
+      "strategy": "naive",
+      "seed": 0,
+      "final_acc": 0.23
+    },
+    {
+      "strategy": "naive",
+      "seed": 1,
+      "final_acc": 0.2475
+    },
+    {
+      "strategy": "naive",
+      "seed": 2,
+      "final_acc": 0.3025
+    },
+    {
+      "strategy": "naive",
+      "seed": 3,
+      "final_acc": 0.17166666666666666
+    },
+    {
+      "strategy": "naive",
+      "seed": 4,
+      "final_acc": 0.3233333333333333
+    },
+    {
+      "strategy": "naive",
+      "seed": 5,
+      "final_acc": 0.31916666666666665
+    },
+    {
+      "strategy": "naive",
+      "seed": 6,
+      "final_acc": 0.18583333333333332
+    },
+    {
+      "strategy": "naive",
+      "seed": 7,
+      "final_acc": 0.25833333333333336
+    }
+  ]
+}

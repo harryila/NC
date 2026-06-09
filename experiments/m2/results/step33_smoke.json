@@ -1,0 +1,12 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.9861111640930176,
+      "final_acc": 0.9305556019147238,
+      "forgetting": 0.0833333432674408,
+      "task": "tetro-real-learnedtrunk"
+    }
+  ]
+}

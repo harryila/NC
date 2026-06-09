@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "strategy": "der",
+      "seed": 0,
+      "final_acc": 0.9912207357859532,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "der",
+      "seed": 1,
+      "final_acc": 0.9899665551839465,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "der",
+      "seed": 2,
+      "final_acc": 0.9866220735785953,
+      "NC": 12,
+      "NEXP": 6
+    },
+    {
+      "strategy": "der",
+      "seed": 3,
+      "final_acc": 0.987876254180602,
+      "NC": 12,
+      "NEXP": 6
+    }
+  ]
+}

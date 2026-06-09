@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "arm": "R6s",
+      "seed": 0,
+      "learn_acc": 0.7111111481984457,
+      "final_acc": 0.5750000377496084,
+      "forgetting": 0.20416666567325592,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 1,
+      "learn_acc": 0.7527778347333273,
+      "final_acc": 0.5833333730697632,
+      "forgetting": 0.25416669249534607,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 2,
+      "learn_acc": 0.7222222487131754,
+      "final_acc": 0.5500000317891439,
+      "forgetting": 0.25833332538604736,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 3,
+      "learn_acc": 0.6277778148651123,
+      "final_acc": 0.5388889213403066,
+      "forgetting": 0.13333334028720856,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 4,
+      "learn_acc": 0.5472222566604614,
+      "final_acc": 0.5083333551883698,
+      "forgetting": 0.05833335220813751,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 5,
+      "learn_acc": 0.7111111481984457,
+      "final_acc": 0.5250000258286794,
+      "forgetting": 0.27916668355464935,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 6,
+      "learn_acc": 0.6694444815317789,
+      "final_acc": 0.5750000278155009,
+      "forgetting": 0.14166668057441711,
+      "task": "tetromino-binding"
+    },
+    {
+      "arm": "R6s",
+      "seed": 7,
+      "learn_acc": 0.6055555840333303,
+      "final_acc": 0.5666667024294535,
+      "forgetting": 0.058333322405815125,
+      "task": "tetromino-binding"
+    }
+  ]
+}

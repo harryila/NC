@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "plainCNN",
+      "seed": 0,
+      "learn_acc": 0.6233333587646485,
+      "final_acc": 0.2483333483338356,
+      "forgetting": 0.46875001303851604,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 1,
+      "learn_acc": 0.598333352804184,
+      "final_acc": 0.14666667580604553,
+      "forgetting": 0.564583346247673,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 2,
+      "learn_acc": 0.5800000339746475,
+      "final_acc": 0.2483333468437195,
+      "forgetting": 0.41458335891366005,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 3,
+      "learn_acc": 0.5883333742618561,
+      "final_acc": 0.23500000406056643,
+      "forgetting": 0.44166671275161207,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 4,
+      "learn_acc": 0.6000000298023224,
+      "final_acc": 0.24000000953674316,
+      "forgetting": 0.45000002533197403,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 5,
+      "learn_acc": 0.5783333480358124,
+      "final_acc": 0.10833333730697632,
+      "forgetting": 0.5875000134110451,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 6,
+      "learn_acc": 0.5916666984558105,
+      "final_acc": 0.21000000834465027,
+      "forgetting": 0.47708336263895035,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 7,
+      "learn_acc": 0.605000016093254,
+      "final_acc": 0.18166667819023133,
+      "forgetting": 0.5291666723787785,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 8,
+      "learn_acc": 0.5800000250339508,
+      "final_acc": 0.24000000953674316,
+      "forgetting": 0.42500001937150955,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 9,
+      "learn_acc": 0.6216666996479034,
+      "final_acc": 0.13166667222976686,
+      "forgetting": 0.6125000342726707,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 10,
+      "learn_acc": 0.5933333665132523,
+      "final_acc": 0.1,
+      "forgetting": 0.6166667081415653,
+      "dataset": "2digit-mnist"
+    },
+    {
+      "arm": "plainCNN",
+      "seed": 11,
+      "learn_acc": 0.5450000286102294,
+      "final_acc": 0.20500001311302185,
+      "forgetting": 0.42500001937150955,
+      "dataset": "2digit-mnist"
+    }
+  ]
+}
