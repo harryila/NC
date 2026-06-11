@@ -27,3 +27,6 @@ venv/
 
 # local ssh / git-auth setup notes (host, PAT steps) — never commit
 cursor_ssh_configuration_for_neuralcomb.md
+
+# private outreach contacts (researcher names/notes) — never commit
+OUTREACH-stanford-berkeley.md

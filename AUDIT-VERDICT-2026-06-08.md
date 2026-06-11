@@ -78,3 +78,20 @@ Real DeepMind Tetrominoes (red-shape CL, presence-leak 0.49, class-incr, mem=300
   TMLR/CoLLAs/workshop over a NeurIPS-main "beats baselines" story (a main-track SOTA claim dies to this DER row).
 - HONEST framing for paper: report DER>ours plainly as a limitation; lead with the controlled oscillator-vs-
   feedforward mechanism + binding-earned + audit-survival, explicitly "mechanism, not SOTA".
+
+## CRITICAL OPEN CONTROL (2026-06-09, external review caught it; our 30-agent probe MISSED it) — R5 recurrence-confound
+The headline mechanism claim (oscillator R6/R6s >> plainCNN-ctx on binding, p=0.0005) is NOT controlled for plain
+RECURRENCE. plainCNN differs from the oscillator on >=4 axes at once (T-step recurrence, per-step normalization,
+spherical vector-coding, sparsity) BEFORE the synchrony projection. And R6s~=R6 (random==learned coupling) -> the
+LEARNED coupling is not the ingredient; both still have the synchrony projection (apply_proj=True). The M1 ladder
+HAD the recurrence-matched control -- R5 (apply_proj=False: recurrence+norm ON, synchrony projection OFF; ladder.py:
+"Synchrony's causal effect = R6-R5, a single apply_proj flip") -- but it was NEVER ported to the binding/online arms
+(step9 ARM_RUNG was only {R6,R6s}; +plainCNN). So we cannot currently distinguish "synchrony projection binds" from
+"an iterative normalized recurrent net binds" (the latter overlaps slot-attention/iterative-refinement = far less novel).
+DECISIVE TEST (wired, pending GPU): step9 ARM_RUNG now has R5 (no_proj) + R5d (depthwise). Run --arm R5/R5d on the
+conjunction-binding task (step27), n=12, vs R6 0.432 / R6s 0.484 / plainCNN 0.187.
+  R6~=R6s >> R5  -> it IS the synchrony projection (not mere recurrence) -> rescues+sharpens the synchrony story.
+  R6~=R6s~=R5 >> plainCNN -> it's RECURRENCE/normalization, NOT synchrony -> the honest paper is about recurrence.
+This gate is UPSTREAM of the mechanism paper's headline, Path A (M2), and any scale work. RUN BEFORE writing/scaling.
+BLOCKER 2026-06-09: GPU box (213.192.2.118:40105) is DOWN (conn refused, 100% packet loss; rented instance reclaimed)
+-> need a fresh GPU to run R5.

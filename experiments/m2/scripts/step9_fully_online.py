@@ -16,7 +16,11 @@ from h3 import _seeded as h3_seeded
 from palr_pool import torch_group_dirs
 from avalanche_backbone import LadderClassifier
 
-ARM_RUNG = {"R6": ("R6", {}), "R6s": ("R6s", {})}
+ARM_RUNG = {"R6": ("R6", {}), "R6s": ("R6s", {}),
+            # RECURRENCE-MATCHED controls (synchrony projection OFF) — isolates synchrony from mere recurrence.
+            # R6 - R5 = the causal effect of the Kuramoto phase-coupling (single apply_proj flip, identical machinery).
+            "R5": ("R5", {"variant": "no_proj"}),     # apply_proj=False: recurrence+norm ON, synchrony projection OFF (surgical)
+            "R5d": ("R5", {"variant": "depthwise"})}  # pure per-oscillator normalized recurrent dynamics (no neuron coupling)
 
 def mean_pool_ctx(state, n):
     gd = torch_group_dirs(state, n)
