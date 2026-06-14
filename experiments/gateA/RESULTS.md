@@ -4,6 +4,28 @@ Status: 2026-06-13. n=1 seed (seed=1234) per arm so far; **n>=3 + equivalence st
 All arms L=1, ch=256, psize=8, T=8, c_norm=gn, bs=256, 500 epochs (the README CLEVRTex command). Eval = eval_obj.py
 (agglomerative clustering of readout features, n_clusters=11).
 
+## 2026-06-14 UPDATE — where/what usefulness probe + controls + ItrSA reframe (n=1, decisive direction)
+GATE-A "coupling load-bearing" was reframed via a GT-mask-pooled attribute-decode probe (native_usefulness.py,
+PREREG-usefulness.md): does an arm high on FG-ARI (where) differ on per-object property decoding (what)? Severing
+coupling halves FG-ARI (75.5->38.5) yet per-object decode does NOT drop. Validated against the validation-workflow's
+full confound list (native_usefulness_controls.py + analyze_usefulness.py):
+- FLOOR controls: severed material > raw-pixel/random-init/stem floors -> genuine representation, not de-processing.
+- L2-NORM control: material gap full->severed identical raw vs cosine-norm (0.207 vs 0.204) -> CONTENT, not a
+  common-mode variance artifact.
+- PROBE-FREE: kNN-retrieval + KMeans-AMI agree (severed material kNN 0.39 / AMI 0.39 vs full 0.12 / 0.13).
+- Verdict W1_REALLOCATION: coupling reallocates capacity -> grouping (FG-ARI) + global size, away from per-object
+  material/shape. Mechanism = the 94-96% common-mode smoothing (predicted a priori).
+- **ItrSA FLOOR (the reframe):** ItrSA (attention, NO Kuramoto) ~= full on representation (material kNN 0.120 vs 0.121;
+  size 0.500 vs 0.516). So the reallocation is driven by cross-token ATTENTION GROUPING, NOT synchrony specifically:
+  severed->ItrSA (add attention) crashes material -0.27; ItrSA->full (add synchrony) adds +12 FG-ARI at ~no material
+  cost. => HONEST HEADLINE shifts from "synchrony buys segmentation not representation" to "object-centric GROUPING
+  (attention or synchrony) trades per-object representation for segmentation; synchrony confers no representational
+  advantage over attention." Broader / field-level / subsumes synchrony.
+Probe-free 6-arm ladder (material kNN / size kNN): severed 0.39/0.39 | itrsa 0.12/0.50 | full 0.12/0.52 (FG-ARI
+38.5 < 63.5 < 75.5). CAVEAT: all n=1 model seed; single benchmark L=1; color dead (dropped). Next gates: n>=3 seeds;
+cross-model (SynCx) for the family-level claim. Files: results/{native_usefulness.json, native_usefulness_controls.json,
+usefulness_analysis.json}.
+
 ## Ladder (n=1)
 | arm | what it removes | FG-ARI | MBO | R_global | reading |
 |---|---|---|---|---|---|

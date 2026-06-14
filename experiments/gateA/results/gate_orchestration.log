@@ -78,3 +78,40 @@ Sourced full (test) from /root/data/clevrtex/clevrtex_full
 NATIVE_DECOMPOSE_DONE
 [00:19] A3 R_global DONE -> native_decompose_normclamp.json
 DESYNC DONE
+[08:07] A4 itrsa EVAL DONE -> eval_itrsa.log
+[08:07] === PATH-A COMPLETE: full=75.5 / J=none / projoff / normclamp / itrsa ===
+[06-14_08:08] RIGOR CAMPAIGN start (one 4090, sequential)
+[06-14_08:08] PhaseD trained-desync sigma=0.5 train...
+/root/NC/experiments/gateA/native_decompose.py:210: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  blob = torch.load(ckpt_path, map_location="cpu")
+Indexing /root/data/clevrtex/clevrtex_full
+Sourced full (test) from /root/data/clevrtex/clevrtex_full
+{
+  "prediction": "ambiguous",
+  "clauses": {
+    "a_gJ_dominates": true,
+    "b_gJ_common_mode": true,
+    "c_raises_R_global": true,
+    "d_fgari_unchanged": false,
+    "delta_fgari_full_minus_jzero": 0.40594,
+    "delta_mbo_full_minus_jzero": 0.29181
+  },
+  "metrics_full": {
+    "fgari": 0.6536314773083559,
+    "mbo": 0.4409821016924134
+  },
+  "metrics_jzero": {
+    "fgari": 0.24769206702117333,
+    "mbo": 0.14917479562251965
+  },
+  "R_global_full": {
+    "L0": 0.3959772934516271
+  },
+  "R_global_jzero": {
+    "L0": 0.30306000014146167
+  },
+  "out": "/root/NC/experiments/gateA/decompose_pn05.json"
+}
+NATIVE_DECOMPOSE_DONE
+[06-14_18:31] PhaseD sigma=0.5 DONE
+[06-14_18:31] PhaseD trained-desync sigma=1.0 train...

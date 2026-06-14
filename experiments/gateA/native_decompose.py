@@ -194,6 +194,11 @@ def build_net(args, imsize):
             sys.path.insert(0, "/root/NC")
         from experiments.gateA.native_norm_ablate import norm_ablate_akorn
         net = norm_ablate_akorn(net, variant=args.norm_ablate, no_proj=True, verbose=False)
+    if getattr(args, "phase_noise", 0.0) > 0:
+        if "/root/NC" not in sys.path:
+            sys.path.insert(0, "/root/NC")
+        from experiments.gateA.native_phase_noise import phase_noise_akorn
+        net = phase_noise_akorn(net, args.phase_noise, verbose=False)
     return net
 
 
@@ -530,6 +535,8 @@ def main():
     ap.add_argument("--J", type=str, default="attn")
     ap.add_argument("--norm_ablate", type=str, default="none",
                     help="A3: clamp|soft|layernorm sphere-norm ablation (must match the checkpoint)")
+    ap.add_argument("--phase_noise", type=float, default=0.0,
+                    help="trained-desync: per-step phase noise sigma (match the checkpoint) for R_global under noise")
     ap.add_argument("--psize", type=int, default=8)
     ap.add_argument("--ksize", type=int, default=1)
     ap.add_argument("--heads", type=int, default=8)

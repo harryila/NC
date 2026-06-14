@@ -1,17 +1,19 @@
 diff --git a/eval_obj.py b/eval_obj.py
-index b75a0e9..551962d 100644
+index b75a0e9..4701b1a 100644
 --- a/eval_obj.py
 +++ b/eval_obj.py
-@@ -383,6 +383,8 @@ if __name__ == "__main__":
+@@ -383,6 +383,10 @@ if __name__ == "__main__":
      parser.add_argument("--N", type=int, default=4,
                          help="num of rotating dimensions")
      parser.add_argument("--J", type=str, default="conv", help="connectivity")
 +    parser.add_argument("--norm_ablate", type=str, default="none",
 +                        help="GATE A A3: clamp|soft|layernorm sphere-normalization ablation (none=off)")
++    parser.add_argument("--phase_noise", type=float, default=0.0,
++                        help="GATE A trained-desync: per-step phase noise sigma (match the trained checkpoint; 0=off)")
      parser.add_argument("--use_omega", type=str2bool, default=False)
      parser.add_argument("--global_omg", type=str2bool, default=False)
      parser.add_argument(
-@@ -426,7 +428,7 @@ if __name__ == "__main__":
+@@ -426,7 +430,7 @@ if __name__ == "__main__":
              ch=args.ch,
              L=args.L,
              T=args.T,
@@ -20,7 +22,7 @@ index b75a0e9..551962d 100644
              use_omega=args.use_omega,
              global_omg=args.global_omg,
              c_norm=args.c_norm,
-@@ -454,6 +456,23 @@ if __name__ == "__main__":
+@@ -454,6 +458,31 @@ if __name__ == "__main__":
              gta=args.gta,
          ).cuda()
  
@@ -41,23 +43,33 @@ index b75a0e9..551962d 100644
 +        from experiments.gateA.native_norm_ablate import norm_ablate_akorn
 +        net = norm_ablate_akorn(net, variant=args.norm_ablate, no_proj=True)
 +
++    # --- GATE A trained-desync: phase noise (match the trained checkpoint; eval-noisy vs clean both via this flag) ---
++    if args.model == "akorn" and getattr(args, "phase_noise", 0.0) > 0:
++        import sys as _sys
++        if "/root/NC" not in _sys.path:
++            _sys.path.insert(0, "/root/NC")
++        from experiments.gateA.native_phase_noise import phase_noise_akorn
++        net = phase_noise_akorn(net, args.phase_noise)
++
      model = EMA(net)
      model.load_state_dict(torch.load(
          args.model_path, weights_only=True)["model_state_dict"])
 diff --git a/train_obj.py b/train_obj.py
-index e399f41..c69a51d 100644
+index e399f41..4ebc0da 100644
 --- a/train_obj.py
 +++ b/train_obj.py
-@@ -153,6 +153,8 @@ if __name__ == "__main__":
+@@ -153,6 +153,10 @@ if __name__ == "__main__":
      parser.add_argument("--N", type=int, default=4, help="num of rotating dimensions")
      parser.add_argument("--gamma", type=float, default=1.0, help="step size")
      parser.add_argument("--J", type=str, default="conv", help="connectivity")
 +    parser.add_argument("--norm_ablate", type=str, default="none",
 +                        help="GATE A A3: clamp|soft|layernorm sphere-normalization ablation (none=off)")
++    parser.add_argument("--phase_noise", type=float, default=0.0,
++                        help="GATE A trained-desync: per-step phase noise sigma injected into the recurrence (0=off)")
      parser.add_argument("--use_omega", type=str2bool, default=False)
      parser.add_argument("--global_omg", type=str2bool, default=False)
      parser.add_argument(
-@@ -291,7 +293,7 @@ if __name__ == "__main__":
+@@ -291,7 +295,7 @@ if __name__ == "__main__":
              L=args.L,
              T=args.T,
              gamma=args.gamma,
@@ -66,7 +78,7 @@ index e399f41..c69a51d 100644
              use_omega=args.use_omega,
              global_omg=args.global_omg,
              c_norm=args.c_norm,
-@@ -326,6 +328,26 @@ if __name__ == "__main__":
+@@ -326,6 +330,34 @@ if __name__ == "__main__":
      else:
          raise NotImplementedError
  
@@ -89,6 +101,14 @@ index e399f41..c69a51d 100644
 +            _sys.path.insert(0, "/root/NC")
 +        from experiments.gateA.native_norm_ablate import norm_ablate_akorn
 +        net = norm_ablate_akorn(net, variant=args.norm_ablate, no_proj=True)
++
++    # --- GATE A trained-desync: per-step phase noise during training (non-circular synchrony-necessity test) ---
++    if args.model == "akorn" and getattr(args, "phase_noise", 0.0) > 0:
++        import sys as _sys
++        if "/root/NC" not in _sys.path:
++            _sys.path.insert(0, "/root/NC")
++        from experiments.gateA.native_phase_noise import phase_noise_akorn
++        net = phase_noise_akorn(net, args.phase_noise)
 +
      total_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
      print(f"Total number of basemodel parameters: {total_params}")

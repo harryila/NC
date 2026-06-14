@@ -1,0 +1,28 @@
+Indexing /root/data/clevrtex/clevrtex_full
+Sourced full (test) from /root/data/clevrtex/clevrtex_full
+[data] 500 scenes, 3228 objects
+rawpixels    nobj=3105 | shape=0.265(c0.28) size=0.341(c0.35) color=0.132(c0.13) material=0.409(c0.01)
+patchfy_full nobj=3105 | shape=0.309(c0.28) size=0.355(c0.35) color=0.127(c0.13) material=0.254(c0.01)
+full_readout nobj=3105 | shape=0.483(c0.28) size=0.603(c0.35) color=0.115(c0.13) material=0.264(c0.01)
+randinit     nobj=3105 | shape=0.372(c0.28) size=0.446(c0.35) color=0.132(c0.13) material=0.360(c0.01)
+  [sever] KLayer ch=256: Attention(328704) -> NoCouplingMixer(hid=640, 328576) delta=-128 (-0.0389%)
+  [sever] severed 1 KLayer(s)
+severed_readout nobj=3105 | shape=0.518(c0.28) size=0.473(c0.35) color=0.151(c0.13) material=0.466(c0.01)
+
+=== MATERIAL (local) === {
+ "rawpixels": 0.4093385214007782,
+ "patchfy": 0.2544747081712062,
+ "full": 0.26381322957198444,
+ "randinit": 0.3595330739299611,
+ "severed": 0.466147859922179
+}
+=== SIZE (global) === {
+ "rawpixels": 0.3408560311284047,
+ "patchfy": 0.354863813229572,
+ "full": 0.603112840466926,
+ "randinit": 0.44591439688715956,
+ "severed": 0.47315175097276263
+}
+=== CONFOUND VERDICT === SEVERED_BUILDS_MATERIAL (severed>patchfy): stronger 'representation' wording allowed
+wrote /root/NC/experiments/gateA/results/native_usefulness_controls.json
+CONTROLS DONE

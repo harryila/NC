@@ -1,0 +1,229 @@
+{
+  "full": {
+    "fgari": 75.5,
+    "n_objects": 71,
+    "ckpt": "/root/NC/external/akorn/runs/clvtex_akorn_attn_repro/ema_model.pth",
+    "attrs": {
+      "shape": {
+        "acc": 0.34782608695652173,
+        "ci": [
+          0.17391304347826086,
+          0.5652173913043478
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 4,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "size": {
+        "acc": 0.34782608695652173,
+        "ci": [
+          0.17391304347826086,
+          0.5652173913043478
+        ],
+        "chance": 0.391304347826087,
+        "n_classes": 3,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "color": {
+        "acc": 0.13043478260869565,
+        "ci": [
+          0.0,
+          0.2608695652173913
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 8,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "material": {
+        "acc": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "chance": 0.0,
+        "n_classes": 45,
+        "n_train": 48,
+        "n_test": 23
+      }
+    },
+    "U_norm": 0.02161654135338345,
+    "U_mean_acc": 0.20652173913043478
+  },
+  "projoff": {
+    "fgari": 76.7,
+    "n_objects": 71,
+    "ckpt": "/root/NC/external/akorn/runs/clvtex_projoff/ema_model.pth",
+    "attrs": {
+      "shape": {
+        "acc": 0.21739130434782608,
+        "ci": [
+          0.043478260869565216,
+          0.391304347826087
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 4,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "size": {
+        "acc": 0.391304347826087,
+        "ci": [
+          0.216304347826087,
+          0.6086956521739131
+        ],
+        "chance": 0.391304347826087,
+        "n_classes": 3,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "color": {
+        "acc": 0.17391304347826086,
+        "ci": [
+          0.043478260869565216,
+          0.34782608695652173
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 8,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "material": {
+        "acc": 0.08695652173913043,
+        "ci": [
+          0.0,
+          0.21739130434782608
+        ],
+        "chance": 0.0,
+        "n_classes": 45,
+        "n_train": 48,
+        "n_test": 23
+      }
+    },
+    "U_norm": 0.03489702517162471,
+    "U_mean_acc": 0.2173913043478261
+  },
+  "normclamp": {
+    "fgari": 80.9,
+    "n_objects": 71,
+    "ckpt": "/root/NC/external/akorn/runs/clvtex_normclamp/ema_model.pth",
+    "attrs": {
+      "shape": {
+        "acc": 0.34782608695652173,
+        "ci": [
+          0.17391304347826086,
+          0.5217391304347826
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 4,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "size": {
+        "acc": 0.43478260869565216,
+        "ci": [
+          0.21739130434782608,
+          0.6097826086956513
+        ],
+        "chance": 0.391304347826087,
+        "n_classes": 3,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "color": {
+        "acc": 0.21739130434782608,
+        "ci": [
+          0.043478260869565216,
+          0.391304347826087
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 8,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "material": {
+        "acc": 0.043478260869565216,
+        "ci": [
+          0.0,
+          0.13043478260869565
+        ],
+        "chance": 0.0,
+        "n_classes": 45,
+        "n_train": 48,
+        "n_test": 23
+      }
+    },
+    "U_norm": 0.09451618175874468,
+    "U_mean_acc": 0.2608695652173913
+  },
+  "severed": {
+    "fgari": 38.5,
+    "n_objects": 71,
+    "ckpt": "/root/NC/external/akorn/runs/clvtex_severed_none/ema_model.pth",
+    "attrs": {
+      "shape": {
+        "acc": 0.21739130434782608,
+        "ci": [
+          0.08695652173913043,
+          0.391304347826087
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 4,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "size": {
+        "acc": 0.34782608695652173,
+        "ci": [
+          0.17391304347826086,
+          0.5652173913043478
+        ],
+        "chance": 0.391304347826087,
+        "n_classes": 3,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "color": {
+        "acc": 0.17391304347826086,
+        "ci": [
+          0.043478260869565216,
+          0.30543478260869467
+        ],
+        "chance": 0.17391304347826086,
+        "n_classes": 8,
+        "n_train": 48,
+        "n_test": 23
+      },
+      "material": {
+        "acc": 0.043478260869565216,
+        "ci": [
+          0.0,
+          0.13043478260869565
+        ],
+        "chance": 0.0,
+        "n_classes": 45,
+        "n_train": 48,
+        "n_test": 23
+      }
+    },
+    "U_norm": 0.006170317097090542,
+    "U_mean_acc": 0.19565217391304346
+  },
+  "_verdict": {
+    "label": "NO-DISSOCIATION",
+    "D1_hollow_clamp": false,
+    "D2_whatwhere_split": false,
+    "spearman_fg_u": 1.0,
+    "U_full": 0.02161654135338345,
+    "U_clamp": 0.09451618175874468,
+    "U_severed": 0.006170317097090542
+  },
+  "_meta": {
+    "n_scenes": 16,
+    "seconds": 4.0,
+    "device": "cuda",
+    "seed": 0
+  }
+}

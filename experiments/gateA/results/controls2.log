@@ -1,0 +1,29 @@
+Indexing /root/data/clevrtex/clevrtex_full
+Sourced full (test) from /root/data/clevrtex/clevrtex_full
+[data] 500 scenes, 3228 objects
+rawpixels      nobj=3105 | RAW shape=0.265 size=0.341 color=0.132 material=0.409 | L2 shape=0.284 size=0.350 color=0.128 material=0.360
+patchfy_full   nobj=3105 | RAW shape=0.309 size=0.355 color=0.127 material=0.254 | L2 shape=0.291 size=0.342 color=0.134 material=0.244
+full_readout   nobj=3105 | RAW shape=0.461 size=0.607 color=0.117 material=0.258 | L2 shape=0.472 size=0.616 color=0.118 material=0.266
+randinit       nobj=3105 | RAW shape=0.363 size=0.426 color=0.127 material=0.322 | L2 shape=0.356 size=0.435 color=0.131 material=0.328
+  [sever] KLayer ch=256: Attention(328704) -> NoCouplingMixer(hid=640, 328576) delta=-128 (-0.0389%)
+  [sever] severed 1 KLayer(s)
+severed_readout nobj=3105 | RAW shape=0.531 size=0.476 color=0.141 material=0.465 | L2 shape=0.528 size=0.473 color=0.140 material=0.470
+[saved features] /root/NC/experiments/gateA/results/native_usefulness_controls_features.npz
+
+=== MATERIAL (local) === {
+ "rawpixels": 0.4093385214007782,
+ "patchfy": 0.2544747081712062,
+ "full": 0.25836575875486384,
+ "randinit": 0.32217898832684827,
+ "severed": 0.46459143968871597
+}
+=== SIZE (global) === {
+ "rawpixels": 0.3408560311284047,
+ "patchfy": 0.354863813229572,
+ "full": 0.6070038910505836,
+ "randinit": 0.42568093385214006,
+ "severed": 0.4762645914396887
+}
+=== CONFOUND VERDICT === SEVERED_BUILDS_MATERIAL (severed>patchfy): stronger 'representation' wording allowed
+wrote /root/NC/experiments/gateA/results/native_usefulness_controls.json
+CONTROLS2 DONE
