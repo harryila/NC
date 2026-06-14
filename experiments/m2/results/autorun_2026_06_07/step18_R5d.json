@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R5d",
+      "seed": 0,
+      "learn_acc": 0.7833333611488342,
+      "final_acc": 0.5083333671092987,
+      "forgetting": 0.3437499925494194,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 1,
+      "learn_acc": 0.8416667222976685,
+      "final_acc": 0.3983333557844162,
+      "forgetting": 0.5541667081415653,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 2,
+      "learn_acc": 0.7800000429153442,
+      "final_acc": 0.41000002175569533,
+      "forgetting": 0.4625000264495611,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 3,
+      "learn_acc": 0.8416667103767395,
+      "final_acc": 0.49333337396383287,
+      "forgetting": 0.4354166705161333,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 4,
+      "learn_acc": 0.8400000333786011,
+      "final_acc": 0.5350000321865082,
+      "forgetting": 0.3812500014901161,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 5,
+      "learn_acc": 0.8600000381469727,
+      "final_acc": 0.47666669487953184,
+      "forgetting": 0.479166679084301,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 6,
+      "learn_acc": 0.8250000476837158,
+      "final_acc": 0.5066667020320892,
+      "forgetting": 0.39791668206453323,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 7,
+      "learn_acc": 0.8366667270660401,
+      "final_acc": 0.5250000327825546,
+      "forgetting": 0.38958336785435677,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 8,
+      "learn_acc": 0.8000000357627869,
+      "final_acc": 0.4566666841506958,
+      "forgetting": 0.42916668951511383,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 9,
+      "learn_acc": 0.8150000452995301,
+      "final_acc": 0.503333356976509,
+      "forgetting": 0.38958336040377617,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 10,
+      "learn_acc": 0.8166666984558105,
+      "final_acc": 0.5333333611488342,
+      "forgetting": 0.3541666716337204,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5d",
+      "seed": 11,
+      "learn_acc": 0.743333387374878,
+      "final_acc": 0.4950000405311584,
+      "forgetting": 0.31041668355464935,
+      "dataset": "2obj-fashion"
+    }
+  ]
+}

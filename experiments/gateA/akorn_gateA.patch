@@ -1,0 +1,95 @@
+diff --git a/eval_obj.py b/eval_obj.py
+index b75a0e9..551962d 100644
+--- a/eval_obj.py
++++ b/eval_obj.py
+@@ -383,6 +383,8 @@ if __name__ == "__main__":
+     parser.add_argument("--N", type=int, default=4,
+                         help="num of rotating dimensions")
+     parser.add_argument("--J", type=str, default="conv", help="connectivity")
++    parser.add_argument("--norm_ablate", type=str, default="none",
++                        help="GATE A A3: clamp|soft|layernorm sphere-normalization ablation (none=off)")
+     parser.add_argument("--use_omega", type=str2bool, default=False)
+     parser.add_argument("--global_omg", type=str2bool, default=False)
+     parser.add_argument(
+@@ -426,7 +428,7 @@ if __name__ == "__main__":
+             ch=args.ch,
+             L=args.L,
+             T=args.T,
+-            J=args.J,  # "conv" or "attn",
++            J=("attn" if args.J in ("none", "identity") else args.J),  # GATE A: none->attn then sever
+             use_omega=args.use_omega,
+             global_omg=args.global_omg,
+             c_norm=args.c_norm,
+@@ -454,6 +456,23 @@ if __name__ == "__main__":
+             gta=args.gta,
+         ).cuda()
+ 
++    # --- GATE A: param-matched coupling severance (J in {none, identity}) ---
++    # Sever BEFORE EMA-wrap + load so the architecture matches the severed checkpoint.
++    if args.model == "akorn" and args.J in ("none", "identity"):
++        import sys as _sys
++        if "/root/NC" not in _sys.path:
++            _sys.path.insert(0, "/root/NC")
++        from experiments.gateA.native_severance import sever_akorn
++        net = sever_akorn(net)
++
++    # --- GATE A A3: sphere-normalization ablation (must match the trained checkpoint) ---
++    if args.model == "akorn" and getattr(args, "norm_ablate", "none") != "none":
++        import sys as _sys
++        if "/root/NC" not in _sys.path:
++            _sys.path.insert(0, "/root/NC")
++        from experiments.gateA.native_norm_ablate import norm_ablate_akorn
++        net = norm_ablate_akorn(net, variant=args.norm_ablate, no_proj=True)
++
+     model = EMA(net)
+     model.load_state_dict(torch.load(
+         args.model_path, weights_only=True)["model_state_dict"])
+diff --git a/train_obj.py b/train_obj.py
+index e399f41..c69a51d 100644
+--- a/train_obj.py
++++ b/train_obj.py
+@@ -153,6 +153,8 @@ if __name__ == "__main__":
+     parser.add_argument("--N", type=int, default=4, help="num of rotating dimensions")
+     parser.add_argument("--gamma", type=float, default=1.0, help="step size")
+     parser.add_argument("--J", type=str, default="conv", help="connectivity")
++    parser.add_argument("--norm_ablate", type=str, default="none",
++                        help="GATE A A3: clamp|soft|layernorm sphere-normalization ablation (none=off)")
+     parser.add_argument("--use_omega", type=str2bool, default=False)
+     parser.add_argument("--global_omg", type=str2bool, default=False)
+     parser.add_argument(
+@@ -291,7 +293,7 @@ if __name__ == "__main__":
+             L=args.L,
+             T=args.T,
+             gamma=args.gamma,
+-            J=args.J,  # "conv" or "attn",
++            J=("attn" if args.J in ("none", "identity") else args.J),  # GATE A: none->attn then sever
+             use_omega=args.use_omega,
+             global_omg=args.global_omg,
+             c_norm=args.c_norm,
+@@ -326,6 +328,26 @@ if __name__ == "__main__":
+     else:
+         raise NotImplementedError
+ 
++    # --- GATE A: param-matched coupling severance (J in {none, identity}) ---
++    # Model was built with J='attn'; swap KLayer.connectivity for a param-matched
++    # per-token mixer (zero cross-token interaction), holding c/omega/project/normalize fixed.
++    if args.model == "akorn" and args.J in ("none", "identity"):
++        import sys as _sys
++        if "/root/NC" not in _sys.path:
++            _sys.path.insert(0, "/root/NC")
++        from experiments.gateA.native_severance import sever_akorn
++        net = sever_akorn(net)
++
++    # --- GATE A A3: sphere-NORMALIZATION ablation (--norm_ablate {clamp,soft,layernorm}) ---
++    # Replace the unit-sphere normalize with a bounded non-spherical norm (+ apply_proj=False);
++    # parameter-identical. Dissociates normalization-stability from phase-synchrony.
++    if args.model == "akorn" and getattr(args, "norm_ablate", "none") != "none":
++        import sys as _sys
++        if "/root/NC" not in _sys.path:
++            _sys.path.insert(0, "/root/NC")
++        from experiments.gateA.native_norm_ablate import norm_ablate_akorn
++        net = norm_ablate_akorn(net, variant=args.norm_ablate, no_proj=True)
++
+     total_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
+     print(f"Total number of basemodel parameters: {total_params}")
+ 

@@ -1,0 +1,80 @@
+[22:00] orchestration started; waiting for reproduction (ema_499.pth)
+[02:30] STEP1 reproduction DONE (ema_499.pth present)
+[02:30] STEP2 running native_decompose on ema_499 (n=64)...
+/root/NC/experiments/gateA/native_decompose.py:199: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  blob = torch.load(ckpt_path, map_location="cpu")
+Indexing /root/data/clevrtex/clevrtex_full
+Sourced full (test) from /root/data/clevrtex/clevrtex_full
+{
+  "prediction": "ambiguous",
+  "clauses": {
+    "a_gJ_dominates": true,
+    "b_gJ_common_mode": true,
+    "c_raises_R_global": true,
+    "d_fgari_unchanged": false,
+    "delta_fgari_full_minus_jzero": 0.40066,
+    "delta_mbo_full_minus_jzero": 0.32401
+  },
+  "metrics_full": {
+    "fgari": 0.7589052027442516,
+    "mbo": 0.5655780663031117
+  },
+  "metrics_jzero": {
+    "fgari": 0.35824898361621227,
+    "mbo": 0.2415646138034026
+  },
+  "R_global_full": {
+    "L0": 0.6809568926692009
+  },
+  "R_global_jzero": {
+    "L0": 0.6355929002165794
+  },
+  "out": "/root/NC/experiments/gateA/native_decompose_ema499.json"
+}
+NATIVE_DECOMPOSE_DONE
+[02:30] STEP2 predictor DONE -> native_decompose_ema499.json
+[02:30] STEP3 full eval_obj on ema_499 (this can take a while)...
+[02:31] STEP3 full eval DONE -> eval_repro_full.log
+[02:31] STEP4 launching severance retrain (--J none)...
+[02:31] STEP4 severance retrain launched pid 171077
+[02:31] ORCHESTRATION: repro+eval done, severance retraining (~9h). Check eval_repro_full.log + train_clvtex_severed_none.log
+[07:18] SEVERED reproduction DONE; running full eval...
+[07:19] SEVERED full eval DONE -> eval_severed_full.log
+[07:19] === GATE COMPLETE: compare eval_repro_full.log (full) vs eval_severed_full.log (severed) ===
+[07:21] PATH-A start (corrected ladder: A1 projoff / A3 normclamp / A4 itrsa)
+[15:50] A1 projoff EVAL DONE -> eval_projoff.log
+[00:18] A3 normclamp EVAL DONE -> eval_normclamp.log  (DECISIVE: FG-ARI + R_global)
+[00:19] A3 ckpt present; measuring R_global on normclamp...
+/root/NC/experiments/gateA/native_decompose.py:205: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  blob = torch.load(ckpt_path, map_location="cpu")
+Indexing /root/data/clevrtex/clevrtex_full
+Sourced full (test) from /root/data/clevrtex/clevrtex_full
+{
+  "prediction": "ambiguous",
+  "clauses": {
+    "a_gJ_dominates": true,
+    "b_gJ_common_mode": true,
+    "c_raises_R_global": true,
+    "d_fgari_unchanged": false,
+    "delta_fgari_full_minus_jzero": 0.48315,
+    "delta_mbo_full_minus_jzero": 0.35174
+  },
+  "metrics_full": {
+    "fgari": 0.811180235980955,
+    "mbo": 0.5575463994876226
+  },
+  "metrics_jzero": {
+    "fgari": 0.328025491360444,
+    "mbo": 0.2058109864657512
+  },
+  "R_global_full": {
+    "L0": 0.7637534290552139
+  },
+  "R_global_jzero": {
+    "L0": 0.5636622756719589
+  },
+  "out": "/root/NC/experiments/gateA/native_decompose_normclamp.json"
+}
+NATIVE_DECOMPOSE_DONE
+[00:19] A3 R_global DONE -> native_decompose_normclamp.json
+DESYNC DONE

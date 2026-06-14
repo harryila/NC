@@ -19,7 +19,7 @@ import torch.nn as nn
 import _bootstrap  # noqa: F401  -- makes the pinned external/akorn importable; MUST precede `source.*`
 from source.models.classification.knet import AKOrN
 from source.layers.klayer import KLayer
-from source.layers.kutils import normalize as sphere_normalize
+from source.layers.kutils import normalize as sphere_normalize, reshape, reshape_back
 
 # Keep IDENTICAL across all rungs; only the per-layer core (index 2) changes.
 # NOTE norm="gn" (not the repo default "bn") -- BN running-stat drift is a CL confound.
@@ -78,6 +78,66 @@ def build_R6_scrambled(out_classes, **ov):
     for _, layer in _layers(m):
         for p in layer[2].connectivity.parameters():
             p.requires_grad_(False)  # random fixed J; apply_proj stays True
+    return m
+
+
+# ---- R7: NORMALIZATION ABLATION (E2). Coupling + projection + omega + recurrence ALL ON; ONLY the per-step
+# spherical normalize() is swapped for a bounded-but-non-spherical variant, to test whether the SPHERICAL
+# per-oscillator competition (not mere boundedness, not coupling) is the binding ingredient. We monkeypatch each
+# KLayer.forward to route both normalize() calls through k._norm_fn -- byte-identical to klayer.py:152-165 otherwise
+# (verified bit-exact when _norm_fn == spherical). Zero added params. RMS of the spherical state = 1/sqrt(n).
+import types as _types
+import torch.nn.functional as _F
+
+
+def _make_norm_fn(kind, n, rmax=3.0, lam=1.0):
+    if kind == "spherical":                                  # == R6 control (bit-exact)
+        return lambda x: sphere_normalize(x, n)
+    if kind == "clamp":                                      # V1: cap per-group radius at rmax, drop the sphere constraint
+        def f(x):
+            xr = reshape(x, n); r = xr.norm(dim=2, keepdim=True).clamp_min(1e-8)
+            return reshape_back(xr * (r.clamp(max=rmax) / r))
+        return f
+    if kind == "layernorm":                                  # V2: normalize mean/var over channels, rescale to RMS 1/sqrt(n)
+        def f(x):
+            C = x.shape[1]
+            z = _F.layer_norm(x.permute(0, 2, 3, 1), (C,)) * (1.0 / (n ** 0.5))
+            return z.permute(0, 3, 1, 2).contiguous()
+        return f
+    if kind == "soft":                                       # V3 dose-response: x/(1+lam*(r-1)); lam=1 == sphere, lam=0 == none
+        def f(x):
+            xr = reshape(x, n); r = xr.norm(dim=2, keepdim=True).clamp_min(1e-8)
+            return reshape_back(xr / (1.0 + lam * (r - 1.0)))
+        return f
+    raise ValueError(f"unknown R7 norm variant {kind!r}")
+
+
+def _patched_klayer_forward(self, x, c, T, gamma):
+    # IDENTICAL to KLayer.forward (klayer.py:152-165) except normalize() -> self._norm_fn
+    xs, es = [], []
+    c = self.c_norm(c)
+    x = self._norm_fn(x)
+    es.append(torch.zeros(x.shape[0]).to(x.device))
+    for t in range(T):
+        dxdt, _sim = self.kupdate(x, c)
+        x = self._norm_fn(x + gamma * dxdt)
+        xs.append(x)
+        es.append((-_sim).reshape(x.shape[0], -1).sum(-1))
+    return xs, es
+
+
+def build_R7(out_classes, variant="clamp", lam=1.0, rmax=3.0, no_proj=False, **ov):
+    """E2 normalization-ablation arm: full R6 (coupling+proj+omega+T=3) but the per-step spherical normalize is
+    replaced by `variant` in {spherical(=R6 control), clamp(V1), layernorm(V2), soft(V3,lam)}. Zero added params.
+    no_proj=True ALSO sets apply_proj=False -> separates 'lost normalization-competition' from 'corrupted tangent
+    projection' (the projection y-<y,x>x assumes ||x||=1, which the non-spherical variants break)."""
+    m = _base_model(out_classes, **ov)
+    for _, layer in _layers(m):
+        k = layer[2]
+        k._norm_fn = _make_norm_fn(variant, k.n, rmax=rmax, lam=lam)
+        k.forward = _types.MethodType(_patched_klayer_forward, k)
+        if no_proj:
+            k.apply_proj = False
     return m
 
 
@@ -146,6 +206,8 @@ def build(rung, out_classes, **kw):
         return build_R6(out_classes, **kw)
     if rung == "R5":
         return build_R5(out_classes, **kw)
+    if rung == "R7":
+        return build_R7(out_classes, **kw)
     if rung == "R6s":
         return build_R6_scrambled(out_classes, **kw)
     return build_R1_to_R4(rung, out_classes, **kw)

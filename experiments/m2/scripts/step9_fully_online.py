@@ -17,10 +17,24 @@ from palr_pool import torch_group_dirs
 from avalanche_backbone import LadderClassifier
 
 ARM_RUNG = {"R6": ("R6", {}), "R6s": ("R6s", {}),
-            # RECURRENCE-MATCHED controls (synchrony projection OFF) — isolates synchrony from mere recurrence.
-            # R6 - R5 = the causal effect of the Kuramoto phase-coupling (single apply_proj flip, identical machinery).
-            "R5": ("R5", {"variant": "no_proj"}),     # apply_proj=False: recurrence+norm ON, synchrony projection OFF (surgical)
-            "R5d": ("R5", {"variant": "depthwise"})}  # pure per-oscillator normalized recurrent dynamics (no neuron coupling)
+            # ABLATION LADDER. NOTE (corrected 2026-06-11 after reading klayer.py + AKOrN paper):
+            #   apply_proj (no_proj) removes ONLY the tangent-space PROJECTION Proj_x(y)=y-<y,x>x. The Kuramoto
+            #   COUPLING J (=connectivity(x), klayer.py:128) is computed UNCONDITIONALLY and stays ON in no_proj.
+            #   The paper names J — not the projection — as the synchronizer. So R6-R5(no_proj) = effect of the
+            #   PROJECTION (NOT of coupling/synchrony); R5~=R6 here merely replicates AKOrN's own 'without Proj' ablation.
+            # COUPLING/SYNCHRONY-OFF control = R5d (depthwise: severs neuron-neuron coupling). Anchor the
+            #   'recurrence-not-synchrony' claim on R5d, not no_proj.
+            "R5": ("R5", {"variant": "no_proj"}),     # PROJECTION off (coupling J still ON); param-identical to R6
+            "R5d": ("R5", {"variant": "depthwise"}),  # COUPLING severed -> pure per-oscillator recurrent normalized dynamics
+            # E2 NORMALIZATION-ablation arms (coupling+proj+omega+T=3 ALL ON; only the per-step spherical normalize swapped):
+            "R7sph": ("R7", {"variant": "spherical"}),            # control == R6 (bit-exact normalize)
+            "R7clamp": ("R7", {"variant": "clamp"}),              # V1: bounded radius, NO sphere/competition constraint
+            "R7ln": ("R7", {"variant": "layernorm"}),             # V2: channel mean/var norm (bounded, not per-osc sphere)
+            "R7s25": ("R7", {"variant": "soft", "lam": 0.25}),   # V3 dose-response: bounded non-spherical midpoint
+            "R7s50": ("R7", {"variant": "soft", "lam": 0.5}),
+            "R7lam0": ("R7", {"variant": "soft", "lam": 0.0}),   # blowup reference (expect NaN); never positive evidence
+            # control: clamp WITH the tangent projection also OFF -> isolates lost-competition from corrupted-projection
+            "R7clampNP": ("R7", {"variant": "clamp", "no_proj": True})}
 
 def mean_pool_ctx(state, n):
     gd = torch_group_dirs(state, n)
@@ -34,7 +48,7 @@ class PlainCNNContext(nn.Module):
     def forward(self, x): return self.net(x)
 
 def run(arm, seed, n_tasks=5, cl_epochs=40, n_anchors=300, n_replay=128, device="cuda",
-        n_per_class=600, max_probe=160):
+        n_per_class=600, max_probe=160, capture_fn=None, T_override=None):
     Xtr, ytr = shp._gen_split(n_per_class, seed=1000 + seed)
     Xte, yte = shp._gen_split(max(60, max_probe // 5), seed=5000 + seed)
     exps_tr = shp._experiences(Xtr, ytr, n_exp=n_tasks); exps_te = shp._experiences(Xte, yte, n_exp=n_tasks)
@@ -48,6 +62,8 @@ def run(arm, seed, n_tasks=5, cl_epochs=40, n_anchors=300, n_replay=128, device=
     else:
         rung, kw = ARM_RUNG[arm]; torch.manual_seed(seed)
         cg = LadderClassifier(rung, num_classes=shp.N_CLASSES, eval_inits=1, base_seed=seed, **kw).to(device)
+        if T_override is not None:  # E3 T-sweep: train-T == eval-T (Kuramoto recurrence depth)
+            cg.net.T = [int(T_override)] * int(getattr(cg.net, "L", 3))
         n = int(getattr(cg.net, "n", 4))
         def context(xb):
             with h3_seeded(0):
@@ -88,6 +104,11 @@ def run(arm, seed, n_tasks=5, cl_epochs=40, n_anchors=300, n_replay=128, device=
     learn = [float(A[k, k]) for k in range(T)]; fwd = [A[k, k] - A[T - 1, k] for k in range(T - 1)]
     out = {"arm": arm, "seed": seed, "learn_acc": float(np.mean(learn)), "final_acc": float(np.mean(A[T - 1])),
            "forgetting": float(np.mean(fwd)) if fwd else 0.0}
+    # optional post-training capture (e.g. synchrony measure on the TRAINED oscillator). Oscillator arms only.
+    if capture_fn is not None and arm != "plainCNN":
+        cg.eval()
+        try: out["measure"] = capture_fn(arm, cg, n, te_imgs, device)
+        except Exception as e: out["measure_error"] = repr(e)
     del cg, trunk, hh.gen
     if torch.cuda.is_available(): torch.cuda.empty_cache()
     return out
