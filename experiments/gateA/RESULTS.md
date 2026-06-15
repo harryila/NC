@@ -56,6 +56,25 @@ OOD>in-dist gap is a live caveat (could be held-out-class separability) — the 
 (i.i.d.-query CIs anti-conservative — CI-separation is WEAK; model-seed variance is the binding bar, n≥3 campaign running).
 Features saved to results/crossmodel_sa_{full,outd}_features.npz (gitignored) for offline re-scoring (--rescore_npz).
 
+**T-SWEEP DOSE-RESPONSE (t_sweep.py, eval-only, single trained full ckpt, OOD n=320):** vary AKOrN's native Kuramoto
+recurrence T∈{1,2,4,6,8} at eval time (grouping-STRENGTH knob, no retraining) — turns the discrete ladder into a
+continuous curve, addressing "3 dots not a curve". Canonical FG-ARI (eval_obj, n_clusters=11) + GT-pooled material/size
+retrieval from the SAME activation per T:
+| T | FG-ARI | material mAP | material R@1 | size mAP |
+|---|---|---|---|---|
+| 1 | 0.025 | 0.139 | 0.279 | 0.355 |
+| 2 | 0.255 | 0.199 | 0.468 | 0.348 |
+| 4 | 0.472 | 0.176 | 0.481 | 0.358 |
+| 6 | 0.582 | 0.150 | 0.439 | 0.362 |
+| 8 | 0.733 | 0.103 | 0.372 | 0.357 |
+TWO-PHASE (honest): FG-ARI rises monotonically with T (0.025→0.733). Material utility PEAKS at low grouping (T=2 mAP
+0.199 / T=4 R@1 0.481) then DECLINES monotonically as FG-ARI climbs — **ρ(FG-ARI, material mAP)=−1.0 over the converged
+regime T≥2** (and ρ=−1.0 for R@1 over T≥4). T=1 is degenerate/under-iterated (FG-ARI≈0, both metrics low → including it
+makes the all-5 ρ=−0.40); report all points, highlight the mature-regime trade-off. size mAP FLAT (~0.355, all T) —
+consistent with the retired size leg. Reading: early recurrence BUILDS the representation; past T≈2-4, further Kuramoto
+grouping TRADES local material for segmentation. The strongest cheap within-model version of the causal anti-correlation.
+(t_sweep.py validates against the headline: T=8 OOD FG-ARI 0.726 ≈ canonical in-dist 75.5; material mAP 0.103 ≈ full 0.096.)
+
 **Honest ceiling (review):** as-is TMLR/workshop; after fix-set (n≥3 seeds + drop size leg + SA=destruction + mAP-led +
 hard-mask + 2nd dataset family) = borderline-to-solid ICLR poster; NOT spotlight/oral (Oh-A-DINO overlap; both distinctive
 selling points refuted). Decisions: ONE-DIRECTIONAL framing; HOLD SynCx (rebuttal-phase); GPU → n≥3 seeds + 2nd dataset.
