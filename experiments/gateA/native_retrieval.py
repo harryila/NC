@@ -30,6 +30,13 @@ def l2(X):
     return X / np.clip(np.linalg.norm(X, axis=1, keepdims=True), 1e-9, None)
 
 
+def real_gt(a, b, min_delta=0.01):
+    """SHARED decision primitive (used by both native_retrieval [AKOrN] and crossmodel_slotattn [SA] -> one rule).
+    a MEANINGFULLY beats b iff: CI-separated AND mAP-delta >= min_delta AND R@1 agrees. CIs are anti-conservative at
+    large nq (i.i.d.-query bootstrap), so we require an effect size + cross-metric agreement, NOT bare CI-separation."""
+    return (a["ci"][0] > b["ci"][1]) and (a["mAP"] - b["mAP"] >= min_delta) and (a["R1"] > b["R1"])
+
+
 def retrieval(X, y, sc, n_boot=1000, seed=0):
     """leave-one-scene-out cosine retrieval. mAP (relevance=same label) + Recall@1 + bootstrap CI over queries."""
     Xn = l2(X.astype("float32"))
@@ -140,20 +147,26 @@ def main():
     if all(k in R and "material" in R[k] for k in ("full", "severed")):
         fm, sm = R["full"]["material"], R["severed"]["material"]
         im = R.get("itrsa", {}).get("material")
-        mat_sev_gt_full = sm["mAP"] - (sm["ci"][1] - sm["mAP"]) > fm["mAP"] + (fm["mAP"] - fm["ci"][0])
-        mat_sev_gt_itrsa = (im is None) or (sm["ci"][0] > im["ci"][1])
+        # material DESTRUCTION leg (real_gt = CI-sep + effect-size + R@1 agreement; SAME rule as crossmodel_slotattn)
+        mat_sev_gt_full = real_gt(sm, fm)
+        mat_sev_gt_itrsa = (im is None) or real_gt(sm, im)
         # spearman(FG-ARI, mAP_material) over arms present
         arms_fg = [(FGARI.get(k, FGARI.get(k + "_readout", 0)), R[k]["material"]["mAP"]) for k in R if "material" in R[k] and FGARI.get(k, FGARI.get(k+"_readout")) ]
         rho = float("nan")
         if len(arms_fg) >= 3:
             from scipy.stats import spearmanr
             rho = float(spearmanr([x[0] for x in arms_fg], [x[1] for x in arms_fg]).correlation)
-        size_ctrl = ("size" in R.get("full", {}) and "size" in R.get("severed", {}) and
-                     R["full"]["size"]["ci"][0] >= R["severed"]["size"]["mAP"])
-        inversion = bool(mat_sev_gt_full and mat_sev_gt_itrsa and (rho <= -0.5 if rho == rho else False) and size_ctrl)
+        # MATERIAL-SPECIFICITY control (honest, post size-leg-retirement): grouping must NOT also destroy size
+        # -> severed does NOT meaningfully beat full on size. (We do NOT claim grouping BUILDS size; that was a
+        #    spatial-context confound.) This shows the loss is material-specific, not global degradation.
+        size_specific = ("size" in R.get("full", {}) and "size" in R.get("severed", {})
+                         and not real_gt(R["severed"]["size"], R["full"]["size"]))
+        inversion = bool(mat_sev_gt_full and mat_sev_gt_itrsa and (rho <= -0.5 if rho == rho else False) and size_specific)
         verdict = dict(INVERSION_CONFIRMED=inversion, mat_severed_gt_full=bool(mat_sev_gt_full),
                        mat_severed_gt_itrsa=bool(mat_sev_gt_itrsa), spearman_fg_material=rho,
-                       size_control_full_ge_severed=bool(size_ctrl),
+                       material_specific_size_not_lost=bool(size_specific),
+                       NOTE="size leg = material-SPECIFICITY control only (size not also destroyed); grouping does NOT "
+                            "build size (spatial-context confound, retired). real_gt = CI-sep + effect-size + R@1 agreement.",
                        material_full=fm["mAP"], material_severed=sm["mAP"], material_itrsa=(im["mAP"] if im else None),
                        size_full=R["full"].get("size", {}).get("mAP"), size_severed=R["severed"].get("size", {}).get("mAP"))
     res["_verdict"] = verdict

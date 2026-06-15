@@ -215,13 +215,7 @@ def main():
     # is EXPECTED TO FAIL) — reported explicitly so the asymmetry is disclosed, not hidden. mAP is primary; R@1 secondary.
     enc, s3, s1 = res["sa_encoder"], res["sa_slots_i3"], res["sa_slots_i1"]
 
-    def ci_sep_gt(a, b):  # a's mAP CI-low strictly above b's mAP CI-high
-        return a["ci"][0] > b["ci"][1]
-    # CIs are anti-conservative at nq~12617 (i.i.d.-query bootstrap); require a real EFFECT SIZE + cross-metric agreement,
-    # not bare CI-separation (per adversarial review). MIN_DELTA on mAP guards against tight-CI false positives.
-    MIN_DELTA = 0.01
-    def real_gt(a, b):  # a meaningfully beats b: CI-sep AND mAP-delta>=MIN_DELTA AND R@1 agrees
-        return ci_sep_gt(a, b) and (a["mAP"] - b["mAP"] >= MIN_DELTA) and (a["R1"] > b["R1"])
+    real_gt = NR.real_gt   # SINGLE shared decision primitive (CI-sep + effect-size + R@1 agreement) -> same rule as AKOrN
     # DESTRUCTION leg (the claim we make for SA): ungrouped encoder material > grouped slots
     destruction_mAP = enc["material"]["mAP"] > s3["material"]["mAP"]
     destruction_ci = real_gt(enc["material"], s3["material"])
