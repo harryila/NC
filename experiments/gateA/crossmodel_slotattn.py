@@ -174,16 +174,27 @@ def main():
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default="/root/NC/experiments/gateA/results/crossmodel_sa.json")
+    ap.add_argument("--rescore_npz", default=None,
+                    help="re-score saved features (skip model): recompute retrieval+verdict offline w/ current logic")
     args = ap.parse_args()
 
-    import torch
-    dev = args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu"
-    model, hp = load_sa(args.ckpt, dev)
-    print("[model] SA loaded: %d slots / %d iters / slot_size %d / %s" % (
-        hp.num_slots, hp.num_iterations, hp.slot_size, hp.resolution), flush=True)
-    scenes = load_scenes(args)
-    arms, labs, sc, fgari = extract(model, scenes, dev, iters=(1, 3))
-    print("[FG-ARI trust gate] " + " ".join("%s=%.3f" % (k, fgari[k]) for k in fgari), flush=True)
+    if args.rescore_npz:                                                # OFFLINE re-score: no model, reuse saved features
+        d = np.load(args.rescore_npz, allow_pickle=True)
+        nms = sorted({k.rsplit("__", 1)[0] for k in d.files})
+        arms = {nm: d[nm + "__X"] for nm in nms}
+        sc = d[nms[0] + "__sc"]
+        labs = {a: d[nms[0] + "__lab_" + a] for a in ATTRS}
+        fgari = json.load(open(args.out))["_verdict"]["fgari"]          # carry FG-ARI from the existing json
+        print("[rescore] %d arms from %s" % (len(arms), args.rescore_npz), flush=True)
+    else:
+        import torch
+        dev = args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu"
+        model, hp = load_sa(args.ckpt, dev)
+        print("[model] SA loaded: %d slots / %d iters / slot_size %d / %s" % (
+            hp.num_slots, hp.num_iterations, hp.slot_size, hp.resolution), flush=True)
+        scenes = load_scenes(args)
+        arms, labs, sc, fgari = extract(model, scenes, dev, iters=(1, 3))
+        print("[FG-ARI trust gate] " + " ".join("%s=%.3f" % (k, fgari[k]) for k in fgari), flush=True)
 
     # encode labels per attr (factorize strings -> ints) and run the LOCKED retrieval per arm/attr
     res = {}
@@ -198,36 +209,62 @@ def main():
             a, res[nm][a]["mAP"], res[nm][a]["ci"][0], res[nm][a]["ci"][1],
             res[nm][a]["R1"], res[nm][a]["chance"]) for a in ATTRS), flush=True)
 
-    # ---- cross-model verdict: same DIRECTION as AKOrN ----
+    # ---- SA verdict: HONEST SCOPE = DESTRUCTION LEG ONLY (mAP-primary; harmonized w/ AKOrN prereg rule) ----
+    # Post adversarial-review (wm01luswy): SA corroborates ONLY the local-destruction direction. We apply the SAME
+    # prereg gate AKOrN uses (native_retrieval.py): material destruction CI-separated AND the size-BUILD gate (which SA
+    # is EXPECTED TO FAIL) — reported explicitly so the asymmetry is disclosed, not hidden. mAP is primary; R@1 secondary.
     enc, s3, s1 = res["sa_encoder"], res["sa_slots_i3"], res["sa_slots_i1"]
-    mat_dir = enc["material"]["mAP"] > s3["material"]["mAP"]
-    mat_ci_sep = enc["material"]["ci"][0] > s3["material"]["ci"][1]
-    size_dir = s3["size"]["mAP"] >= enc["size"]["mAP"]
+
+    def ci_sep_gt(a, b):  # a's mAP CI-low strictly above b's mAP CI-high
+        return a["ci"][0] > b["ci"][1]
+    # CIs are anti-conservative at nq~12617 (i.i.d.-query bootstrap); require a real EFFECT SIZE + cross-metric agreement,
+    # not bare CI-separation (per adversarial review). MIN_DELTA on mAP guards against tight-CI false positives.
+    MIN_DELTA = 0.01
+    def real_gt(a, b):  # a meaningfully beats b: CI-sep AND mAP-delta>=MIN_DELTA AND R@1 agrees
+        return ci_sep_gt(a, b) and (a["mAP"] - b["mAP"] >= MIN_DELTA) and (a["R1"] > b["R1"])
+    # DESTRUCTION leg (the claim we make for SA): ungrouped encoder material > grouped slots
+    destruction_mAP = enc["material"]["mAP"] > s3["material"]["mAP"]
+    destruction_ci = real_gt(enc["material"], s3["material"])
+    destruction_R1 = enc["material"]["R1"] > s3["material"]["R1"]   # secondary corroboration
+    # SIZE-BUILD gate (AKOrN-style, prereg cond iii) applied to SA — EXPECTED FALSE (size is a spatial-context confound).
+    # Now uses real_gt (effect-size + R@1 agreement) so a +0.002 mAP tight-CI artifact does NOT pass.
+    size_build_gate = real_gt(s3["size"], enc["size"])
+    # n_iters monotonicity (prereg SA gate) — EXPECTED FALSE (slots_i1 < slots_i3)
     monotone_mat = enc["material"]["mAP"] >= s1["material"]["mAP"] >= s3["material"]["mAP"]
-    fgari_mono = fgari["sa_slots_i3"] >= fgari["sa_slots_i1"]
-    # Spearman(FG-ARI, mAP_material) across the 3-point ladder
     order = ["sa_encoder", "sa_slots_i1", "sa_slots_i3"]
-    fg = [fgari[k] for k in order]
-    mp = [res[k]["material"]["mAP"] for k in order]
     rho = float("nan")
     try:
         from scipy.stats import spearmanr
-        rho = float(spearmanr(fg, mp).correlation)
+        rho = float(spearmanr([fgari[k] for k in order], [res[k]["material"]["mAP"] for k in order]).correlation)
     except Exception:
         pass
     verdict = dict(
-        SA_DIRECTION_CONFIRMED=bool(mat_dir and size_dir),
-        material_enc_gt_slots3=bool(mat_dir), material_ci_separated=bool(mat_ci_sep),
-        size_slots3_ge_enc=bool(size_dir), monotone_material_enc_i1_i3=bool(monotone_mat),
-        fgari_i3_ge_i1=bool(fgari_mono), spearman_fgari_material=rho,
+        SA_DESTRUCTION_LEG_CONFIRMED=bool(destruction_mAP and destruction_ci),   # the ONLY claim made for SA
+        destruction_material_mAP_enc_gt_slots=bool(destruction_mAP), destruction_mAP_ci_separated=bool(destruction_ci),
+        destruction_material_R1_corroborates=bool(destruction_R1),
+        size_build_gate_passed=bool(size_build_gate),               # EXPECTED FALSE: size is not grouping-specific (confound)
+        n_iters_monotonicity_passed=bool(monotone_mat),             # EXPECTED FALSE: slots_i1 < slots_i3
+        spearman_fgari_material=rho,
+        NOTE="SA = local-DESTRUCTION corroboration only. size-build + monotonicity gates expected FALSE (retired as confounds). "
+             "Lead with mAP; R@1 secondary. NOT equivalent to AKOrN INVERSION_CONFIRMED.",
         mAP_material=dict(encoder=enc["material"]["mAP"], slots_i1=s1["material"]["mAP"], slots_i3=s3["material"]["mAP"]),
+        R1_material=dict(encoder=enc["material"]["R1"], slots_i1=s1["material"]["R1"], slots_i3=s3["material"]["R1"]),
         mAP_size=dict(encoder=enc["size"]["mAP"], slots_i1=s1["size"]["mAP"], slots_i3=s3["size"]["mAP"]),
         fgari=fgari)
     res["_verdict"] = verdict
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     json.dump(res, open(args.out, "w"), indent=2)
-    print("\n=== SA CROSS-MODEL VERDICT ===", json.dumps(verdict, indent=1), flush=True)
-    print("wrote", args.out, flush=True)
+    # save pooled features so CIs/floors/cluster-bootstrap can be RE-SCORED offline without re-running the model
+    npz_path = args.out.replace(".json", "_features.npz")
+    save = {}
+    for nm, X in arms.items():
+        save[nm + "__X"] = X
+        save[nm + "__sc"] = sc
+        for a in ATTRS:
+            save[nm + "__lab_" + a] = labs[a]
+    np.savez_compressed(npz_path, **save)
+    print("\n=== SA VERDICT (destruction-leg scope) ===", json.dumps(verdict, indent=1), flush=True)
+    print("wrote", args.out, "and", npz_path, flush=True)
 
 
 if __name__ == "__main__":
