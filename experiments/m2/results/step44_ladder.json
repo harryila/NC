@@ -1,0 +1,43 @@
+{
+  "runs": [
+    {
+      "arm": "R6",
+      "seed": 0,
+      "learn_acc": 0.5333333412806193,
+      "final_acc": 0.4583333532015483,
+      "forgetting": 0.11249998211860657,
+      "measure": {
+        "ami_x_init": 0.1854,
+        "ami_full": 0.2987,
+        "ami_Jzero": 0.2306,
+        "ami_czero": 0.1718
+      }
+    },
+    {
+      "arm": "R6",
+      "seed": 1,
+      "learn_acc": 0.5583333671092987,
+      "final_acc": 0.4750000238418579,
+      "forgetting": 0.1250000149011612,
+      "measure": {
+        "ami_x_init": 0.2394,
+        "ami_full": 0.1506,
+        "ami_Jzero": 0.2404,
+        "ami_czero": 0.1751
+      }
+    },
+    {
+      "arm": "R6",
+      "seed": 2,
+      "learn_acc": 0.5555555820465088,
+      "final_acc": 0.45555558800697327,
+      "forgetting": 0.14999999105930328,
+      "measure": {
+        "ami_x_init": 0.2496,
+        "ami_full": 0.2384,
+        "ami_Jzero": 0.2389,
+        "ami_czero": 0.1013
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "sigma": 0.0,
+      "R_global": 0.685,
+      "fgari": 0.7434,
+      "mbo": 0.569
+    },
+    {
+      "sigma": 0.1,
+      "R_global": 0.6746,
+      "fgari": 0.7316,
+      "mbo": 0.5622
+    },
+    {
+      "sigma": 0.25,
+      "R_global": 0.6266,
+      "fgari": 0.6475,
+      "mbo": 0.5199
+    },
+    {
+      "sigma": 0.5,
+      "R_global": 0.598,
+      "fgari": 0.1371,
+      "mbo": 0.1552
+    },
+    {
+      "sigma": 1.0,
+      "R_global": 0.3684,
+      "fgari": 0.0253,
+      "mbo": 0.0678
+    },
+    {
+      "sigma": 2.0,
+      "R_global": 0.191,
+      "fgari": 0.0109,
+      "mbo": 0.0626
+    }
+  ],
+  "ckpt": "runs/clvtex_akorn_attn_repro/ema_499.pth",
+  "n_images": 24
+}

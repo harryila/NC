@@ -1,0 +1,100 @@
+{
+  "runs": [
+    {
+      "arm": "R5",
+      "seed": 0,
+      "learn_acc": 0.9016667127609252,
+      "final_acc": 0.596666693687439,
+      "forgetting": 0.3812500238418579,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 1,
+      "learn_acc": 0.9316667199134827,
+      "final_acc": 0.545000022649765,
+      "forgetting": 0.48333337157964706,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 2,
+      "learn_acc": 0.9366667151451111,
+      "final_acc": 0.565000033378601,
+      "forgetting": 0.4645833522081375,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 3,
+      "learn_acc": 0.9166667103767395,
+      "final_acc": 0.5616667032241821,
+      "forgetting": 0.4437500089406967,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 4,
+      "learn_acc": 0.9450000405311585,
+      "final_acc": 0.5816667020320893,
+      "forgetting": 0.4541666731238365,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 5,
+      "learn_acc": 0.940000033378601,
+      "final_acc": 0.5783333539962768,
+      "forgetting": 0.4520833492279053,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 6,
+      "learn_acc": 0.9466667175292969,
+      "final_acc": 0.56833336353302,
+      "forgetting": 0.47291669249534607,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 7,
+      "learn_acc": 0.9583333611488343,
+      "final_acc": 0.5650000274181366,
+      "forgetting": 0.49166666716337204,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 8,
+      "learn_acc": 0.96500004529953,
+      "final_acc": 0.516666692495346,
+      "forgetting": 0.56041669100523,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 9,
+      "learn_acc": 0.9550000309944153,
+      "final_acc": 0.5766667008399964,
+      "forgetting": 0.4729166626930237,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 10,
+      "learn_acc": 0.9616666913032532,
+      "final_acc": 0.5600000262260437,
+      "forgetting": 0.5020833313465118,
+      "dataset": "2obj-fashion"
+    },
+    {
+      "arm": "R5",
+      "seed": 11,
+      "learn_acc": 0.9350000381469726,
+      "final_acc": 0.5533333599567414,
+      "forgetting": 0.47708334773778915,
+      "dataset": "2obj-fashion"
+    }
+  ]
+}
