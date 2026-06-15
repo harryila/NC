@@ -50,9 +50,11 @@ arm_flags(){ case "$1" in   # train & eval share the same model/connectivity fla
   *) echo "UNKNOWN_ARM_$1" >&2; return 1;;
 esac; }
 
-# build the (arm:seed) job list
+# build the (arm:seed) job list. ARM-OUTER / SEED-INNER so an arm's seeds are adjacent: with NSLOT>=2*nseeds the
+# FIRST-listed arms (headline: full, jnone) fill the first concurrent batch and finish first; secondary arms (normclamp,
+# itrsa) run in the next batch. (Put the arms you want soonest first in ARMS.)
 JOBS=()
-for s in "${SEEDS[@]}"; do for a in "${ARMS[@]}"; do JOBS+=("$a:$s"); done; done
+for a in "${ARMS[@]}"; do for s in "${SEEDS[@]}"; do JOBS+=("$a:$s"); done; done
 
 NGPU=$(nvidia-smi -L 2>/dev/null | wc -l); [ "$NGPU" -lt 1 ] && NGPU=1
 NSLOT=$((NGPU * SLOTS_PER_GPU))
