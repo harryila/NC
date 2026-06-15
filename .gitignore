@@ -33,3 +33,10 @@ OUTREACH-stanford-berkeley.md
 
 # scratch strategy notes (contain box host:port)
 otherchat.txt
+
+# local checkpoint backup from terminated 4090 (seed-1234 finals)
+experiments/gateA/ckpt_backup_seed1234/
+
+# throwaway smoke-test outputs (kept on local disk, not git)
+experiments/gateA/results/*smoke*.json
+experiments/gateA/results/crossmodel_sa_t50.json
