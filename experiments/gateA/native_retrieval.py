@@ -16,7 +16,8 @@ import os, sys, json, argparse
 import numpy as np
 
 _GA = "/root/NC/experiments/gateA"
-for p in (_GA, "/root/NC"):
+_AK = "/root/NC/external/akorn"                         # so `source.*` (get_clevrtex, models) imports from any cwd
+for p in (_GA, _AK, "/root/NC"):
     if p not in sys.path:
         sys.path.insert(0, p)
 

@@ -1,0 +1,126 @@
+{
+  "AKOrN ladder OOD": {
+    "arms": [
+      "severed",
+      "itrsa",
+      "full",
+      "normclamp"
+    ],
+    "per_attribute": {
+      "material": {
+        "rho_mAP": -1.0,
+        "rho_R1": -1.0,
+        "class": "LOCAL"
+      },
+      "size": {
+        "rho_mAP": 1.0,
+        "rho_R1": 1.0,
+        "class": "GLOBAL"
+      },
+      "shape": {
+        "rho_mAP": 0.6,
+        "rho_R1": -0.2,
+        "class": "GLOBAL"
+      }
+    }
+  },
+  "AKOrN ladder IN-DIST": {
+    "arms": [
+      "severed",
+      "itrsa",
+      "full",
+      "normclamp"
+    ],
+    "per_attribute": {
+      "material": {
+        "rho_mAP": -1.0,
+        "rho_R1": -1.0,
+        "class": "LOCAL"
+      },
+      "size": {
+        "rho_mAP": 0.8,
+        "rho_R1": 1.0,
+        "class": "GLOBAL"
+      },
+      "shape": {
+        "rho_mAP": 0.4,
+        "rho_R1": -0.2,
+        "class": "GLOBAL"
+      }
+    }
+  },
+  "T-sweep (T>=2)": {
+    "T_used": [
+      2,
+      4,
+      6,
+      8
+    ],
+    "per_attribute": {
+      "material": {
+        "rho_mAP": -1.0,
+        "class": "LOCAL"
+      },
+      "size": {
+        "rho_mAP": 0.4,
+        "class": "GLOBAL"
+      },
+      "shape": {
+        "rho_mAP": 0.4,
+        "class": "GLOBAL"
+      }
+    }
+  },
+  "pooled_scatter": {
+    "n_points": 9,
+    "rho_all_points": -0.8,
+    "rho_excl_T1_degenerate": -0.952,
+    "points": [
+      {
+        "fgari": 0.385,
+        "material_mAP": 0.343,
+        "label": "AKOrN:severed"
+      },
+      {
+        "fgari": 0.635,
+        "material_mAP": 0.103,
+        "label": "AKOrN:itrsa"
+      },
+      {
+        "fgari": 0.755,
+        "material_mAP": 0.096,
+        "label": "AKOrN:full"
+      },
+      {
+        "fgari": 0.809,
+        "material_mAP": 0.092,
+        "label": "AKOrN:normclamp"
+      },
+      {
+        "fgari": 0.025,
+        "material_mAP": 0.139,
+        "label": "T=1"
+      },
+      {
+        "fgari": 0.255,
+        "material_mAP": 0.199,
+        "label": "T=2"
+      },
+      {
+        "fgari": 0.472,
+        "material_mAP": 0.176,
+        "label": "T=4"
+      },
+      {
+        "fgari": 0.582,
+        "material_mAP": 0.15,
+        "label": "T=6"
+      },
+      {
+        "fgari": 0.733,
+        "material_mAP": 0.103,
+        "label": "T=8"
+      }
+    ]
+  }
+}

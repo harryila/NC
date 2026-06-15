@@ -80,6 +80,42 @@ hard-mask + 2nd dataset family) = borderline-to-solid ICLR poster; NOT spotlight
 selling points refuted). Decisions: ONE-DIRECTIONAL framing; HOLD SynCx (rebuttal-phase); GPU → n≥3 seeds + 2nd dataset.
 Artifacts: results/{retrieval_outd.json, crossmodel_sa_full.json, crossmodel_sa_outd.json} (committed @ d1def04).
 
+## 2026-06-14f — IN-DIST retrieval KILLS the OOD-artifact attack (#1 gap-closer)
+The pre-registered decider was OOD; a reviewer's #1 attack = "the severed>full inversion is held-out-class separability,
+not grouping." RESOLVED: ran native_retrieval.py on the IN-DIST (full) split too (results/retrieval_full.json, n=2000).
+The inversion HOLDS in-distribution: severed material mAP 0.165 vs full 0.039 = **4.2x**, rho(FG-ARI,material) = -1.0,
+material-specific (size sev 0.344 / full 0.363, preserved). So the AKOrN causal core is present on BOTH splits (in-dist
+4.2x, OOD 3.4x) -> NOT an OOD/separability artifact. (Lower absolute mAP in-dist = 60 materials/chance 0.017 vs OOD 25/
+0.040; the RATIO + rho are what hold.) The OOD>in-dist asymmetry that worried the review was a SLOT-ATTENTION encoder
+issue (material R@1 0.415 OOD vs 0.151 in-dist), NOT AKOrN. DITTADI reconciliation holds on BOTH splits (in-dist:
+material rho -1.0, size +0.80/+1.0, shape +0.40). Reproducible via analyze_metric_critique.py (-> results/metric_critique.json):
+pooled FG-ARI-vs-material scatter rho = -0.80 over 9 grouping-strength points (-0.95 excl. degenerate T=1).
+
+## 2026-06-14e — DITTADI RECONCILIATION (per-attribute FG-ARI correlation) + scoop re-sweep
+Scoop re-sweep (workflow wzp5j1drx, Valency MCP + WebSearch): VERDICT = WATCH (not scooped). The two core pillars
+(parameter-matched CAUSAL severance ladder + eval-only recurrence dose-response) returned ZERO hits — uncontested.
+Yue Song IS re-entering oscillatory nets (Winfree Oscillatory Network 2605.20922) + Welling/Miyato/Keller/Song group
+active (Goldstone modes 2605.14685, Kuramoto diffusion 2509.15328) but on DIFFERENT problems (generation), not our
+dissection — WATCH not collision.
+
+SERIOUS positioning tension found + RECONCILED: **Dittadi et al. ICML 2022 (2107.00637)** reports ARI POSITIVELY
+correlates with downstream object-PROPERTY prediction and proposes ARI as a model-SELECTION metric — apparent opposite of
+our headline. RECONCILIATION (per-attribute FG-ARI correlation, our committed data): FG-ARI tracks attributes with
+OPPOSITE SIGN by class:
+| attribute | class | rho(FG-ARI,util) AKOrN ladder (mAP/R@1) | rho T-sweep T>=2 (mAP) |
+|---|---|---|---|
+| material | LOCAL | -1.00 / -1.00 (0.343->0.096, large) | -1.00 |
+| size | GLOBAL/geom | +1.00 / +1.00 (flat 0.346->0.357, small) | +0.40 |
+| shape | GLOBAL/geom | +0.60 / -0.20 | +0.40 |
+So Dittadi's aggregate POSITIVE correlation is carried by the GEOMETRIC properties; we isolate the LOCAL-appearance
+subset where it INVERTS. Refine, not contradict -> the sharper claim: **"FG-ARI/ARI used for model selection (Dittadi)
+positively predicts GLOBAL attribute utility but is ANTI-correlated with LOCAL appearance utility -> selecting on ARI
+actively selects against local-appearance fidelity."** (Honest: size's positive rho is over a TINY range — size is
+PRESERVED/flat, not meaningfully built; the sign contrast vs material's large negative is the point, NOT a size "build".)
+Adjacent recent work to cite/differentiate: Kapl et al 2602.16689 (Feb 2026, CLEVRTex property-generalization VQA, OC vs
+dense). FIGURE PLAN (all drawable from committed data): Fig1(money)=severance ladder; Fig2=T-sweep (T=1 grayed);
+Fig3=pooled FG-ARI-vs-material scatter (all points, report all-pts rho AND converged rho); Fig4=floors; Fig5=SA+hard-mask.
+
 ## 2026-06-14 UPDATE — where/what usefulness probe + controls + ItrSA reframe (n=1, decisive direction)
 GATE-A "coupling load-bearing" was reframed via a GT-mask-pooled attribute-decode probe (native_usefulness.py,
 PREREG-usefulness.md): does an arm high on FG-ARI (where) differ on per-object property decoding (what)? Severing
